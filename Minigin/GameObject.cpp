@@ -5,10 +5,10 @@
 
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::Update(float deltaTime)
+void dae::GameObject::Update()
 {
 	//todo: find a better way to fix this. error ocurs when deltaTime is not used
-	deltaTime;
+
 }
 
 void dae::GameObject::Render() const

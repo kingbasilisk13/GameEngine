@@ -10,6 +10,8 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
+#include "Time.h"
+
 #include <chrono>
 #include <thread>
 
@@ -86,6 +88,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
+	auto& time = Time::GetInstance();
+
 	// todo: this update loop could use some work.
 	bool doContinue{ true };
 	
@@ -96,9 +100,10 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	while (doContinue)
 	{
 		const auto currentTime = std::chrono::high_resolution_clock::now();
-		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
+		time.ChangeDeltaTime(std::chrono::duration<float>(currentTime - lastTime).count());
+
 		lastTime = currentTime;
-		lag += deltaTime;
+		lag += time.GetDeltaTime();
 
 		doContinue = input.ProcessInput();
 		while (lag >= m_FixedTimeStep)
@@ -107,7 +112,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		
 			lag -= m_FixedTimeStep;
 		}
-		sceneManager.Update(deltaTime);
+		sceneManager.Update();
 		renderer.Render();
 
 		//todo: change ms per frame from magic number to either calculation or pre defined option.
