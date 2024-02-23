@@ -13,6 +13,10 @@ namespace dae
 		Scene& CreateScene(const std::string& name);
 
 		void Update();
+
+		//only used for physics an networking.
+		void FixedUpdate(float fixedTimeStep);
+
 		void Render();
 	private:
 		friend class Singleton<SceneManager>;

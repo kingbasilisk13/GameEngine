@@ -45,8 +45,11 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 }
 
-dae::Minigin::Minigin(const std::string &dataPath)
+dae::Minigin::Minigin(const std::string &dataPath, int frameRate, float fixedTimeStep):
+	m_FixedTimeStep( fixedTimeStep )
 {
+	m_FrameRate = int((1.f / abs(frameRate)) * 1000);
+
 	PrintSDLVersion();
 	
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
@@ -108,15 +111,14 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		doContinue = input.ProcessInput();
 		while (lag >= m_FixedTimeStep)
 		{
-			//todo: figure out where the fixed update needs to be added. it only updates physics and networks.
-		
+			//todo: is using fixed time step as a function parameter realy a good idea?
+			sceneManager.FixedUpdate(m_FixedTimeStep);
 			lag -= m_FixedTimeStep;
 		}
 		sceneManager.Update();
 		renderer.Render();
 
-		//todo: change ms per frame from magic number to either calculation or pre defined option.
-		const auto sleepTime = currentTime + std::chrono::milliseconds(16) - std::chrono::high_resolution_clock::now();
+		const auto sleepTime = currentTime + std::chrono::milliseconds(m_FrameRate) - std::chrono::high_resolution_clock::now();
 
 		std::this_thread::sleep_for(sleepTime);
 

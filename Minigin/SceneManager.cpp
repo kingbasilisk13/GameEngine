@@ -1,13 +1,17 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-//todo: change all sub items to also take dt for update
 void dae::SceneManager::Update()
 {
 	for(auto& scene : m_scenes)
 	{
 		scene->Update();
 	}
+}
+
+void dae::SceneManager::FixedUpdate(float fixedTimeStep)
+{
+	fixedTimeStep;
 }
 
 void dae::SceneManager::Render()
