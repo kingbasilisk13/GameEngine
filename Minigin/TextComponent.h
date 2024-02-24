@@ -3,7 +3,6 @@
 
 #include <string>
 #include <memory>
-#include "BaseComponent.h"
 #include "Transform.h"
 
 struct SDL_Texture;
@@ -15,7 +14,7 @@ namespace dae
 	{
 	public:
 		TextComponent(const std::string& text, std::shared_ptr<Font> font);
-		virtual ~TextComponent() = default;
+		virtual ~TextComponent();
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
 		TextComponent& operator=(const TextComponent& other) = delete;

@@ -4,7 +4,7 @@
 #include <SDL_ttf.h>
 #include "Renderer.h"
 #include "Font.h"
-#include "Texture2D.h"
+
 
 dae::TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font> font) : 
 	m_NeedsUpdate(true), 
@@ -12,6 +12,11 @@ dae::TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font>
 	m_Font(std::move(font)), 
 	m_Texture(nullptr)
 {
+}
+
+dae::TextComponent::~TextComponent()
+{
+	SDL_DestroyTexture(m_Texture);
 }
 
 void dae::TextComponent::Update()
