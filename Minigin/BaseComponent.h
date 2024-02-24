@@ -15,7 +15,7 @@ namespace dae
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
 		virtual void Update() = 0;
-		virtual void Render() const = 0;
+		virtual void Render(float posX, float posY) const = 0;
 	private:
 
 	};

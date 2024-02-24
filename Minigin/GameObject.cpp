@@ -23,16 +23,9 @@ void dae::GameObject::Update()
 
 void dae::GameObject::Render() const
 {
-	for (auto& component : m_Components) {
-		component->Render();
-	}
 	const auto& pos = m_Transform->GetPosition();
-
 	for (auto& component : m_Components) {
-		if (auto DerivedComponent = std::dynamic_pointer_cast<Texture2D>(component)) {
-			Renderer::GetInstance().RenderTexture(*DerivedComponent, pos.x, pos.y);
-			break;
-		}
+		component->Render(pos.x, pos.y);
 	}
 }
 

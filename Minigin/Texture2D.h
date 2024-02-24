@@ -23,7 +23,7 @@ namespace dae
 		Texture2D& operator= (const Texture2D&&) = delete;
 
 		void Update() override;
-		void Render() const override;
+		void Render(float posX, float posY) const override;
 
 		SDL_Texture* GetSDLTexture() const;
 		
