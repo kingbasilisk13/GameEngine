@@ -1,14 +1,14 @@
 #pragma once
 #include <string>
 #include <memory>
-#include "GameObject.h"
+#include "BaseComponent.h"
 #include "Transform.h"
 
 namespace dae
 {
 	class Font;
 	class Texture2D;
-	class TextObject final : public GameObject
+	class TextObject final : public BaseComponent
 	{
 	public:
 		void Update() override;
@@ -24,10 +24,10 @@ namespace dae
 		TextObject& operator=(const TextObject& other) = delete;
 		TextObject& operator=(TextObject&& other) = delete;
 	private:
-		bool m_needsUpdate;
-		std::string m_text;
-		Transform m_transform{};
-		std::shared_ptr<Font> m_font;
-		std::shared_ptr<Texture2D> m_textTexture;
+		bool m_NeedsUpdate;
+		std::string m_Text;
+		std::shared_ptr<Transform> m_Transform{};
+		std::shared_ptr<Font> m_Font;
+		std::shared_ptr<Texture2D> m_TextTexture;
 	};
 }

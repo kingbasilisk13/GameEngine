@@ -1,9 +1,23 @@
 #include <SDL.h>
 #include "Texture2D.h"
 
+#include "ResourceManager.h"
+#include <string>
+
+dae::Texture2D::Texture2D(const std::string& fileName):
+	dae::BaseComponent()
+{
+	m_Texture = ResourceManager::GetInstance().LoadTexture(fileName);
+}
+
+dae::Texture2D::Texture2D(SDL_Texture* texture):
+	m_Texture(texture)
+{
+}
+
 dae::Texture2D::~Texture2D()
 {
-	SDL_DestroyTexture(m_texture);
+	SDL_DestroyTexture(m_Texture);
 }
 
 glm::ivec2 dae::Texture2D::GetSize() const
@@ -13,12 +27,18 @@ glm::ivec2 dae::Texture2D::GetSize() const
 	return { dst.w,dst.h };
 }
 
-SDL_Texture* dae::Texture2D::GetSDLTexture() const
+void dae::Texture2D::Update()
 {
-	return m_texture;
 }
 
-dae::Texture2D::Texture2D(SDL_Texture* texture)
+//todo: add code to render texture here.
+void dae::Texture2D::Render() const
 {
-	m_texture = texture;
 }
+
+SDL_Texture* dae::Texture2D::GetSDLTexture() const
+{
+	return m_Texture;
+}
+
+
