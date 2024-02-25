@@ -11,7 +11,10 @@ void dae::SceneManager::Update()
 
 void dae::SceneManager::FixedUpdate(float fixedTimeStep)
 {
-	fixedTimeStep;
+	for (auto& scene : m_Scenes)
+	{
+		scene->FixedUpdate(fixedTimeStep);
+	}
 }
 
 void dae::SceneManager::Render()

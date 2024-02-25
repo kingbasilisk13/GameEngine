@@ -25,6 +25,7 @@ namespace dae
 		FpsComponent& operator=(FpsComponent&& other) = delete;
 
 		void Update() override;
+		void FixedUpdate(float fixedTimeStep) override;
 		void Render(float posX, float posY) const override;
 
 	private:

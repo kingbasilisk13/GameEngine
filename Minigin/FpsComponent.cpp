@@ -46,6 +46,11 @@ void dae::FpsComponent::Update()
 	}
 }
 
+void dae::FpsComponent::FixedUpdate(float fixedTimeStep)
+{
+	fixedTimeStep;
+}
+
 void dae::FpsComponent::Render(float posX, float posY) const
 {
 	if (m_Texture != nullptr)

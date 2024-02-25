@@ -21,6 +21,11 @@ void dae::Texture2D::Update()
 {
 }
 
+void dae::Texture2D::FixedUpdate(float fixedTimeStep)
+{
+	fixedTimeStep;
+}
+
 void dae::Texture2D::Render(float posX, float posY) const
 {
 	Renderer::GetInstance().RenderTexture(m_Texture, posX, posY);

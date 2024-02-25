@@ -9,7 +9,7 @@ namespace dae
 	class Texture2D;
 	class BaseComponent;
 
-	// todo: this should become final.
+	// todo: Done, this should become final.
 	class GameObject final
 	{
 	public:
@@ -22,6 +22,7 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 		void Update();
+		void FixedUpdate(float fixedTimeStep);
 		void Render() const;
 
 		//todo: maybe it is a good idea to add a check that first sees if the game object already has the component and if it does that it deltes the previus component and replaces it with the new one?
@@ -40,7 +41,7 @@ namespace dae
 		//every object should have a place in the game, so transform is by default added to the game object.
 		Transform m_Transform{};
 
-		// todo: mmm, every gameobject has a texture? Is that correct?
+		// todo: Done, mmm, every gameobject has a texture? Is that correct?
 		//std::shared_ptr<Texture2D> m_texture{};
 
 		//vector containing all the components. this will need to be changed later when the update order becomes important

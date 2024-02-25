@@ -29,6 +29,11 @@ void dae::TextComponent::Update()
 	}
 }
 
+void dae::TextComponent::FixedUpdate(float fixedTimeStep)
+{
+	fixedTimeStep;
+}
+
 void dae::TextComponent::Render(float posX, float posY) const
 {
 	if (m_Texture != nullptr)

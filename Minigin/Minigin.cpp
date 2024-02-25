@@ -93,7 +93,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 	auto& time = Time::GetInstance();
 
-	// todo: this update loop could use some work.
+	// todo: Done, this update loop could use some work.
 	bool doContinue{ true };
 	
 	auto lastTime{ std::chrono::high_resolution_clock::now() };

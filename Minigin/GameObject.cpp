@@ -5,11 +5,6 @@
 
 #include "BaseComponent.h"
 
-//dae::GameObject::GameObject(Transform transform):
-//	m_Transform(transform)
-//{
-//}
-
 dae::GameObject::GameObject(Transform transform) :
 	m_Transform(transform)
 {
@@ -21,6 +16,13 @@ void dae::GameObject::Update()
 {
 	for (auto &component : m_Components) {
 		component->Update();
+	}
+}
+
+void dae::GameObject::FixedUpdate(float fixedTimeStep)
+{
+	for (auto& component : m_Components) {
+		component->FixedUpdate(fixedTimeStep);
 	}
 }
 
