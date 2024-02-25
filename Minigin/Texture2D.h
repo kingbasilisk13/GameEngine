@@ -13,8 +13,7 @@ namespace dae
 	class Texture2D final : public BaseComponent
 	{
 	public:
-		Texture2D(const std::string& fileName);
-		Texture2D(SDL_Texture* texture);
+		Texture2D(GameObject* gameObject, const std::string& fileName);
 
 		virtual ~Texture2D();
 		Texture2D(const Texture2D&) = delete;
@@ -25,9 +24,8 @@ namespace dae
 		void Update() override;
 		void Render(float posX, float posY) const override;
 
-		SDL_Texture* GetSDLTexture() const;
-		
-		glm::ivec2 GetSize() const;
+		/*SDL_Texture* GetSDLTexture() const;
+		glm::ivec2 GetSize() const;*/
 
 		
 	private:

@@ -5,9 +5,12 @@
 
 #include "BaseComponent.h"
 
+//dae::GameObject::GameObject(Transform transform):
+//	m_Transform(transform)
+//{
+//}
 
-
-dae::GameObject::GameObject(std::shared_ptr<Transform> transform):
+dae::GameObject::GameObject(Transform transform) :
 	m_Transform(transform)
 {
 }
@@ -23,9 +26,8 @@ void dae::GameObject::Update()
 
 void dae::GameObject::Render() const
 {
-	const auto& pos = m_Transform->GetPosition();
 	for (auto& component : m_Components) {
-		component->Render(pos.x, pos.y);
+		component->Render(m_Transform.position.x, m_Transform.position.y);
 	}
 }
 

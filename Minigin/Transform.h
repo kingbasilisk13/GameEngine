@@ -1,30 +1,20 @@
 #pragma once
 #include <glm/glm.hpp>
 
-#include "BaseComponent.h"
-
 namespace dae
 {
-	//a game object will always need a transform component.
-	class Transform final : public BaseComponent
+	//transform is a struct and not a component because a game object can not exist without a transform.
+	struct Transform
 	{
-	public:
-		Transform(float x = 0.f, float y = 0.f, float z = 0.f);
+		glm::vec3 position;
+		glm::vec3 rotation;
+		glm::vec3 scale;
 
-		virtual ~Transform() {};
-		Transform(const Transform&) = delete;
-		Transform(Transform&&) = delete;
-		Transform& operator= (const Transform&) = delete;
-		Transform& operator= (const Transform&&) = delete;
-
-		void Update() override;
-		void Render(float posX, float posY) const override;
-
-		const glm::vec3& GetPosition() const { return m_Position; }
-		void SetPosition(float x, float y, float z);
-	private:
-		glm::vec3 m_Position;
-		glm::vec3 m_Rotation;
-		glm::vec3 m_Scale;
+		void SetPosition(float x = 0.f, float y = 0.f, float z = 0.f) 
+		{
+			position.x = x;
+			position.y = y;
+			position.z = z;
+		}
 	};
 }

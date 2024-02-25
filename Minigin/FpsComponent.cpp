@@ -5,14 +5,14 @@
 #include "Renderer.h"
 #include "Font.h"
 
-dae::FpsComponent::FpsComponent(const std::string& text, std::shared_ptr<Font> font):
-	m_NeedsUpdate(true),
-	m_Text(text),
+dae::FpsComponent::FpsComponent(GameObject* gameObject, std::shared_ptr<Font> font):
+	BaseComponent(gameObject),
 	m_Font(std::move(font)),
 	m_Texture(nullptr),
 	m_FrameCount(0),
 	m_ElapsedTime(0.0f)
 {
+	GenerateTexture(" ");
 }
 
 dae::FpsComponent::~FpsComponent()
@@ -36,30 +36,13 @@ void dae::FpsComponent::Update()
 	// If one second has elapsed, calculate and display FPS
 	if (m_ElapsedTime >= 1.0f) {
 		float fps = static_cast<float>(m_FrameCount) / m_ElapsedTime;
-		m_Text = "FPS: " + std::to_string(fps);
-		m_NeedsUpdate = true;
+
+		std::string text = std::to_string(fps) + " FPS";
+		GenerateTexture(text);
 
 		// Reset frame count and elapsed time for the next second
 		m_FrameCount = 0;
 		m_ElapsedTime = 0.0f;
-	}
-
-	if (m_NeedsUpdate)
-	{
-		const SDL_Color color = { 255,255,255,255 }; // only white text is supported now
-		const auto surf = TTF_RenderText_Blended(m_Font->GetFont(), m_Text.c_str(), color);
-		if (surf == nullptr)
-		{
-			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
-		}
-		auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
-		if (texture == nullptr)
-		{
-			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
-		}
-		SDL_FreeSurface(surf);
-		m_Texture = texture;
-		m_NeedsUpdate = false;
 	}
 }
 
@@ -71,8 +54,19 @@ void dae::FpsComponent::Render(float posX, float posY) const
 	}
 }
 
-void dae::FpsComponent::SetText(const std::string& text)
+void dae::FpsComponent::GenerateTexture(const std::string& text)
 {
-	m_Text = text;
-	m_NeedsUpdate = true;
+	const SDL_Color color = { 255,255,255,255 }; // only white text is supported now
+	const auto surf = TTF_RenderText_Blended(m_Font->GetFont(), text.c_str(), color);
+	if (surf == nullptr)
+	{
+		throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
+	}
+	auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
+	if (texture == nullptr)
+	{
+		throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
+	}
+	SDL_FreeSurface(surf);
+	m_Texture = texture;
 }

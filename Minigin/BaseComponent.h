@@ -6,7 +6,7 @@ namespace dae
 	class BaseComponent
 	{
 	public:
-		BaseComponent() {};
+		BaseComponent(GameObject* gameObject) :m_GameObject(gameObject) {};
 
 		virtual ~BaseComponent() {};
 		BaseComponent(const BaseComponent& other) = delete;
@@ -16,8 +16,9 @@ namespace dae
 
 		virtual void Update() = 0;
 		virtual void Render(float posX, float posY) const = 0;
-	private:
 
+	protected:
+		GameObject* m_GameObject;
 	};
 }
 

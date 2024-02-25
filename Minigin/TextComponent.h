@@ -13,7 +13,8 @@ namespace dae
 	class TextComponent final : public BaseComponent
 	{
 	public:
-		TextComponent(const std::string& text, std::shared_ptr<Font> font);
+		TextComponent(GameObject* gameObject, const std::string& text, std::shared_ptr<Font> font);
+
 		virtual ~TextComponent();
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -30,6 +31,8 @@ namespace dae
 		std::string m_Text;
 		std::shared_ptr<Font> m_Font;
 		SDL_Texture* m_Texture;
+
+		void GenerateTexture();
 	};
 }
 
