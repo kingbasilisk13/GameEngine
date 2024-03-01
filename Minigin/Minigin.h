@@ -7,10 +7,9 @@ namespace dae
 	class Minigin
 	{
 	public:
-		//todo: figure out how to set the fixed time step. does it need to be during construction?
 		explicit Minigin(const std::string& dataPath, int frameRate = 60, float fixedTimeStep = 0.02f);
 		~Minigin();
-		void Run(const std::function<void()>& load);
+		void Run(const std::function<void()>& load) const;
 
 		Minigin(const Minigin& other) = delete;
 		Minigin(Minigin&& other) = delete;

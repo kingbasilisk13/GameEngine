@@ -9,11 +9,10 @@ namespace dae
 	class Texture2D;
 	class BaseComponent;
 
-	// todo: Done, this should become final.
 	class GameObject final
 	{
 	public:
-		GameObject(Transform transform);
+		explicit GameObject(Transform transform);
 
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -37,12 +36,11 @@ namespace dae
 		template<typename T>
 		bool HasComponent();
 
+		glm::vec3 GetCurrentPosition() const { return m_Transform.position; }
+
 	private:
 		//every object should have a place in the game, so transform is by default added to the game object.
 		Transform m_Transform{};
-
-		// todo: Done, mmm, every gameobject has a texture? Is that correct?
-		//std::shared_ptr<Texture2D> m_texture{};
 
 		//vector containing all the components. this will need to be changed later when the update order becomes important
 		std::vector < std::shared_ptr<BaseComponent>> m_Components{};

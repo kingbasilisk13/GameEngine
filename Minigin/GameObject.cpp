@@ -14,6 +14,8 @@ dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update()
 {
+	
+
 	for (auto &component : m_Components) {
 		component->Update();
 	}

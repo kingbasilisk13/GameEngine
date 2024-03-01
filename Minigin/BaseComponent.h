@@ -1,14 +1,17 @@
 #pragma once
 
+#include "Time.h"
+#include "GameObject.h"
+
 namespace dae
 {
 	class GameObject;
 	class BaseComponent
 	{
 	public:
-		BaseComponent(GameObject* gameObject) :m_GameObject(gameObject) {};
+		explicit BaseComponent(GameObject* gameObject) :m_GameObject(gameObject) {};
 
-		virtual ~BaseComponent() {};
+		virtual ~BaseComponent() = default;
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;
 		BaseComponent& operator=(const BaseComponent& other) = delete;
@@ -18,7 +21,11 @@ namespace dae
 		virtual void FixedUpdate(float fixedTimeStep) = 0;
 		virtual void Render(float posX, float posY) const = 0;
 
-	protected:
+		//todo: add some more inheritance to split up components that need to be rendered and those that do not.
+
+		GameObject& GetOwningGameObject() const { return *m_GameObject; }
+
+	private:
 		GameObject* m_GameObject;
 	};
 }

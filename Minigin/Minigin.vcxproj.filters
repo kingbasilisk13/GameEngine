@@ -34,6 +34,12 @@
     <Filter Include="Header Files\Structs">
       <UniqueIdentifier>{905aa0dc-d331-47a7-b085-e6748a2c8f83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Wrappers">
+      <UniqueIdentifier>{e9b80374-22cc-4f12-8bfb-3042ce66fc83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Wrappers">
+      <UniqueIdentifier>{626b315d-af43-4ce5-beee-8ee3fb94b38d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -69,9 +75,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Texture2D.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="TextComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -80,6 +83,12 @@
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Header Files\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Header Files\Wrappers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -116,14 +125,17 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Texture2D.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="TextComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="FpsComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Source Files\Wrappers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

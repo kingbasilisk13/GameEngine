@@ -28,6 +28,7 @@ void Scene::RemoveAll()
 
 void Scene::Update()
 {
+	//todo: handeling removal of components and gameobjects when needed, aka waneer iets tijdens het runnen van de game verwijderd wordt.
 	for(auto& object : m_objects)
 	{
 		object->Update();

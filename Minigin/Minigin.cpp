@@ -48,7 +48,7 @@ void PrintSDLVersion()
 dae::Minigin::Minigin(const std::string &dataPath, int frameRate, float fixedTimeStep):
 	m_FixedTimeStep( fixedTimeStep )
 {
-	m_FrameRate = int((1.f / abs(frameRate)) * 1000);
+	m_FrameRate = static_cast<int>((1.f / abs(frameRate)) * 1000);
 
 	PrintSDLVersion();
 	
@@ -83,22 +83,24 @@ dae::Minigin::~Minigin()
 	SDL_Quit();
 }
 
-void dae::Minigin::Run(const std::function<void()>& load)
+void dae::Minigin::Run(const std::function<void()>& load) const
 {
 	load();
 
-	auto& renderer = Renderer::GetInstance();
+	const auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
 	auto& time = Time::GetInstance();
 
-	// todo: Done, this update loop could use some work.
 	bool doContinue{ true };
 	
 	auto lastTime{ std::chrono::high_resolution_clock::now() };
 	
 	float lag{ 0.0f };
+
+	//tip: when debugging code it can be handy to clamp delta time so that when the code continues that delta time won't be too large.
+	// if (delta time > 1) delta time = 0.01f;
 
 	while (doContinue)
 	{
@@ -109,17 +111,21 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		lag += time.GetDeltaTime();
 
 		doContinue = input.ProcessInput();
+
 		while (lag >= m_FixedTimeStep)
 		{
-			//todo: is using fixed time step as a function parameter realy a good idea?
+			//todo: is using fixed time step as a function parameter really a good idea?
 			sceneManager.FixedUpdate(m_FixedTimeStep);
 			lag -= m_FixedTimeStep;
 		}
 		sceneManager.Update();
+		//wat is late update? just a second update. But it is not just calling the update a second time. it is a special update just be specific objects, like the camera.
+		//updates of any kind always happen before the render.
 		renderer.Render();
 
 		const auto sleepTime = currentTime + std::chrono::milliseconds(m_FrameRate) - std::chrono::high_resolution_clock::now();
 
+		//todo: look into using vsinc instead of sleep
 		std::this_thread::sleep_for(sleepTime);
 
 	}

@@ -1,45 +1,24 @@
 #include <SDL.h>
 #include "Texture2D.h"
 
-#include "ResourceManager.h"
-#include <string>
-
-#include "Renderer.h"
-
-dae::Texture2D::Texture2D(GameObject* gameObject, const std::string& fileName):
-	dae::BaseComponent(gameObject)
-{
-	m_Texture = ResourceManager::GetInstance().LoadTexture(fileName);
-}
-
 dae::Texture2D::~Texture2D()
 {
-	SDL_DestroyTexture(m_Texture);
+	SDL_DestroyTexture(m_texture);
 }
 
-void dae::Texture2D::Update()
+glm::ivec2 dae::Texture2D::GetSize() const
 {
+	SDL_Rect dst{};
+	SDL_QueryTexture(GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
+	return { dst.w,dst.h };
 }
 
-void dae::Texture2D::FixedUpdate(float fixedTimeStep)
+SDL_Texture* dae::Texture2D::GetSDLTexture() const
 {
-	fixedTimeStep;
+	return m_texture;
 }
 
-void dae::Texture2D::Render(float posX, float posY) const
+dae::Texture2D::Texture2D(SDL_Texture* texture)
 {
-	Renderer::GetInstance().RenderTexture(m_Texture, posX, posY);
+	m_texture = texture;
 }
-
-//SDL_Texture* dae::Texture2D::GetSDLTexture() const
-//{
-//	return m_Texture;
-//}
-//
-//glm::ivec2 dae::Texture2D::GetSize() const
-//{
-//	SDL_Rect dst{};
-//	SDL_QueryTexture(GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-//	return { dst.w,dst.h };
-//}
-
