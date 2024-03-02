@@ -24,7 +24,7 @@ void dae::RenderComponent::Render(float, float) const
 	// maybe find a way to only ask for the current location when it changes. maybe in the update loop.
 	if (m_Texture != nullptr)
 	{
-		const auto position = GetOwningGameObject().GetCurrentPosition();
+		const auto position = GetOwningGameObject().GetWorldPosition();
 
 		Renderer::GetInstance().RenderTexture(m_Texture->GetSDLTexture(), position.x, position.y);
 	}

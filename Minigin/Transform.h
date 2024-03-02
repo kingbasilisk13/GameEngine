@@ -10,11 +10,16 @@ namespace dae
 		glm::vec3 rotation;
 		glm::vec3 scale;
 
-		void SetPosition(float x = 0.f, float y = 0.f, float z = 0.f) 
+		void SetPosition(const float x = 0.f, const float y = 0.f, const float z = 0.f)
 		{
 			position.x = x;
 			position.y = y;
 			position.z = z;
+		}
+
+		void SetPosition(const glm::vec3 newPosition)
+		{
+			SetPosition(newPosition.x, newPosition.y, newPosition.z);
 		}
 	};
 }

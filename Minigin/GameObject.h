@@ -12,7 +12,8 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		explicit GameObject(Transform transform);
+		//todo: initialize variables in order of decleration.
+		explicit GameObject(const Transform& transform);
 
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -24,26 +25,63 @@ namespace dae
 		void FixedUpdate(float fixedTimeStep);
 		void Render() const;
 
-		//todo: maybe it is a good idea to add a check that first sees if the game object already has the component and if it does that it deltes the previus component and replaces it with the new one?
+#pragma region component functions
 		void AddComponent(std::shared_ptr<BaseComponent> component);
-
-		//todo: is there a better way to do this. curently you first need to get a pointer to the component to then delete it.
-		void RemoveComponent(std::shared_ptr<BaseComponent> component);
+		void RemoveComponent(const std::shared_ptr<BaseComponent>& component);
 
 		template<typename T>
 		std::shared_ptr<T> GetComponent();
 
 		template<typename T>
 		bool HasComponent();
+#pragma endregion
 
-		glm::vec3 GetCurrentPosition() const { return m_Transform.position; }
+#pragma region parent child and location functions
+		GameObject* GetParentGameObject() const { return m_Parent; }
+
+		void SetParentGameObject(GameObject* parentObject, bool keepWorldPosition = false);
+
+		size_t GetChildCount() const { return m_Children.size(); }
+
+		GameObject* GetChildAt(const int index)const { return m_Children[index]; }
+
+		//todo: think about this, who should have the ability to change the locations
+		void SetLocalPosition(const glm::vec3& position);
+
+		glm::vec3 GetWorldPosition();
+
+		//a public functions to indicate to the object that the location has changed
+		void SetPositionDirty();
+#pragma endregion 
+		
 
 	private:
-		//every object should have a place in the game, so transform is by default added to the game object.
-		Transform m_Transform{};
+		//todo: order your variables from smallest to largest
 
-		//vector containing all the components. this will need to be changed later when the update order becomes important
+		bool m_PositionIsDirty;
+
+		//every object should have a place in the game.
+		//it has a local transform and a world transform
+		Transform m_LocalTransform{};
+		Transform m_WorldTransform{};
+
+		GameObject* m_Parent;
+
+		//todo: ask about shared pointers
 		std::vector < std::shared_ptr<BaseComponent>> m_Components{};
+
+		std::vector<GameObject*> m_Children{};
+
+
+#pragma region private functions
+		void AddChild(GameObject* child) { m_Children.push_back(child); }
+
+		void RemoveChild(GameObject* child);
+
+		bool IsChild(GameObject* gameObject);
+
+		void UpdateWorldPosition();
+#pragma endregion 
 	};
 
 	//template functions

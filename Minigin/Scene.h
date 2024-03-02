@@ -26,6 +26,7 @@ namespace dae
 		explicit Scene(const std::string& name);
 
 		std::string m_name;
+		//todo: why does scene use shared pointers? would it not be better to use unique pointers. unless it is the point to share pointers between multiple scenes?
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
 
 		static unsigned int m_idCounter; 
