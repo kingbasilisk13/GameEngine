@@ -2,12 +2,11 @@
 #include "BaseComponent.h"
 
 #include <string>
-#include <memory>
 
 namespace dae
 {
 	class Font;
-
+	class RenderComponent;
 	class TextComponent final : public BaseComponent
 	{
 	public:
@@ -29,6 +28,9 @@ namespace dae
 	private:
 		std::shared_ptr<Font> m_Font;
 		std::string m_Text;
+		RenderComponent* m_RenderComponent;
+
+		void GetRenderComponent();
 
 		void GenerateTexture() const;
 	};

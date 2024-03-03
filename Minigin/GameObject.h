@@ -2,8 +2,9 @@
 #include <memory>
 #include <vector>
 #include "Transform.h"
-
 #include "Texture2D.h"
+#include "BaseComponent.h"
+
 namespace dae
 {
 	class Texture2D;
@@ -12,7 +13,7 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		//todo: initialize variables in order of decleration.
+		//todo: initialize variables in order of declaration.
 		explicit GameObject(const Transform& transform);
 
 		~GameObject();
@@ -21,36 +22,36 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		void Update();
-		void FixedUpdate(float fixedTimeStep);
+		void Update() const;
+		void FixedUpdate(float fixedTimeStep) const;
 		void Render() const;
 
 #pragma region component functions
-		void AddComponent(std::shared_ptr<BaseComponent> component);
-		void RemoveComponent(const std::shared_ptr<BaseComponent>& component);
+		void AddComponent(std::unique_ptr<BaseComponent> component);
+
+		/*template <typename T>
+		void RemoveComponent();*/
 
 		template<typename T>
-		std::shared_ptr<T> GetComponent();
+		T* GetComponent();
 
 		template<typename T>
 		bool HasComponent();
 #pragma endregion
 
 #pragma region parent child and location functions
-		GameObject* GetParentGameObject() const { return m_Parent; }
+		[[nodiscard]] GameObject* GetParentGameObject() const { return m_Parent; }
 
 		void SetParentGameObject(GameObject* parentObject, bool keepWorldPosition = false);
 
-		size_t GetChildCount() const { return m_Children.size(); }
+		[[nodiscard]] size_t GetChildCount() const { return m_Children.size(); }
 
-		GameObject* GetChildAt(const int index)const { return m_Children[index]; }
+		[[nodiscard]] GameObject* GetChildAt(const int index)const { return m_Children[index]; }
 
-		//todo: think about this, who should have the ability to change the locations
 		void SetLocalPosition(const glm::vec3& position);
 
 		glm::vec3 GetWorldPosition();
 
-		//a public functions to indicate to the object that the location has changed
 		void SetPositionDirty();
 #pragma endregion 
 		
@@ -67,8 +68,7 @@ namespace dae
 
 		GameObject* m_Parent;
 
-		//todo: ask about shared pointers
-		std::vector < std::shared_ptr<BaseComponent>> m_Components{};
+		std::vector < std::unique_ptr<BaseComponent>> m_Components{};
 
 		std::vector<GameObject*> m_Children{};
 
@@ -86,16 +86,30 @@ namespace dae
 
 	//template functions
 
+	/*template<typename T>
+	inline void GameObject::RemoveComponent()
+	{
+		m_Components.erase(
+			std::remove_if(m_Components.begin(), m_Components.end(),
+				[](const auto& component) 
+				{
+				return dynamic_cast<T*>(component.get()) != nullptr;
+				}
+			),
+			m_Components.end());
+	}*/
+
 	template<typename T>
-	inline std::shared_ptr<T> GameObject::GetComponent()
+	inline T* GameObject::GetComponent()
 	{
 		for (auto& component : m_Components) {
-			if (auto DerivedComponent = std::dynamic_pointer_cast<T>(component)) {
-				return DerivedComponent;
+			if (auto ptr = dynamic_cast<T*>(component.get())) {
+				return ptr;
 			}
 		}
 		return nullptr;
 	}
+
 	template<typename T>
 	inline bool GameObject::HasComponent()
 	{

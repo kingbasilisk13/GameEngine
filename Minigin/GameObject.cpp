@@ -1,9 +1,5 @@
-#include <string>
 #include "GameObject.h"
 #include "ResourceManager.h"
-#include "Renderer.h"
-
-#include "BaseComponent.h"
 
 dae::GameObject::GameObject(const Transform& transform)
 	: m_PositionIsDirty(false)
@@ -15,14 +11,14 @@ dae::GameObject::GameObject(const Transform& transform)
 
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::Update()
+void dae::GameObject::Update() const
 {
 	for (auto &component : m_Components) {
 		component->Update();
 	}
 }
 
-void dae::GameObject::FixedUpdate(float fixedTimeStep)
+void dae::GameObject::FixedUpdate(float fixedTimeStep) const
 {
 	for (auto& component : m_Components) {
 		component->FixedUpdate(fixedTimeStep);
@@ -36,14 +32,9 @@ void dae::GameObject::Render() const
 	}
 }
 
-void dae::GameObject::AddComponent(std::shared_ptr<BaseComponent> component)
+void dae::GameObject::AddComponent(std::unique_ptr<BaseComponent> component)
 {
 	m_Components.emplace_back(std::move(component));
-}
-
-void dae::GameObject::RemoveComponent(const std::shared_ptr<BaseComponent>& component)
-{
-	std::erase(m_Components, component);
 }
 
 void dae::GameObject::SetParentGameObject(GameObject* parentObject, const bool keepWorldPosition)

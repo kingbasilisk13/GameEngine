@@ -1,15 +1,14 @@
 #pragma once
 #include "BaseComponent.h"
-#include <memory>
+
 
 namespace dae
 {
-	class Font;
-
+	class TextComponent;
 	class FpsComponent final : public BaseComponent
 	{
 	public:
-		FpsComponent(GameObject* gameObject);
+		explicit FpsComponent(GameObject* gameObject);
 
 		~FpsComponent() override = default;
 		FpsComponent(const FpsComponent& other) = delete;
@@ -24,5 +23,10 @@ namespace dae
 	private:
 		int m_FrameCount;
 		float m_ElapsedTime;
+		GameObject* m_Owner;
+		TextComponent* m_TextComponent;
+
+		void GetPointerToTextComponent();
+
 	};
 }

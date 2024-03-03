@@ -106,11 +106,13 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 	{
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 
-		float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
+		//this code is meant for debugging. This enshures that stepping through the code does not cause to large of a time gap.
+		/*float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		if (deltaTime > 1) deltaTime = 0.01f;
+		time.ChangeDeltaTime(deltaTime);*/
 
-		//time.ChangeDeltaTime(std::chrono::duration<float>(currentTime - lastTime).count());
-		time.ChangeDeltaTime(deltaTime);
+		//comment this code when using the debugging code.
+		time.ChangeDeltaTime(std::chrono::duration<float>(currentTime - lastTime).count());
 
 		lastTime = currentTime;
 		lag += time.GetDeltaTime();

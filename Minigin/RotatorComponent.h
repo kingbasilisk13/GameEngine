@@ -1,8 +1,11 @@
 #pragma once
+#include <SDL_stdinc.h>
+
 #include "BaseComponent.h"
 
 namespace dae
 {
+	//changes the local position is a circular pattern.
 	class RotatorComponent final : public BaseComponent
 	{
 	public:
@@ -25,13 +28,11 @@ namespace dae
 
 		float m_TotalTime;
 
-		float m_MaxTime{3.f};
+		float m_MaxTime;
 
-		glm::vec3 m_Center;
+		GameObject* m_Owner;
 
-		GameObject& m_Owner;
-
-		float m_Pi2;
+		const float m_Pi2{ 2.f * static_cast<float>(M_PI) };
 
 		void CalculateRotation(float time);
 

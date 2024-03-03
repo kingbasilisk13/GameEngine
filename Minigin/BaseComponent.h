@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Time.h"
 #include "GameObject.h"
+#include "Time.h"
 
 namespace dae
 {
@@ -23,7 +23,7 @@ namespace dae
 
 		//todo: add some more inheritance to split up components that need to be rendered and those that do not.
 
-		GameObject& GetOwningGameObject() const { return *m_GameObject; }
+		[[nodiscard]] GameObject* GetOwningGameObject() const { return m_GameObject; }
 
 	private:
 		GameObject* m_GameObject;

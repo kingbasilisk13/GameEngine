@@ -11,12 +11,22 @@ dae::TextComponent::TextComponent(GameObject* gameObject, std::shared_ptr<Font> 
 	:BaseComponent(gameObject)
 	, m_Font(std::move(font))
 	, m_Text(std::move(text))
+	, m_RenderComponent(nullptr)
 {
+	GetRenderComponent();
 	GenerateTexture();
 }
 
 void dae::TextComponent::Update()
 {
+	if (m_RenderComponent == nullptr)
+	{
+		GetRenderComponent();
+		if (m_RenderComponent == nullptr)
+		{
+			return;
+		}
+	}
 }
 
 void dae::TextComponent::FixedUpdate(float)
@@ -39,6 +49,11 @@ void dae::TextComponent::ChangeFont(const std::shared_ptr<Font>& font)
 	GenerateTexture();
 }
 
+void dae::TextComponent::GetRenderComponent()
+{
+	m_RenderComponent = GetOwningGameObject()->GetComponent<RenderComponent>();
+}
+
 void dae::TextComponent::GenerateTexture() const
 {
 	constexpr SDL_Color color = { 255,255,255,255 }; // only white text is supported now
@@ -53,5 +68,8 @@ void dae::TextComponent::GenerateTexture() const
 		throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 	}
 	SDL_FreeSurface(surf);
-	GetOwningGameObject().GetComponent<RenderComponent>()->ChangeTexture(std::make_shared<Texture2D>(texture));
+	if(m_RenderComponent != nullptr)
+	{
+		m_RenderComponent->ChangeTexture(std::make_shared<Texture2D>(texture));
+	}
 }

@@ -9,6 +9,8 @@ namespace dae
 	public:
 		explicit RenderComponent(GameObject* gameObject, std::shared_ptr<Texture2D> texture = nullptr);
 
+		//texture is a shared pointer in case that multiple object require the same texture.
+
 		~RenderComponent() override = default;
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;
@@ -22,8 +24,7 @@ namespace dae
 		void ChangeTexture(std::shared_ptr<Texture2D> texture);
 
 	private:
-		//render components owns the texture, so it is responsoble for handeling it.
 		std::shared_ptr<Texture2D> m_Texture;
-		
+		GameObject* m_Owner;
 	};
 }
