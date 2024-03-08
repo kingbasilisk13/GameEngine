@@ -15,7 +15,7 @@ namespace dae
 		void Update();
 
 		//only used for physics an networking.
-		void FixedUpdate(float fixedTimeStep);
+		void FixedUpdate();
 
 		void Render();
 	private:

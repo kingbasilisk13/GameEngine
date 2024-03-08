@@ -9,6 +9,7 @@
 
 dae::TextComponent::TextComponent(GameObject* gameObject, std::shared_ptr<Font> font, std::string text)
 	:BaseComponent(gameObject)
+	, m_TextureIsDirty(false)
 	, m_Font(std::move(font))
 	, m_Text(std::move(text))
 	, m_RenderComponent(nullptr)
@@ -19,34 +20,39 @@ dae::TextComponent::TextComponent(GameObject* gameObject, std::shared_ptr<Font> 
 
 void dae::TextComponent::Update()
 {
+	if (m_ComponentsAreDirty)
+	{
+		ReloadPointers();
+	}
 	if (m_RenderComponent == nullptr)
 	{
-		GetRenderComponent();
-		if (m_RenderComponent == nullptr)
-		{
-			return;
-		}
+		return;
+	}
+
+	if(m_TextureIsDirty)
+	{
+		GenerateTexture();
 	}
 }
 
-void dae::TextComponent::FixedUpdate(float)
+void dae::TextComponent::FixedUpdate()
 {
 }
 
-void dae::TextComponent::Render(float , float ) const
+void dae::TextComponent::Render() const
 {
 }
 
 void dae::TextComponent::ChangeText(const std::string& text)
 {
 	m_Text = text;
-	GenerateTexture();
+	m_TextureIsDirty = true;
 }
 
 void dae::TextComponent::ChangeFont(const std::shared_ptr<Font>& font)
 {
 	m_Font = font;
-	GenerateTexture();
+	m_TextureIsDirty = true;
 }
 
 void dae::TextComponent::GetRenderComponent()
@@ -54,7 +60,7 @@ void dae::TextComponent::GetRenderComponent()
 	m_RenderComponent = GetOwningGameObject()->GetComponent<RenderComponent>();
 }
 
-void dae::TextComponent::GenerateTexture() const
+void dae::TextComponent::GenerateTexture()
 {
 	constexpr SDL_Color color = { 255,255,255,255 }; // only white text is supported now
 	const auto surf = TTF_RenderText_Blended(m_Font->GetFont(), m_Text.c_str(), color);
@@ -72,4 +78,11 @@ void dae::TextComponent::GenerateTexture() const
 	{
 		m_RenderComponent->ChangeTexture(std::make_shared<Texture2D>(texture));
 	}
+	m_TextureIsDirty = false;
+}
+
+void dae::TextComponent::ReloadPointers()
+{
+	m_RenderComponent = GetOwningGameObject()->GetComponent<RenderComponent>();
+	m_ComponentsAreDirty = false;
 }

@@ -7,14 +7,14 @@
 
 namespace dae
 {
+	class Scene;
 	class Texture2D;
 	class BaseComponent;
 
 	class GameObject final
 	{
 	public:
-		//todo: initialize variables in order of declaration.
-		explicit GameObject(const Transform& transform);
+		explicit GameObject(const Transform& transform = {});
 
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -22,15 +22,17 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		void Update() const;
-		void FixedUpdate(float fixedTimeStep) const;
+		void Update();
+		void FixedUpdate() const;
 		void Render() const;
+
+		void SetScene(Scene* scene);
+		[[nodiscard]] Scene* GetScene() const;
 
 #pragma region component functions
 		void AddComponent(std::unique_ptr<BaseComponent> component);
 
-		/*template <typename T>
-		void RemoveComponent();*/
+		void RemoveComponent(BaseComponent* component);
 
 		template<typename T>
 		T* GetComponent();
@@ -61,14 +63,20 @@ namespace dae
 
 		bool m_PositionIsDirty;
 
+		bool m_RemovalListIsDirty;
+
 		//every object should have a place in the game.
 		//it has a local transform and a world transform
 		Transform m_LocalTransform{};
 		Transform m_WorldTransform{};
 
+		Scene* m_Scene;
+
 		GameObject* m_Parent;
 
-		std::vector < std::unique_ptr<BaseComponent>> m_Components{};
+		std::vector <std::unique_ptr<BaseComponent>> m_Components{};
+
+		std::vector<BaseComponent*> m_RemovalList{};
 
 		std::vector<GameObject*> m_Children{};
 
@@ -81,23 +89,12 @@ namespace dae
 		bool IsChild(GameObject* gameObject);
 
 		void UpdateWorldPosition();
+
+		void HandleComponentRemoval();
 #pragma endregion 
 	};
 
 	//template functions
-
-	/*template<typename T>
-	inline void GameObject::RemoveComponent()
-	{
-		m_Components.erase(
-			std::remove_if(m_Components.begin(), m_Components.end(),
-				[](const auto& component) 
-				{
-				return dynamic_cast<T*>(component.get()) != nullptr;
-				}
-			),
-			m_Components.end());
-	}*/
 
 	template<typename T>
 	inline T* GameObject::GetComponent()

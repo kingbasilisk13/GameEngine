@@ -18,13 +18,12 @@ namespace dae
 		RenderComponent& operator=(RenderComponent&& other) = delete;
 
 		void Update() override;
-		void FixedUpdate(float fixedTimeStep) override;
-		void Render(float posX, float posY) const override;
+		void FixedUpdate() override;
+		void Render() const override;
 
 		void ChangeTexture(std::shared_ptr<Texture2D> texture);
 
 	private:
 		std::shared_ptr<Texture2D> m_Texture;
-		GameObject* m_Owner;
 	};
 }

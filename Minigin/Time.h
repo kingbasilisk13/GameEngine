@@ -13,10 +13,15 @@ namespace dae
 	public:
 		float GetDeltaTime() const { return m_DeltaTime; }
 
+		float GetFixedTimeStep() const { return m_FixedTimeStep; }
 	private:
 		void ChangeDeltaTime(float deltaTime) { m_DeltaTime = deltaTime; }
 
+		void SetFixedTimeStep(float fixedTimeStep) { m_FixedTimeStep = fixedTimeStep; }
+
 		float m_DeltaTime{ 0.0f };
+
+		float m_FixedTimeStep{0.0f};
 	};
 }
 

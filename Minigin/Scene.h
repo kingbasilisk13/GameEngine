@@ -9,11 +9,11 @@ namespace dae
 		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
 		void Add(std::shared_ptr<GameObject> object);
-		void Remove(std::shared_ptr<GameObject> object);
+		void Remove(GameObject* object);
 		void RemoveAll();
 
 		void Update();
-		void FixedUpdate(float fixedTimeStep);
+		void FixedUpdate() const;
 		void Render() const;
 
 		~Scene();
@@ -23,13 +23,21 @@ namespace dae
 		Scene& operator=(Scene&& other) = delete;
 
 	private: 
-		explicit Scene(const std::string& name);
+		explicit Scene(std::string name);
+
+		bool m_ObjectAreDirty;
 
 		std::string m_name;
-		//todo: why does scene use shared pointers? would it not be better to use unique pointers. unless it is the point to share pointers between multiple scenes?
+
+		std::vector <GameObject*> m_RemovalList{};
+
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
 
-		static unsigned int m_idCounter; 
+		static unsigned int m_IdCounter;
+
+
+		void HandleObjectRemoval();
+
 	};
 
 }

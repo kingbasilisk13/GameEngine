@@ -19,20 +19,23 @@ namespace dae
 		TextComponent& operator=(TextComponent&& other) = delete;
 
 		void Update() override;
-		void FixedUpdate(float fixedTimeStep) override;
-		void Render(float posX, float posY) const override;
+		void FixedUpdate() override;
+		void Render() const override;
 
 		void ChangeText(const std::string& text);
 		void ChangeFont(const std::shared_ptr<Font>& font);
 
 	private:
+		bool m_TextureIsDirty;
 		std::shared_ptr<Font> m_Font;
 		std::string m_Text;
 		RenderComponent* m_RenderComponent;
 
 		void GetRenderComponent();
 
-		void GenerateTexture() const;
+		void GenerateTexture();
+
+		void ReloadPointers() override;
 	};
 }
 

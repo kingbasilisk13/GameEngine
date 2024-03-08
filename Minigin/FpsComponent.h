@@ -17,16 +17,15 @@ namespace dae
 		FpsComponent& operator=(FpsComponent&& other) = delete;
 
 		void Update() override;
-		void FixedUpdate(float fixedTimeStep) override;
-		void Render(float posX, float posY) const override;
+		void FixedUpdate() override;
+		void Render() const override;
 
 	private:
 		int m_FrameCount;
 		float m_ElapsedTime;
-		GameObject* m_Owner;
 		TextComponent* m_TextComponent;
 
-		void GetPointerToTextComponent();
+		void ReloadPointers() override;
 
 	};
 }

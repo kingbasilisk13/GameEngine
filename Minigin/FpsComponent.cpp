@@ -10,23 +10,19 @@ dae::FpsComponent::FpsComponent(GameObject* gameObject)
 	: BaseComponent(gameObject)
 	, m_FrameCount(0)
 	, m_ElapsedTime(0.0f)
-	, m_Owner(nullptr)
 	, m_TextComponent(nullptr)
 {
-	m_Owner = GetOwningGameObject();
-	GetPointerToTextComponent();
 }
 
 void dae::FpsComponent::Update()
 {
-	//todo: see if there is no cleaner way of making sure the object has a text component. still every frame asking for the component. other way?
-	if(m_TextComponent == nullptr)
+	if(m_ComponentsAreDirty)
 	{
-		GetPointerToTextComponent();
-		if (m_TextComponent == nullptr)
-		{
-			return;
-		}
+		ReloadPointers();
+	}
+	if (m_TextComponent == nullptr)
+	{
+		return;
 	}
 
 	m_FrameCount++;
@@ -43,15 +39,16 @@ void dae::FpsComponent::Update()
 	}
 }
 
-void dae::FpsComponent::FixedUpdate(float )
+void dae::FpsComponent::FixedUpdate()
 {
 }
 
-void dae::FpsComponent::Render(float , float ) const
+void dae::FpsComponent::Render() const
 {
 }
 
-void dae::FpsComponent::GetPointerToTextComponent()
+void dae::FpsComponent::ReloadPointers()
 {
-	m_TextComponent = m_Owner->GetComponent<TextComponent>();
+	m_TextComponent = GetOwningGameObject()->GetComponent<TextComponent>();
+	m_ComponentsAreDirty = false;
 }
