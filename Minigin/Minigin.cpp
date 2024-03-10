@@ -15,6 +15,10 @@
 #include <chrono>
 #include <thread>
 
+#include "imgui.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl2.h"
+
 SDL_Window* g_window{};
 
 void PrintSdlVersion()
@@ -103,6 +107,8 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 	// if (delta time > 1) delta time = 0.01f;
 
 	time.SetFixedTimeStep(m_FixedTimeStep);
+
+	
 
 	while (doContinue)
 	{
