@@ -6,6 +6,8 @@
 #include "imgui_plot.h"
 
 #include "MemoryTestImGui.h"
+#include <algorithm>
+#include <vector>
 
 dae::MemoryTestImGui::MemoryTestImGui()
 : m_Averages{}
