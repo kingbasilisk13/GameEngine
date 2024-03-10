@@ -5,15 +5,18 @@
 #include "imgui_impl_sdl2.h"
 #include "imgui_plot.h"
 
-#include "MemoryTestImgui.h"
+#include "MemoryTestImGui.h"
 
-dae::MemoryTestImgui::MemoryTestImgui()
+dae::MemoryTestImGui::MemoryTestImGui()
+: m_Averages{}
+, m_AveragesGameObjects3D{}
+, m_AveragesGameObjects3DAlt{}
 {
 	m_Exercise1SamplesSize = new int(10);
 	m_Exercise2SamplesSize = new int(10);
 }
 
-dae::MemoryTestImgui::~MemoryTestImgui()
+dae::MemoryTestImGui::~MemoryTestImGui()
 {
 	delete m_Exercise1SamplesSize;
 	delete[] m_IntArray;
@@ -24,8 +27,10 @@ dae::MemoryTestImgui::~MemoryTestImgui()
 	delete[] m_GameObject3DAltArray;
 }
 
-void dae::MemoryTestImgui::DrawImGuiWindow()
+void dae::MemoryTestImGui::DrawImGuiWindow()
 {
+	const float steps[m_MaxBufferSize] = { 1,2,4,8,16,32,64,128,256,512,1024 };
+
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
@@ -38,7 +43,7 @@ void dae::MemoryTestImgui::DrawImGuiWindow()
 	if(m_ButtonHasBeenPressed)
 	{
 		ImGui::PlotConfig conf;
-		conf.values.xs = m_Steps; // this line is optional
+		conf.values.xs = steps; // this line is optional
 		conf.values.ys = m_Averages;
 		conf.values.count = m_MaxBufferSize+1;
 		conf.scale.min = 0;
@@ -62,7 +67,7 @@ void dae::MemoryTestImgui::DrawImGuiWindow()
 	if (m_Button2HasBeenPressed)
 	{
 		ImGui::PlotConfig conf;
-		conf.values.xs = m_Steps; // this line is optional
+		conf.values.xs = steps; // this line is optional
 		conf.values.ys = m_AveragesGameObjects3D;
 		conf.values.count = m_MaxBufferSize + 1;
 		conf.scale.min = 0;
@@ -81,7 +86,7 @@ void dae::MemoryTestImgui::DrawImGuiWindow()
 	if (m_Button3HasBeenPressed)
 	{
 		ImGui::PlotConfig conf;
-		conf.values.xs = m_Steps; // this line is optional
+		conf.values.xs = steps; // this line is optional
 		conf.values.ys = m_AveragesGameObjects3DAlt;
 		conf.values.count = m_MaxBufferSize + 1;
 		conf.scale.min = 0;
@@ -104,7 +109,7 @@ void dae::MemoryTestImgui::DrawImGuiWindow()
 		static const float* combined[] = { m_AveragesGameObjects3D, m_AveragesGameObjects3DAlt };
 		static ImU32 colors[3] = { ImColor(0, 255, 0), ImColor(255, 0, 0) };
 		ImGui::PlotConfig conf;
-		conf.values.xs = m_Steps; // this line is optional
+		conf.values.xs = steps; // this line is optional
 		conf.values.ys_list = combined;
 		conf.values.ys_count = 2;
 		conf.values.colors = colors;
@@ -126,7 +131,7 @@ void dae::MemoryTestImgui::DrawImGuiWindow()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void dae::MemoryTestImgui::Exercise1()
+void dae::MemoryTestImGui::Exercise1()
 {
 	m_ButtonHasBeenPressed = false;
 	const int sampleSize{ *m_Exercise1SamplesSize};
@@ -159,7 +164,7 @@ void dae::MemoryTestImgui::Exercise1()
 			sum += num;
 		}
 
-		m_Averages[index] = static_cast<float>(sum / (sampleSize - 2));
+		m_Averages[index] = static_cast<float>(sum) / static_cast<float>(sampleSize - 2);
 		++index;
 
 		results.clear();
@@ -167,7 +172,7 @@ void dae::MemoryTestImgui::Exercise1()
 	m_ButtonHasBeenPressed = true;
 }
 
-void dae::MemoryTestImgui::Exercise2NoFix()
+void dae::MemoryTestImGui::Exercise2NoFix()
 {
 	m_Button2HasBeenPressed = false;
 	const int sampleSize{ *m_Exercise2SamplesSize };
@@ -199,14 +204,14 @@ void dae::MemoryTestImgui::Exercise2NoFix()
 		for (const auto num : results) {
 			sum += num;
 		}
-		m_AveragesGameObjects3D[index] = static_cast<float>(sum / (sampleSize - 2));
+		m_AveragesGameObjects3D[index] = static_cast<float>(sum) / static_cast<float>(sampleSize - 2);
 		++index;
 		results.clear();
 	}
 	m_Button2HasBeenPressed = true;
 }
 
-void dae::MemoryTestImgui::Exercise2WithFix()
+void dae::MemoryTestImGui::Exercise2WithFix()
 {
 	m_Button3HasBeenPressed = false;
 	const int sampleSize{ *m_Exercise2SamplesSize };
@@ -238,7 +243,7 @@ void dae::MemoryTestImgui::Exercise2WithFix()
 		for (const auto num : results) {
 			sum += num;
 		}
-		m_AveragesGameObjects3DAlt[index] = static_cast<float>(sum / (sampleSize - 2));
+		m_AveragesGameObjects3DAlt[index] = static_cast<float>(sum) / static_cast<float>(sampleSize - 2);
 		++index;
 		results.clear();
 	}

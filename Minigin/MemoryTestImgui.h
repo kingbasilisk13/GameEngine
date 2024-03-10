@@ -40,16 +40,16 @@ namespace dae
 	};
 
 
-	class MemoryTestImgui
+	class MemoryTestImGui
 	{
 	public:
-		MemoryTestImgui();
-		~MemoryTestImgui();
+		MemoryTestImGui();
+		~MemoryTestImGui();
 
-		MemoryTestImgui(const MemoryTestImgui& other) = delete;
-		MemoryTestImgui(MemoryTestImgui&& other) = delete;
-		MemoryTestImgui& operator=(const MemoryTestImgui& other) = delete;
-		MemoryTestImgui& operator=(MemoryTestImgui&& other) = delete;
+		MemoryTestImGui(const MemoryTestImGui& other) = delete;
+		MemoryTestImGui(MemoryTestImGui&& other) = delete;
+		MemoryTestImGui& operator=(const MemoryTestImGui& other) = delete;
+		MemoryTestImGui& operator=(MemoryTestImGui&& other) = delete;
 
 
 		void DrawImGuiWindow();
@@ -62,7 +62,6 @@ namespace dae
 		int* m_Exercise1SamplesSize;
 		bool m_ButtonHasBeenPressed{ false };
 		float m_Averages[m_MaxBufferSize];
-		const float m_Steps[m_MaxBufferSize] = { 1,2,4,8,16,32,64,128,256,512,1024 };
 		int* m_IntArray = new int[size];
 
 
@@ -88,7 +87,7 @@ namespace dae
 
 
 
-//void dae::MemoryTestImgui::Exercise1()
+//void dae::MemoryTestImGui::Exercise1()
 //{
 //	m_ButtonHasBeenPressed = false;
 //	const int sampleSize{ *m_Exercise1SamplesSize };

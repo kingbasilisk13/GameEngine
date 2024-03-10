@@ -126,7 +126,7 @@
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imgui_plot.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="MemoryTestImgui.h">
+    <ClInclude Include="MemoryTestImGui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -206,7 +206,7 @@
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui_plot.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="MemoryTestImgui.cpp">
+    <ClCompile Include="MemoryTestImGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

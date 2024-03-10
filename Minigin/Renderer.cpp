@@ -5,7 +5,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_sdl2.h"
 
-#include "MemoryTestImgui.h"
+#include "MemoryTestImGui.h"
 
 int GetOpenGLDriverIndex()
 {
@@ -35,7 +35,7 @@ void dae::Renderer::Init(SDL_Window* window)
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL3_Init();
 
-	m_ImGuiObject = new MemoryTestImgui();
+	m_ImGuiObject = new MemoryTestImGui();
 	
 }
 
