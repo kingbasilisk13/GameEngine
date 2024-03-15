@@ -1,31 +1,20 @@
-//#pragma once
-//#include "BaseComponent.h"
-//
-////opmerking: command en component zijn 2 paterns die je niet mag mixen.
-//class Command
-//{
-//public:
-//	virtual ~Command() = default;
-//	virtual void Execute() = 0;
-//};
-//
-//class GameActorCommand : public Command
-//{
-//	dae::BaseComponent* m_actor;
-//protected:
-//	dae::BaseComponent* GetGameActor() const { return m_actor; }
-//public:
-//	GameActorCommand(dae::BaseComponent* actor);
-//	virtual ~GameActorCommand();
-//};
-//
-//class Fire : public GameActorCommand
-//{
-//public:
-//	void Execute() override
-//	{
-//		GetGameActor()->Fire();
-//		// additional code is possible too, of course
-//	}
-//};
+#pragma once
 
+//opmerking: command en component zijn 2 paterns die je niet mag mixen.
+namespace dae
+{
+	class Command
+	{
+	public:
+		Command() = default;
+
+		virtual ~Command() = default;
+
+		Command(const Command& other) = delete;
+		Command(Command&& other) = delete;
+		Command& operator=(const Command& other) = delete;
+		Command& operator=(Command&& other) = delete;
+
+		virtual void Execute() = 0;
+	};
+}

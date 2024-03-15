@@ -35,7 +35,7 @@ void dae::Renderer::Init(SDL_Window* window)
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL3_Init();
 
-	m_ImGuiObject = new MemoryTestImGui();
+	//m_ImGuiObject = new MemoryTestImGui();
 	
 }
 
@@ -53,7 +53,7 @@ void dae::Renderer::Render() const
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 	//todo: feedback seperate ui from renderer.(aka make seperate object.)
-	m_ImGuiObject->DrawImGuiWindow();
+	//m_ImGuiObject->DrawImGuiWindow();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -66,7 +66,7 @@ void dae::Renderer::Destroy()
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 
-	delete m_ImGuiObject;
+	//delete m_ImGuiObject;
 
 	if (m_renderer != nullptr)
 	{
