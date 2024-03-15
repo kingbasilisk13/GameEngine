@@ -24,3 +24,5 @@ bool dae::InputManager::ProcessInput()
 
 	return true;
 }
+//add command neemt comand object en de knop waar het aan gebonden wordt.
+//je hebt dus een mapping nodig

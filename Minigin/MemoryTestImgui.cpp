@@ -7,6 +7,7 @@
 
 #include "MemoryTestImGui.h"
 #include <algorithm>
+#include <numeric>
 #include <vector>
 
 dae::MemoryTestImGui::MemoryTestImGui()
@@ -33,11 +34,6 @@ void dae::MemoryTestImGui::DrawImGuiWindow()
 {
 	const float steps[m_MaxBufferSize] = { 1,2,4,8,16,32,64,128,256,512,1024 };
 
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame();
-	ImGui::NewFrame();
-
-	///
 	ImGui::Begin("Exercise 1");
 	ImGui::InputInt("# samples", m_Exercise1SamplesSize);
 	if (ImGui::Button("Trash the cache"))
@@ -128,9 +124,6 @@ void dae::MemoryTestImGui::DrawImGuiWindow()
 		ImGui::Plot("plot", conf);
 	}
 	ImGui::End();
-	///
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 void dae::MemoryTestImGui::Exercise1()
@@ -157,16 +150,10 @@ void dae::MemoryTestImGui::Exercise1()
 			results.push_back(elapsedTime);
 		}
 
-		std::ranges::sort(results);
-		results.erase(results.begin());
-		results.pop_back();
+		auto minMax = std::minmax_element(results.begin(), results.end());
+		const auto sum = std::accumulate(results.begin(), results.end(), 0LL) - (*minMax.first) - (*minMax.second);
+		m_Averages[index] = static_cast<float>(sum) / (results.size() - 2);
 
-		long long sum = 0;
-		for (const auto num : results) {
-			sum += num;
-		}
-
-		m_Averages[index] = static_cast<float>(sum) / static_cast<float>(sampleSize - 2);
 		++index;
 
 		results.clear();
@@ -198,15 +185,10 @@ void dae::MemoryTestImGui::Exercise2NoFix()
 			results.push_back(elapsedTime);
 		}
 
-		std::ranges::sort(results);
-		results.erase(results.begin());
-		results.pop_back();
+		auto minMax = std::minmax_element(results.begin(), results.end());
+		const auto sum = std::accumulate(results.begin(), results.end(), 0LL) - (*minMax.first) - (*minMax.second);
+		m_Averages[index] = static_cast<float>(sum) / (results.size() - 2);
 
-		long long sum = 0;
-		for (const auto num : results) {
-			sum += num;
-		}
-		m_AveragesGameObjects3D[index] = static_cast<float>(sum) / static_cast<float>(sampleSize - 2);
 		++index;
 		results.clear();
 	}
@@ -237,15 +219,10 @@ void dae::MemoryTestImGui::Exercise2WithFix()
 			results.push_back(elapsedTime);
 		}
 
-		std::ranges::sort(results);
-		results.erase(results.begin());
-		results.pop_back();
+		auto minMax = std::minmax_element(results.begin(), results.end());
+		const auto sum = std::accumulate(results.begin(), results.end(), 0LL) - (*minMax.first) - (*minMax.second);
+		m_Averages[index] = static_cast<float>(sum) / (results.size() - 2);
 
-		long long sum = 0;
-		for (const auto num : results) {
-			sum += num;
-		}
-		m_AveragesGameObjects3DAlt[index] = static_cast<float>(sum) / static_cast<float>(sampleSize - 2);
 		++index;
 		results.clear();
 	}

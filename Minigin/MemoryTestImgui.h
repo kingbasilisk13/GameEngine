@@ -62,6 +62,7 @@ namespace dae
 		int* m_Exercise1SamplesSize;
 		bool m_ButtonHasBeenPressed{ false };
 		float m_Averages[m_MaxBufferSize];
+		//todo: you can also just use a vector. helps to avoid using new.
 		int* m_IntArray = new int[size];
 
 

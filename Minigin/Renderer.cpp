@@ -46,7 +46,16 @@ void dae::Renderer::Render() const
 	SDL_RenderClear(m_renderer);
 	SceneManager::GetInstance().Render();
 
+	//todo: blijkbaar hoorde dit er bij?
+	SDL_RenderFlush(m_renderer);
+
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+	//todo: feedback seperate ui from renderer.(aka make seperate object.)
 	m_ImGuiObject->DrawImGuiWindow();
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	SDL_RenderPresent(m_renderer);
 }
