@@ -89,12 +89,13 @@ dae::Minigin::~Minigin()
 
 void dae::Minigin::Run(const std::function<void()>& load) const
 {
+	auto& input = InputManager::GetInstance();
+	input.Initialize();
+
 	load();
 
 	const auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
-	auto& input = InputManager::GetInstance();
-
 	auto& time = Time::GetInstance();
 
 	bool doContinue{ true };
@@ -141,6 +142,5 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 
 		//todo: look into using vsync instead of sleep
 		std::this_thread::sleep_for(sleepTime);
-
 	}
 }

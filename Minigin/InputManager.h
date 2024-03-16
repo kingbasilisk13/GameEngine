@@ -1,37 +1,35 @@
 #pragma once
 #include <memory>
 #include <unordered_map>
-
 #include "Command.h"
+#include "ControllerWrapper.h"
 #include "Singleton.h"
 
 
 
 namespace dae
 {
-	struct KeyBinding {
-		SDL_Scancode key;       // Keyboard key
-		SDL_EventType eventType; // Key event type
-		std::unique_ptr<dae::Command> command;
-
-		KeyBinding(SDL_Scancode k, SDL_EventType e, std::unique_ptr<dae::Command> c)
-			: key(k), eventType(e), command(std::move(c)) {}
+	enum class KeyState {
+		Down,
+		Up,
+		Pressed
 	};
 
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
-		bool ProcessInput();
+		void Initialize();
 
-		//scancode for the key, event type for pressed or released, keyboeard event for held.
-		void AddKeyBinding(std::unique_ptr<Command> command, const SDL_Scancode key, const SDL_EventType state);
+		[[nodiscard]] bool ProcessInput() const;
+
+		void AddKeyBinding(std::unique_ptr<Command> command, const SDL_Scancode key, const KeyState keyState) const;
+
+		void AddControllerBinding(std::unique_ptr<Command> command, const int controllerIndex, const WORD button, const KeyState state) const;
 
 	private:
-		//use sdl scancode because this is independant of the keyboard layout. if you pres a on a qwerty or azerty machine it should still work.
-		//std::unordered_map<KeyBinding, std::unique_ptr<dae::Command>, KeyBinding::Hash> m_KeyBindingsMap;
-		std::vector<KeyBinding> m_KeyBindings;
+		class InputImpl;
+		InputImpl* m_Pimpl = nullptr;
 
-		std::vector<Command*> m_CommandsToExecute;
 	};
 
 }
