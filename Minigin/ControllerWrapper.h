@@ -7,7 +7,7 @@ namespace dae
 	class ControllerWrapper
 	{
 	public:
-		ControllerWrapper();
+		ControllerWrapper(const int controllerIndex);
 
 		~ControllerWrapper();
 
@@ -23,7 +23,7 @@ namespace dae
 		bool IsPressed(unsigned int button) const;
 
 	private:
-		int m_controllerIndex{0}; // Index of the controller
+		int m_controllerIndex; // Index of the controller
 		XINPUT_STATE m_CurrentState; // Current state of the controller
 		XINPUT_STATE m_PreviousState; // Previous state of the controller
 

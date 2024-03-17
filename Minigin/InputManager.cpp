@@ -6,11 +6,16 @@
 #include "Command.h"
 #include <Xinput.h>
 
-
 class dae::InputManager::InputImpl
 {
 public:
-	InputImpl() = default;
+	InputImpl()
+	{
+		for (int i = 0; i < 4; ++i)
+		{
+			m_Controllers[i] = std::make_unique<ControllerWrapper>(i);
+		}
+	};
 	~InputImpl() = default;
 
 	void ProcessInput()
@@ -20,26 +25,29 @@ public:
 		// Update current state
 		SDL_memcpy(m_CurrentState, SDL_GetKeyboardState(nullptr), SDL_NUM_SCANCODES);
 
-		m_Controller->Update();
+		for (int i = 0; i < 4; ++i)
+		{
+			m_Controllers[i]->Update();
+		}
 
 		for (const auto& controllerBinding : m_ControllerBindings)
 		{
 			switch (controllerBinding.keyState)
 			{
 			case KeyState::Down:
-				if (m_Controller->IsDownThisFrame(controllerBinding.button))
+				if (m_Controllers[controllerBinding.controllerIndex]->IsDownThisFrame(controllerBinding.button))
 				{
 					m_CommandsToExecute.push_back(controllerBinding.command.get());
 				}
 				break;
 			case KeyState::Up:
-				if (m_Controller->IsUpThisFrame(controllerBinding.button))
+				if (m_Controllers[controllerBinding.controllerIndex]->IsUpThisFrame(controllerBinding.button))
 				{
 					m_CommandsToExecute.push_back(controllerBinding.command.get());
 				}
 				break;
 			case KeyState::Pressed:
-				if (m_Controller->IsPressed(controllerBinding.button))
+				if (m_Controllers[controllerBinding.controllerIndex]->IsPressed(controllerBinding.button))
 				{
 					m_CommandsToExecute.push_back(controllerBinding.command.get());
 				}
@@ -108,10 +116,13 @@ private:
 	std::vector<KeyBinding> m_KeyBindings{};
 	std::vector<ControllerBinding> m_ControllerBindings{};
 	std::vector<Command*> m_CommandsToExecute{};
-	std::unique_ptr<ControllerWrapper> m_Controller{ std::make_unique<ControllerWrapper>() };
+
+	std::unique_ptr<ControllerWrapper> m_Controllers[4];
 
 	Uint8 m_PreviousState[SDL_NUM_SCANCODES]{};
 	Uint8 m_CurrentState[SDL_NUM_SCANCODES]{};
+
+
 
 	bool IsDownThisFrame(const SDL_Scancode key) const
 	{
@@ -135,6 +146,9 @@ void dae::InputManager::Initialize()
 	{
 		m_Pimpl = new InputImpl();
 	}
+
+	
+
 }
 
 bool dae::InputManager::ProcessInput() const

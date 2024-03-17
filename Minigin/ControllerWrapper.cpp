@@ -2,7 +2,11 @@
 
 #include <SDL_syswm.h>
 
-dae::ControllerWrapper::ControllerWrapper() = default;
+dae::ControllerWrapper::ControllerWrapper(const int controllerIndex)
+: m_controllerIndex(controllerIndex)
+{
+	
+};
 
 dae::ControllerWrapper::~ControllerWrapper() = default;
 
