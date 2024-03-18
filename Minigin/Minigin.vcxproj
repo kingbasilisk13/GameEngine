@@ -197,7 +197,6 @@
     <ClInclude Include="MemoryTestImGui.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MoveCommand.h" />
-    <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -232,7 +231,6 @@
     <ClCompile Include="MemoryTestImGui.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
-    <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
