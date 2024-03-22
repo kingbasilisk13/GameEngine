@@ -44,17 +44,17 @@ private:
 	[[nodiscard]] bool IsDownThisFrame(const unsigned int button) const
 	{
 		return m_ButtonsPressedThisFrame & button;
-	};
+	}
 
 	[[nodiscard]] bool IsUpThisFrame(const unsigned int button) const
 	{
 		return m_ButtonsReleasedThisFrame & button;
-	};
+	}
 
 	[[nodiscard]] bool IsPressed(const unsigned int button) const
 	{
 		return m_CurrentState.Gamepad.wButtons & button;
-	};
+	}
 
 
 	int m_controllerIndex{}; // Index of the controller

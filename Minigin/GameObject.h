@@ -55,6 +55,8 @@ namespace dae
 		glm::vec3 GetWorldPosition();
 
 		void SetPositionDirty();
+
+		void Translate(glm::vec3 deltaMovement);
 #pragma endregion 
 		
 

@@ -1,16 +1,17 @@
 #pragma once
 #include <glm/vec3.hpp>
 
-#include "GameActorCommand.h"
+#include "GameComponentCommand.h"
 
-//todo: do not create a component that does what the command is suposed to do.
+//todo: do not create a component that does what the command is supposed to do.
+//todo: ask again to explain how to use command correctly.
 
 namespace dae
 {
-	class MoveCommand : public GameActorCommand
+	class MoveCommand final : public GameComponentCommand
 	{
 	public:
-		MoveCommand(GameObject* actor,const glm::vec3 direction, const float movementSpeed);
+		MoveCommand(BaseComponent* component,const glm::vec3 direction, const float movementSpeed);
 
 		void Execute() override;
 

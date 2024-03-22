@@ -1,5 +1,4 @@
 #include "FpsComponent.h"
-
 #include <format>
 #include "Renderer.h"
 #include "GameObject.h"

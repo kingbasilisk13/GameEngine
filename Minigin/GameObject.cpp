@@ -115,6 +115,11 @@ void dae::GameObject::SetPositionDirty()
 	}
 }
 
+void dae::GameObject::Translate(glm::vec3 deltaMovement)
+{
+	SetLocalPosition(m_LocalTransform.position + deltaMovement);
+}
+
 
 #pragma region private functions
 void dae::GameObject::RemoveChild(GameObject* child)
