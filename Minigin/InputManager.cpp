@@ -1,11 +1,20 @@
-#include <SDL.h>
-#include "InputManager.h"
-#include <iostream>
-#include <SDL_syswm.h>
-#include <backends/imgui_impl_sdl2.h>
-#include "Command.h"
-#include <Xinput.h>
 
+
+#include "InputManager.h"
+
+#include <SDL_keyboard.h>
+#include <SDL_scancode.h>
+#include <SDL_stdinc.h>
+#include <SDL_syswm.h>
+#include <vector>
+
+#include "ControllerWrapper.h"
+#include "imgui_impl_sdl2.h"
+#include <SDL_events.h>
+
+#include "Command.h"
+
+//todo: ask if now that XInput.h is gone that it is correct?
 class dae::InputManager::InputImpl
 {
 public:
@@ -15,8 +24,14 @@ public:
 		{
 			m_Controllers[i] = std::make_unique<ControllerWrapper>(i);
 		}
-	};
+	}
+
 	~InputImpl() = default;
+
+	InputImpl(const InputImpl&) = delete;
+	InputImpl(InputImpl&&) = delete;
+	InputImpl& operator= (const InputImpl&) = delete;
+	InputImpl& operator= (const InputImpl&&) = delete;
 
 	void ProcessInput()
 	{
@@ -25,56 +40,39 @@ public:
 		// Update current state
 		SDL_memcpy(m_CurrentState, SDL_GetKeyboardState(nullptr), SDL_NUM_SCANCODES);
 
-		for (int i = 0; i < 4; ++i)
+		for (const auto& controller : m_Controllers)
 		{
-			m_Controllers[i]->Update();
+			controller->Update();
 		}
 
-		for (const auto& controllerBinding : m_ControllerBindings)
+		for (const auto& [controllerIndex, button, keyState, command] : m_ControllerBindings)
 		{
-			switch (controllerBinding.keyState)
+			if(m_Controllers[controllerIndex]->CheckButtonState(keyState, button))
 			{
-			case KeyState::Down:
-				if (m_Controllers[controllerBinding.controllerIndex]->IsDownThisFrame(controllerBinding.button))
-				{
-					m_CommandsToExecute.push_back(controllerBinding.command.get());
-				}
-				break;
-			case KeyState::Up:
-				if (m_Controllers[controllerBinding.controllerIndex]->IsUpThisFrame(controllerBinding.button))
-				{
-					m_CommandsToExecute.push_back(controllerBinding.command.get());
-				}
-				break;
-			case KeyState::Pressed:
-				if (m_Controllers[controllerBinding.controllerIndex]->IsPressed(controllerBinding.button))
-				{
-					m_CommandsToExecute.push_back(controllerBinding.command.get());
-				}
-				break;
+				m_CommandsToExecute.push_back(command.get());
 			}
 		}
 
-		for (const auto& keyBinding : m_KeyBindings)
+		for (const auto& [key, state, command] : m_KeyBindings)
 		{
-			switch (keyBinding.state)
+			switch (state)
 			{
 			case KeyState::Down:
-				if (IsDownThisFrame(keyBinding.key))
+				if (IsDownThisFrame(key))
 				{
-					m_CommandsToExecute.push_back(keyBinding.command.get());
+					m_CommandsToExecute.push_back(command.get());
 				}
 				break;
 			case KeyState::Up:
-				if (IsUpThisFrame(keyBinding.key))
+				if (IsUpThisFrame(key))
 				{
-					m_CommandsToExecute.push_back(keyBinding.command.get());
+					m_CommandsToExecute.push_back(command.get());
 				}
 				break;
 			case KeyState::Pressed:
-				if (IsPressed(keyBinding.key))
+				if (IsPressed(key))
 				{
-					m_CommandsToExecute.push_back(keyBinding.command.get());
+					m_CommandsToExecute.push_back(command.get());
 				}
 				break;
 			}
@@ -146,9 +144,6 @@ void dae::InputManager::Initialize()
 	{
 		m_Pimpl = new InputImpl();
 	}
-
-	
-
 }
 
 bool dae::InputManager::ProcessInput() const

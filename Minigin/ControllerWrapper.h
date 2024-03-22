@@ -1,13 +1,13 @@
 #pragma once
-#include<windows.h>
-#include <Xinput.h>
 
 namespace dae
 {
+	enum class KeyState;
+
 	class ControllerWrapper
 	{
 	public:
-		ControllerWrapper(const int controllerIndex);
+		explicit ControllerWrapper(const int controllerIndex);
 
 		~ControllerWrapper();
 
@@ -16,19 +16,13 @@ namespace dae
 		ControllerWrapper& operator= (const ControllerWrapper&) = delete;
 		ControllerWrapper& operator= (const ControllerWrapper&&) = delete;
 
-		void Update();
+		void Update() const;
 
-		bool IsDownThisFrame(unsigned int button) const;
-		bool IsUpThisFrame(unsigned int button) const;
-		bool IsPressed(unsigned int button) const;
+		[[nodiscard]] bool CheckButtonState(KeyState keyState, unsigned int button) const;
 
 	private:
-		int m_controllerIndex; // Index of the controller
-		XINPUT_STATE m_CurrentState; // Current state of the controller
-		XINPUT_STATE m_PreviousState; // Previous state of the controller
-
-		int m_ButtonsPressedThisFrame;
-		int m_ButtonsReleasedThisFrame;
+		class ControllerImpl;
+		ControllerImpl* m_Pimpl = nullptr;
 	};
 }
 

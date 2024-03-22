@@ -1,14 +1,15 @@
 #pragma once
+#include <SDL.h>
 #include <memory>
-#include <unordered_map>
-#include "Command.h"
-#include "ControllerWrapper.h"
-#include "Singleton.h"
+#include <SDL_syswm.h>
 
+#include "Singleton.h"
 
 
 namespace dae
 {
+	class Command;
+
 	enum class KeyState {
 		Down,
 		Up,
