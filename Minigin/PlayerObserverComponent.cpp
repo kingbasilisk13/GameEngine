@@ -4,6 +4,7 @@
 #include <format>
 
 #include "HealthComponent.h"
+#include "ScoreComponent.h"
 
 dae::PlayerObserverComponent::PlayerObserverComponent(GameObject* gameObject)
 	: BaseComponent(gameObject)
@@ -38,6 +39,7 @@ void dae::PlayerObserverComponent::OnNotify(BaseComponent* component, const Even
 		m_TextComponent->ChangeText(std::format("# lives: {}", dynamic_cast<HealthComponent*>(component)->GetRemainingLives()));
 		break;
 	case Event::ScoreIncreased:
+		m_TextComponent->ChangeText(std::format("Score: {}", dynamic_cast<ScoreComponent*>(component)->GetScore()));
 		break;
 	}
 }

@@ -1,5 +1,5 @@
 #include "HealthComponent.h"
-#include <iostream>
+
 
 dae::HealthComponent::HealthComponent(GameObject* gameObject, const float maxHealth, const float currentHealth)
 :BaseComponent(gameObject)
