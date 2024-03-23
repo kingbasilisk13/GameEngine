@@ -13,6 +13,7 @@
 #include "Time.h"
 
 #include <chrono>
+#include <steam_api_common.h>
 #include <thread>
 
 #include "imgui.h"
@@ -113,6 +114,8 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 
 	while (doContinue)
 	{
+		SteamAPI_RunCallbacks();
+
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 
 		//this code is meant for debugging. This enshures that stepping through the code does not cause to large of a time gap.

@@ -55,6 +55,12 @@
     <Filter Include="Header Files\Observers">
       <UniqueIdentifier>{2ab9c3f2-be95-4283-8a4f-0b58989a62f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Steam">
+      <UniqueIdentifier>{577bb55a-2da3-45c4-8c47-053efa502c64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Steam">
+      <UniqueIdentifier>{6c0d8235-71a9-4b52-b96e-69b8b5c6a772}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -177,6 +183,12 @@
     <ClInclude Include="ScoreCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="Achievement.h">
+      <Filter>Header Files\Steam</Filter>
+    </ClInclude>
+    <ClInclude Include="CSteamAchievements.h">
+      <Filter>Header Files\Steam</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
@@ -292,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="ScoreCommand.cpp">
       <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="CSteamAchievements.cpp">
+      <Filter>Source Files\Steam</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
