@@ -2,9 +2,9 @@ name: MSBuild
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "SteamWorks" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "SteamWorks" ]
 
 env:
   # Path to the solution file relative to the root of the project.
