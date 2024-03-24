@@ -2,10 +2,6 @@
 #include "BaseComponent.h"
 #include "Subject.h"
 
-class ScoreComponent
-{
-};
-
 namespace dae
 {
 	class ScoreComponent final : public BaseComponent, public Subject

@@ -8,15 +8,14 @@
 
 namespace dae
 {
-	class MoveCommand final : public GameComponentCommand
+	class SetDirectionCommand final : public GameComponentCommand
 	{
 	public:
-		MoveCommand(BaseComponent* component,const glm::vec3 direction, const float movementSpeed);
+		SetDirectionCommand(BaseComponent* component,const glm::vec3 direction);
 
 		void Execute() override;
 
 	private:
 		glm::vec3 m_Direction;
-		float m_MovementSpeed;
 	};
 }

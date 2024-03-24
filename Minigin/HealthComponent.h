@@ -7,7 +7,7 @@ namespace dae
 	class HealthComponent final : public BaseComponent, public Subject
 	{
 	public:
-		explicit HealthComponent(GameObject* gameObject, const float maxHealth, const float currentHealth);
+		explicit HealthComponent(GameObject* gameObject, const int numberOfLives);
 
 		~HealthComponent() override = default;
 		HealthComponent(const HealthComponent& other) = delete;
@@ -24,8 +24,6 @@ namespace dae
 		int GetRemainingLives() const;
 
 	private:
-		int m_Lives{3};
-		float m_MaxHealth;
-		float m_CurrentHealth;
+		int m_Lives;
 	};
 }

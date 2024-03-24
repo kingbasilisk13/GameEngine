@@ -147,7 +147,7 @@
     <ClInclude Include="GameComponentCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="MoveCommand.h">
+    <ClInclude Include="SetDirectionCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="ControllerWrapper.h">
@@ -263,7 +263,7 @@
     <ClCompile Include="GameComponentCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="MoveCommand.cpp">
+    <ClCompile Include="SetDirectionCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
     <ClCompile Include="ControllerWrapper.cpp">

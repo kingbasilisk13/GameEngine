@@ -1,18 +1,17 @@
-#include "MoveCommand.h"
+#include "SetDirectionCommand.h"
 
 #include <glm/geometric.hpp>
 
 #include "GameObject.h"
 #include "MovementComponent.h"
 
-dae::MoveCommand::MoveCommand(BaseComponent* component, const glm::vec3 direction, const float movementSpeed)
+dae::SetDirectionCommand::SetDirectionCommand(BaseComponent* component, const glm::vec3 direction)
 	: GameComponentCommand(component)
 	, m_Direction(direction)
-	, m_MovementSpeed(movementSpeed)
 {
 }
 
-void dae::MoveCommand::Execute()
+void dae::SetDirectionCommand::Execute()
 {
 	if(m_Direction == glm::vec3 {})
 	{

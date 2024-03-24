@@ -10,7 +10,5 @@ namespace dae
 
 		void Execute() override;
 
-	private:
-		
 	};
 }
