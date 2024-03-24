@@ -1,5 +1,4 @@
 #include "TextComponent.h"
-
 #include <stdexcept>
 #include <SDL_ttf.h>
 #include "Renderer.h"

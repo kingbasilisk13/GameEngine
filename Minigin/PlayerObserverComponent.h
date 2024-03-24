@@ -4,12 +4,11 @@
 
 namespace dae
 {
-	class CSteamAchievements;
 	class TextComponent;
 	class PlayerObserverComponent final : public BaseComponent, public Observer
 	{
 	public:
-		explicit PlayerObserverComponent(GameObject* gameObject, CSteamAchievements* steamAchievements);
+		explicit PlayerObserverComponent(GameObject* gameObject);
 
 		~PlayerObserverComponent() override = default;
 		PlayerObserverComponent(const PlayerObserverComponent& other) = delete;
@@ -25,8 +24,6 @@ namespace dae
 
 	private:
 		TextComponent* m_TextComponent;
-
-		CSteamAchievements* m_SteamAchievements;
 
 		void ReloadPointers() override;
 

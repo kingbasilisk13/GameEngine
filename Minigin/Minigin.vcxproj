@@ -228,7 +228,7 @@ xcopy $(SolutionDir)3rdParty\steamworks\steam_appid.txt $(OutputPath) /Y</Comman
     <ClInclude Include="KillCommand.h" />
     <ClInclude Include="MemoryTestImGui.h" />
     <ClInclude Include="Minigin.h" />
-    <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="SetDirectionCommand.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="PlayerObserverComponent.h" />
@@ -241,6 +241,7 @@ xcopy $(SolutionDir)3rdParty\steamworks\steam_appid.txt $(OutputPath) /Y</Comman
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SteamAchievementsObserver.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
@@ -271,7 +272,7 @@ xcopy $(SolutionDir)3rdParty\steamworks\steam_appid.txt $(OutputPath) /Y</Comman
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MemoryTestImGui.cpp" />
     <ClCompile Include="Minigin.cpp" />
-    <ClCompile Include="MoveCommand.cpp" />
+    <ClCompile Include="SetDirectionCommand.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="PlayerObserverComponent.cpp" />
@@ -283,6 +284,7 @@ xcopy $(SolutionDir)3rdParty\steamworks\steam_appid.txt $(OutputPath) /Y</Comman
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScoreCommand.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
+    <ClCompile Include="SteamAchievementsObserver.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />

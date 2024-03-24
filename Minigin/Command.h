@@ -1,6 +1,5 @@
 #pragma once
 
-//opmerking: command en component zijn 2 paterns die je niet mag mixen.
 namespace dae
 {
 	class Command

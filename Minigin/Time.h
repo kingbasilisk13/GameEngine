@@ -8,7 +8,7 @@ namespace dae
 	class Time final : public Singleton<Time>
 	{
 		//only minigin is allowed to change the value of m_DeltaTime.
-		friend void dae::Minigin::Run(const std::function<void()>& load) const;
+		friend void Minigin::Run(const std::function<void()>& load) const;
 
 	public:
 		float GetDeltaTime() const { return m_DeltaTime; }

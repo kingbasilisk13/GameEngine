@@ -1,7 +1,5 @@
 #include "TimerComponent.h"
 
-#include "FpsComponent.h"
-#include "RenderComponent.h"
 #include "Scene.h"
 
 dae::TimerComponent::TimerComponent(GameObject* gameObject)

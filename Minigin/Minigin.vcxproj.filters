@@ -153,7 +153,7 @@
     <ClInclude Include="GameComponentCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="MoveCommand.h">
+    <ClInclude Include="SetDirectionCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="ControllerWrapper.h">
@@ -188,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="CSteamAchievements.h">
       <Filter>Header Files\Steam</Filter>
+    </ClInclude>
+    <ClInclude Include="SteamAchievementsObserver.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -275,7 +278,7 @@
     <ClCompile Include="GameComponentCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="MoveCommand.cpp">
+    <ClCompile Include="SetDirectionCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
     <ClCompile Include="ControllerWrapper.cpp">
@@ -307,6 +310,9 @@
     </ClCompile>
     <ClCompile Include="CSteamAchievements.cpp">
       <Filter>Source Files\Steam</Filter>
+    </ClCompile>
+    <ClCompile Include="SteamAchievementsObserver.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

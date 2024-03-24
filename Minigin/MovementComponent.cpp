@@ -1,6 +1,6 @@
 #include "MovementComponent.h"
 
-dae::MovementComponent::MovementComponent(GameObject* gameObject, float movementSpeed)
+dae::MovementComponent::MovementComponent(GameObject* gameObject, const float movementSpeed)
 	:BaseComponent(gameObject)
 	,m_MovementSpeed(movementSpeed)
 {

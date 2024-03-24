@@ -1,10 +1,9 @@
 #include "HealthComponent.h"
 
 
-dae::HealthComponent::HealthComponent(GameObject* gameObject, const float maxHealth, const float currentHealth)
+dae::HealthComponent::HealthComponent(GameObject* gameObject, const int numberOfLives)
 :BaseComponent(gameObject)
-,m_MaxHealth(maxHealth)
-,m_CurrentHealth(currentHealth)
+,m_Lives(numberOfLives)
 {
 }
 

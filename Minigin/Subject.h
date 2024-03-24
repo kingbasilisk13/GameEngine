@@ -1,16 +1,14 @@
 #pragma once
 #include <vector>
-
 #include "Observer.h"
-
 
 namespace dae
 {
-	class Observer;
-
 	class Subject
 	{
 	public:
+
+		virtual ~Subject();
 		void AddObserver(Observer* observer);
 
 		void RemoveObserver(const Observer* observer);

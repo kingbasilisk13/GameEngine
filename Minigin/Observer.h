@@ -1,9 +1,6 @@
 #pragma once
-
-namespace dae
-{
-	class BaseComponent;
-}
+#include <vector>
+#include "BaseComponent.h"
 
 namespace dae
 {
@@ -15,11 +12,20 @@ namespace dae
 
 	class Observer
 	{
-		class Entity;
-		
+		friend class Subject;
 	public:
-		virtual  ~Observer() = default;
+		virtual ~Observer();
+		
+
 		virtual void OnNotify(BaseComponent* component, Event event) = 0;
+
+	private:
+		//using this feels wrong but could not think of any better way to prevent nullpointers upon deletion of observer or subject.
+
+		std::vector<Subject*> m_Subjects{};
+
+		void AddSubject(Subject* subject);
+		void RemoveSubject(const Subject* subject);
 	};
 }
 

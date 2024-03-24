@@ -6,11 +6,9 @@ namespace dae
 	class KillCommand final : public GameComponentCommand
 	{
 	public:
-		KillCommand(BaseComponent* component);
+		explicit KillCommand(BaseComponent* component);
 
 		void Execute() override;
-
-	private:
 		
 	};
 }

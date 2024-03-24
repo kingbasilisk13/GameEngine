@@ -7,7 +7,7 @@ namespace dae
 	class MovementComponent final : public BaseComponent
 	{
 	public:
-		explicit MovementComponent(GameObject* gameObject, float movementSpeed);
+		explicit MovementComponent(GameObject* gameObject,const float movementSpeed);
 
 		~MovementComponent() override = default;
 		MovementComponent(const MovementComponent& other) = delete;
