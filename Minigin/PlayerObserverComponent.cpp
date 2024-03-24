@@ -3,12 +3,14 @@
 #include "TextComponent.h"
 #include <format>
 
+#include "CSteamAchievements.h"
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
 
-dae::PlayerObserverComponent::PlayerObserverComponent(GameObject* gameObject)
+dae::PlayerObserverComponent::PlayerObserverComponent(GameObject* gameObject, CSteamAchievements* steamAchievements)
 	: BaseComponent(gameObject)
 	, m_TextComponent(nullptr)
+	, m_SteamAchievements(steamAchievements)
 {
 }
 
@@ -40,6 +42,10 @@ void dae::PlayerObserverComponent::OnNotify(BaseComponent* component, const Even
 		break;
 	case Event::ScoreIncreased:
 		m_TextComponent->ChangeText(std::format("Score: {}", dynamic_cast<ScoreComponent*>(component)->GetScore()));
+		if(dynamic_cast<ScoreComponent*>(component)->GetScore() >= 500)
+		{
+			m_SteamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
+		}
 		break;
 	}
 }
