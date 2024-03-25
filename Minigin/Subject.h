@@ -4,6 +4,7 @@
 
 namespace dae
 {
+	//todo: interfaces hebben geen member variables.
 	class Subject
 	{
 	public:

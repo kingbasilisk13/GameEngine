@@ -4,6 +4,7 @@
 
 namespace dae
 {
+	//todo: interfaces hebben geen member variables.
 	enum class Event
 	{
 		ActorDied,
