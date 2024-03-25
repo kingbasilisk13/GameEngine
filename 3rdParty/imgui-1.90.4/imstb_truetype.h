@@ -22,7 +22,7 @@
 //        render glyphs to one-channel bitmaps with antialiasing (box filter)
 //        render glyphs to one-channel SDF bitmaps (signed-distance field/function)
 //
-//   Todo:
+//  
 //        non-MS cmaps
 //        crashproof on bad data
 //        hinting? (no longer patented)
@@ -925,7 +925,7 @@ STBTT_DEF void stbtt_GetGlyphBitmapBox(const stbtt_fontinfo *font, int glyph, fl
 STBTT_DEF void stbtt_GetGlyphBitmapBoxSubpixel(const stbtt_fontinfo *font, int glyph, float scale_x, float scale_y,float shift_x, float shift_y, int *ix0, int *iy0, int *ix1, int *iy1);
 
 
-// @TODO: don't expose this structure
+//
 typedef struct
 {
    int w,h,stride;
@@ -1467,7 +1467,7 @@ static int stbtt_InitFont_internal(stbtt_fontinfo *info, unsigned char *data, in
    info->svg = -1;
 
    // find a cmap encoding table we understand *now* to avoid searching
-   // later. (todo: could make this installable)
+   // later.
    // the same regardless of glyph.
    numTables = ttUSHORT(data + cmap + 2);
    info->index_map = 0;
@@ -1516,7 +1516,7 @@ STBTT_DEF int stbtt_FindGlyphIndex(const stbtt_fontinfo *info, int unicode_codep
          return ttUSHORT(data + index_map + 10 + (unicode_codepoint - first)*2);
       return 0;
    } else if (format == 2) {
-      STBTT_assert(0); // @TODO: high-byte mapping for japanese/chinese/korean
+      STBTT_assert(0); // 
       return 0;
    } else if (format == 4) { // standard mapping for windows fonts: binary search collection of ranges
       stbtt_uint16 segcount = ttUSHORT(data+index_map+6) >> 1;
@@ -3186,7 +3186,7 @@ static void stbtt__fill_active_edges_new(float *scanline, float *scanline_fill, 
                // goal is to measure the area covered by '.' in each pixel
 
                // if x2 is right at the right edge of x1, y_crossing can blow up, github #1057
-               // @TODO: maybe test against sy1 rather than y_bottom?
+               // 
                if (y_crossing > y_bottom)
                   y_crossing = y_bottom;
 

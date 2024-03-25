@@ -140,7 +140,6 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 
 		const auto sleepTime = currentTime + std::chrono::milliseconds(m_FrameRate) - std::chrono::high_resolution_clock::now();
 
-		//todo: look into using vsync instead of sleep
 		std::this_thread::sleep_for(sleepTime);
 	}
 }

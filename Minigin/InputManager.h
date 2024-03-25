@@ -19,8 +19,6 @@ namespace dae
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
-		//todo: add the deleted rule of 5. to make shure you never make a copy of a signleton.
-
 		void Initialize();
 
 		[[nodiscard]] bool ProcessInput() const;
@@ -31,7 +29,6 @@ namespace dae
 		void AddControllerBinding(std::unique_ptr<Command> command, const int controllerIndex, const WORD button, const KeyState state) const;
 
 	private:
-		//todo: technicly inputmanager does not need pimpl. only the code that creates the input state for the controller.
 		class InputImpl;
 		InputImpl* m_Pimpl = nullptr;
 

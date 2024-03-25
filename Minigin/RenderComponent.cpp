@@ -19,7 +19,6 @@ void dae::RenderComponent::FixedUpdate()
 
 void dae::RenderComponent::Render() const
 {
-	//todo: ask if it is a good idea to request to current location every render. this is pre mature optimization look at it later.
 	if (m_Texture != nullptr)
 	{
 		const auto position = GetOwningGameObject()->GetWorldPosition();

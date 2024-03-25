@@ -18,8 +18,6 @@ void dae::ScoreComponent::Render() const
 }
 
 
-//todo: dit is verkeerd. het is de bedoeling dat de notify gebeurt op een event in de game.
-//een event gebeurt (enemie sterf, item wordt opgeraapt, speler sterf) en de score bijhouder beslist dan zelf hoeveel punten dat waard is.
 void dae::ScoreComponent::IncreaseScore(const int points)
 {
 	m_CurrentScore += points;

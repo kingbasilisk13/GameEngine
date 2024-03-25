@@ -38,6 +38,8 @@ void dae::PlayerObserverComponent::OnNotify(BaseComponent* component, const Even
 	case Event::ActorDied:
 		m_TextComponent->ChangeText(std::format("# lives: {}", dynamic_cast<HealthComponent*>(component)->GetRemainingLives()));
 		break;
+		//todo: het is de bedoeling dat verschillende soorten events opgeroepen werden en dat afhankelijk van de thread de score wordt aangepast.
+		//de actordied event is juist.
 	case Event::ScoreIncreased:
 		m_TextComponent->ChangeText(std::format("Score: {}", dynamic_cast<ScoreComponent*>(component)->GetScore()));
 		break;

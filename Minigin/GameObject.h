@@ -61,8 +61,6 @@ namespace dae
 		
 
 	private:
-		//todo: order your variables from smallest to largest
-
 		bool m_PositionIsDirty;
 
 		bool m_RemovalListIsDirty;

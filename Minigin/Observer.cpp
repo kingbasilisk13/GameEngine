@@ -1,6 +1,8 @@
 #include "Observer.h"
 #include "Subject.h"
 
+//todo: op interface niveau niet beslissen, laat de observer dat zelf beslissen.
+//dit gaat over hoe deletion en unsubscribtion te handelen. aka IK VERSTA DIT NOG STEEDS NIET.
 dae::Observer::~Observer()
 {
 	for (const auto subject : m_Subjects)
