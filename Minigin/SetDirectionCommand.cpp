@@ -17,5 +17,5 @@ void dae::SetDirectionCommand::Execute()
 	{
 		return;
 	}
-	dynamic_cast<MovementComponent*>(GetGameComponent())->AddToMovementDirection(m_Direction);
+	dynamic_cast<MovementComponent*>(GetGameComponent())->AddToMovementDirection(glm::normalize(m_Direction));
 }

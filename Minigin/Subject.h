@@ -1,24 +1,33 @@
 #pragma once
 #include <vector>
-#include "Observer.h"
+#include "IObserver.h"
 
 namespace dae
 {
-	//todo: interfaces hebben geen member variables.
-	class Subject
+	//An object that can be subscribed to
+	class Subject final
 	{
 	public:
+		explicit Subject(BaseComponent* owner);
 
-		virtual ~Subject();
-		void AddObserver(Observer* observer);
+		~Subject();
 
-		void RemoveObserver(const Observer* observer);
+		Subject(const Subject& other) = delete;
+		Subject(Subject&& other) = delete;
+		Subject& operator=(const Subject& other) = delete;
+		Subject& operator=(Subject&& other) = delete;
 
-	protected:
-		void Notify(BaseComponent* component, Event event) const;
+		void AddObserver(IObserver* observer);
 
+		void RemoveObserver(const IObserver* observer);
+
+		void Notify(Event event);
+
+		BaseComponent* GetOwner();
 	private:
-		std::vector<Observer*> m_Observers{};
+		BaseComponent* m_Owner;
+
+		std::vector<IObserver*> m_Observers{};
 
 	};
 }

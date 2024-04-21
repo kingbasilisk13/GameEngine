@@ -4,7 +4,7 @@
 
 namespace dae
 {
-	class ScoreComponent final : public BaseComponent, public Subject
+	class ScoreComponent final : public BaseComponent
 	{
 	public:
 		explicit ScoreComponent(GameObject* gameObject);
@@ -23,7 +23,10 @@ namespace dae
 
 		[[nodiscard]] int GetScore() const;
 
+		void SubscribeToScoreChangedEvent(IObserver* observer) const;
+
 	private:
 		int m_CurrentScore{ 0 };
+		std::unique_ptr<Subject> m_ScoreChangedEvent;
 	};
 }

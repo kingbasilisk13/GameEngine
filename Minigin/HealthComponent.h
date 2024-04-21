@@ -4,7 +4,7 @@
 
 namespace dae
 {
-	class HealthComponent final : public BaseComponent, public Subject
+	class HealthComponent final : public BaseComponent
 	{
 	public:
 		explicit HealthComponent(GameObject* gameObject, const int numberOfLives);
@@ -21,9 +21,12 @@ namespace dae
 
 		void Kill();
 
-		int GetRemainingLives() const;
+		[[nodiscard]] int GetRemainingLives() const;
+
+		void SubscribeToHealthChangedEvent(IObserver* observer) const;
 
 	private:
 		int m_Lives;
+		std::unique_ptr<Subject> m_HealthChangedEvent;
 	};
 }
