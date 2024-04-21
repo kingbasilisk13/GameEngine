@@ -124,6 +124,7 @@ void dae::GameObject::Translate(glm::vec3 deltaMovement)
 #pragma region private functions
 void dae::GameObject::RemoveChild(GameObject* child)
 {
+	//todo: ask if it counts as multi threading to use policy here.
 	m_Children.erase(std::ranges::find(m_Children, child));
 }
 

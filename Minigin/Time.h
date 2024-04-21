@@ -7,14 +7,18 @@ namespace dae
 {
 	class Time final : public Singleton<Time>
 	{
-		//only minigin is allowed to change the value of m_DeltaTime.
-		friend void dae::Minigin::Run(const std::function<void()>& load) const;
-
 	public:
 		float GetDeltaTime() const { return m_DeltaTime; }
 
 		float GetFixedTimeStep() const { return m_FixedTimeStep; }
+
 	private:
+		//only minigin is allowed to change the value of m_DeltaTime.
+		friend void dae::Minigin::Run(const std::function<void()>& load) const;
+
+		friend class Singleton<Time>;
+		Time() = default;
+
 		void ChangeDeltaTime(float deltaTime) { m_DeltaTime = deltaTime; }
 
 		void SetFixedTimeStep(float fixedTimeStep) { m_FixedTimeStep = fixedTimeStep; }

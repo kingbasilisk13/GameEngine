@@ -55,11 +55,11 @@
     <Filter Include="Header Files\Observers">
       <UniqueIdentifier>{2ab9c3f2-be95-4283-8a4f-0b58989a62f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Singletons\Base">
+      <UniqueIdentifier>{e4d54e2e-d089-4535-a62f-bf0a5bc1f120}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Singleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -177,6 +177,12 @@
     <ClInclude Include="ScoreCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Header Files\Singletons\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
@@ -289,6 +295,9 @@
     </ClCompile>
     <ClCompile Include="ScoreCommand.cpp">
       <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files\Singletons</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

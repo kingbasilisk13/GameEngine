@@ -15,6 +15,7 @@
 #include <chrono>
 #include <thread>
 
+#include "EventManager.h"
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl2.h"
@@ -89,8 +90,9 @@ dae::Minigin::~Minigin()
 
 void dae::Minigin::Run(const std::function<void()>& load) const
 {
-	auto& input = InputManager::GetInstance();
-	input.Initialize();
+	const auto& input = InputManager::GetInstance();
+
+	auto& eventManager = EventManager::GetInstance();
 
 	load();
 
@@ -134,6 +136,11 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 			lag -= m_FixedTimeStep;
 		}
 		sceneManager.Update();
+
+		//event managers processes the next event
+		eventManager.ProcessEvent();
+
+
 		//wat is late update? just a second update. But it is not just calling the update a second time. it is a special update just be specific objects, like the camera.
 		//updates of any kind always happen before the render.
 		renderer.Render();

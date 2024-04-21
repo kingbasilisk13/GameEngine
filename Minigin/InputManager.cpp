@@ -138,14 +138,6 @@ private:
 	}
 };
 
-void dae::InputManager::Initialize()
-{
-	if (m_Pimpl == nullptr)
-	{
-		m_Pimpl = new InputImpl();
-	}
-}
-
 bool dae::InputManager::ProcessInput() const
 {
 	m_Pimpl->ProcessInput();
@@ -176,4 +168,12 @@ void dae::InputManager::AddKeyBinding(std::unique_ptr<Command> command, const SD
 void dae::InputManager::AddControllerBinding(std::unique_ptr<Command> command, const int controllerIndex, const WORD button, const KeyState state) const
 {
 	m_Pimpl->AddControllerBinding(std::move(command), controllerIndex, button,state);
+}
+
+dae::InputManager::InputManager()
+{
+	if (m_Pimpl == nullptr)
+	{
+		m_Pimpl = new InputImpl();
+	}
 }
