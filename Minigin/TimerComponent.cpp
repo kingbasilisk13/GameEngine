@@ -14,7 +14,7 @@ void dae::TimerComponent::Update()
 
 	if(m_TaskFinished == false)
 	{
-		m_ElapsedTime += dae::Time::GetInstance().GetDeltaTime();
+		m_ElapsedTime += dae::EngineTime::GetInstance().GetDeltaTime();
 
 		if(m_ElapsedTime >= 10.f)
 		{

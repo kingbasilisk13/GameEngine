@@ -13,7 +13,7 @@ dae::RotatorComponent::RotatorComponent(GameObject* gameObject, const float radi
 
 void dae::RotatorComponent::Update()
 {
-	CalculateRotation(dae::Time::GetInstance().GetDeltaTime());
+	CalculateRotation(dae::EngineTime::GetInstance().GetDeltaTime());
 }
 
 void dae::RotatorComponent::FixedUpdate()

@@ -26,7 +26,7 @@ void dae::FpsComponent::Update()
 
 	m_FrameCount++;
 	
-	m_ElapsedTime += Time::GetInstance().GetDeltaTime();
+	m_ElapsedTime += EngineTime::GetInstance().GetDeltaTime();
 
 	if (m_ElapsedTime >= 1.0f) {
 		const float fps = static_cast<float>(m_FrameCount) / m_ElapsedTime;

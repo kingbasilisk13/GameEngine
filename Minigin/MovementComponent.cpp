@@ -10,7 +10,7 @@ void dae::MovementComponent::Update()
 {
 	if (m_Direction == glm::vec3{}) return;
 
-	const glm::vec3 deltaMovement = m_MovementSpeed * dae::Time::GetInstance().GetDeltaTime() * glm::normalize(m_Direction);
+	const glm::vec3 deltaMovement = m_MovementSpeed * dae::EngineTime::GetInstance().GetDeltaTime() * glm::normalize(m_Direction);
 
 	GetOwningGameObject()->Translate(deltaMovement);
 

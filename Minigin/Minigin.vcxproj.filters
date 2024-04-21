@@ -81,7 +81,7 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>Header Files\Singletons</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
+    <ClInclude Include="EngineTime.h">
       <Filter>Header Files\Singletons</Filter>
     </ClInclude>
     <ClInclude Include="BaseComponent.h">
@@ -209,7 +209,7 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Source Files\Singletons</Filter>
     </ClCompile>
-    <ClCompile Include="Time.cpp">
+    <ClCompile Include="EngineTime.cpp">
       <Filter>Source Files\Singletons</Filter>
     </ClCompile>
     <ClCompile Include="BaseComponent.cpp">

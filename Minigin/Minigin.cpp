@@ -10,7 +10,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
-#include "Time.h"
+#include "EngineTime.h"
 
 #include <chrono>
 #include <thread>
@@ -98,7 +98,7 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 
 	const auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
-	auto& time = Time::GetInstance();
+	auto& time = EngineTime::GetInstance();
 
 	bool doContinue{ true };
 	
