@@ -4,6 +4,8 @@
 #include <memory>
 #include "Singleton.h"
 
+//todo: add rule of five to all singletons and delete them
+
 namespace dae
 {
 	class Scene;
