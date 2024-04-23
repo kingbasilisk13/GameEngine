@@ -200,6 +200,7 @@
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imstb_truetype.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="ControllerInput.h" />
     <ClInclude Include="ControllerWrapper.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Font.h" />

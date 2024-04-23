@@ -29,6 +29,12 @@ namespace dae
 
 		void ProcessEvent();
 
+		//todo: voeg hier een map toe waar je specifieken handelers linkd aan specifieke events.
+		//vb sound event word voor alles met sound gelinked.
+
+		//todo: queue moet niet per see via de time ge de coupled worden. je mag ze gewoon direct uitvoeren. de keuze is aan u.
+
+
 		std::queue<Event> m_EventQueue;
 		std::vector<IObserver*> m_Observers;
 

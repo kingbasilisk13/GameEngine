@@ -4,8 +4,11 @@
 #endif
 #endif
 
-#include <windows.h>
-#include <Xinput.h>
+//todo: deze include mag er niet staan. maak een aparte enum in uw engine die je dan gebruikt om te translaten naar de correcte code in de input manager.
+//xinput
+
+#include "ControllerInput.h"
+
 #include "Minigin.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
@@ -145,49 +148,50 @@ void InitializeGame()
 	dae::InputManager::GetInstance().AddControllerBinding(
 		std::make_unique<dae::KillCommand>(healthComponentP2),
 		0,
-		XINPUT_GAMEPAD_X,
+		dae::ControllerInput::Gamepad_X,
 		dae::KeyState::Down
+		
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
 		std::make_unique<dae::ScoreCommand>(scoreComponentP2, 100),
 		0,
-		XINPUT_GAMEPAD_A,
+		dae::ControllerInput::Gamepad_A,
 		dae::KeyState::Down
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
 		std::make_unique<dae::ScoreCommand>(scoreComponentP2, 10),
 		0,
-		XINPUT_GAMEPAD_B,
+		dae::ControllerInput::Gamepad_B,
 		dae::KeyState::Down
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
 		std::make_unique<dae::SetDirectionCommand>(temp, glm::vec3(1, 0, 0)),
 		0,
-		XINPUT_GAMEPAD_DPAD_RIGHT,
+		dae::ControllerInput::Gamepad_Dpad_Right,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
 		std::make_unique<dae::SetDirectionCommand>(temp, glm::vec3(-1, 0, 0)),
 		0,
-		XINPUT_GAMEPAD_DPAD_LEFT,
+		dae::ControllerInput::Gamepad_Dpad_Left,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
 		std::make_unique<dae::SetDirectionCommand>(temp, glm::vec3(0, -1, 0)),
 		0,
-		XINPUT_GAMEPAD_DPAD_UP,
+		dae::ControllerInput::Gamepad_Dpad_Up,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
 		std::make_unique<dae::SetDirectionCommand>(temp, glm::vec3(0, 1, 0)),
 		0,
-		XINPUT_GAMEPAD_DPAD_DOWN,
+		dae::ControllerInput::Gamepad_Dpad_Down,
 		dae::KeyState::Pressed
 	);
 

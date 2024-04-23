@@ -2,6 +2,7 @@
 
 namespace dae
 {
+	enum class ControllerInput;
 	enum class KeyState;
 
 	class ControllerWrapper
@@ -18,7 +19,7 @@ namespace dae
 
 		void Update() const;
 
-		[[nodiscard]] bool CheckButtonState(KeyState keyState, unsigned int button) const;
+		[[nodiscard]] bool CheckButtonState(KeyState keyState, ControllerInput button) const;
 
 	private:
 		class ControllerImpl;

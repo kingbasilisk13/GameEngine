@@ -1,17 +1,12 @@
-
-
 #include "InputManager.h"
-
 #include <SDL_keyboard.h>
 #include <SDL_scancode.h>
 #include <SDL_stdinc.h>
 #include <SDL_syswm.h>
 #include <vector>
-
 #include "ControllerWrapper.h"
 #include "imgui_impl_sdl2.h"
 #include <SDL_events.h>
-
 #include "Command.h"
 
 //todo: ask if now that XInput.h is gone that it is correct?
@@ -90,7 +85,11 @@ public:
 		m_KeyBindings.emplace_back(key, keyState, std::move(command));
 	}
 
-	void AddControllerBinding(std::unique_ptr<Command> command, const int controllerIndex, const WORD button, const KeyState state)
+	void AddControllerBinding(
+		std::unique_ptr<Command> command
+		, const int controllerIndex
+		, const ControllerInput button
+		, const KeyState state)
 	{
 		m_ControllerBindings.emplace_back(controllerIndex, button, state, std::move(command));
 	}
@@ -106,7 +105,7 @@ private:
 	struct ControllerBinding
 	{
 		int controllerIndex; // Index of the controller (0-3)
-		WORD button; // Button ID (XINPUT_GAMEPAD_A, XINPUT_GAMEPAD_B, etc.)
+		ControllerInput button; // Button ID (XINPUT_GAMEPAD_A, XINPUT_GAMEPAD_B, etc.)
 		KeyState keyState; // Key state (Down, Up, Pressed)
 		std::unique_ptr<dae::Command> command; // command bound to key
 	};
@@ -165,7 +164,11 @@ void dae::InputManager::AddKeyBinding(std::unique_ptr<Command> command, const SD
 	m_Pimpl->AddKeyBinding(std::move(command), key, keyState);
 }
 
-void dae::InputManager::AddControllerBinding(std::unique_ptr<Command> command, const int controllerIndex, const WORD button, const KeyState state) const
+void dae::InputManager::AddControllerBinding(
+	std::unique_ptr<Command> command
+	, const int controllerIndex
+	, const ControllerInput button
+	, const KeyState state) const
 {
 	m_Pimpl->AddControllerBinding(std::move(command), controllerIndex, button,state);
 }

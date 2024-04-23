@@ -1,11 +1,8 @@
-
-
 #include "ControllerWrapper.h"
-
 #include <SDL_syswm.h>
-#include <Xinput.h>
-
 #include "InputManager.h"
+#include "ControllerInput.h"
+#include <Xinput.h>
 
 class dae::ControllerWrapper::ControllerImpl
 {
@@ -26,21 +23,57 @@ public:
 		m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
 	}
 
-	[[nodiscard]] bool CheckButtonState(const KeyState keyState, unsigned int button) const
+	[[nodiscard]] bool CheckButtonState(const KeyState keyState, ControllerInput button) const
 	{
+		const unsigned int actualButton = TranslateButton(button);
 		switch (keyState)
 		{
 		case KeyState::Down:
-			return IsDownThisFrame(button);
+			return IsDownThisFrame(actualButton);
 		case KeyState::Up:
-			return IsUpThisFrame(button);
+			return IsUpThisFrame(actualButton);
 		case KeyState::Pressed:
-			return IsPressed(button);
+			return IsPressed(actualButton);
 		}
 		return false;
 	}
 
 private:
+	static unsigned int TranslateButton(ControllerInput button)
+	{
+		unsigned int result{};
+
+		switch (button)
+		{
+		case ControllerInput::Gamepad_A:
+			result = XINPUT_GAMEPAD_A;
+			break;
+		case ControllerInput::Gamepad_B:
+			result = XINPUT_GAMEPAD_B;
+			break;
+		case ControllerInput::Gamepad_X:
+			result = XINPUT_GAMEPAD_X;
+			break;
+		case ControllerInput::Gamepad_Y:
+			result = XINPUT_GAMEPAD_Y;
+			break;
+		case ControllerInput::Gamepad_Dpad_Up:
+			result = XINPUT_GAMEPAD_DPAD_UP;
+			break;
+		case ControllerInput::Gamepad_Dpad_Down:
+			result = XINPUT_GAMEPAD_DPAD_DOWN;
+			break;
+		case ControllerInput::Gamepad_Dpad_Left:
+			result = XINPUT_GAMEPAD_DPAD_LEFT;
+			break;
+		case ControllerInput::Gamepad_Dpad_Right:
+			result = XINPUT_GAMEPAD_DPAD_RIGHT;
+			break;
+		default: ;
+		}
+		return result;
+	}
+
 	[[nodiscard]] bool IsDownThisFrame(const unsigned int button) const
 	{
 		return m_ButtonsPressedThisFrame & button;
@@ -82,7 +115,7 @@ void dae::ControllerWrapper::Update() const
 	m_Pimpl->Update();
 }
 
-bool dae::ControllerWrapper::CheckButtonState(const KeyState keyState, const unsigned int button) const
+bool dae::ControllerWrapper::CheckButtonState(const KeyState keyState, ControllerInput button) const
 {
 	return m_Pimpl->CheckButtonState(keyState, button);
 }
