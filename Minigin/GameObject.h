@@ -14,7 +14,7 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		explicit GameObject(const Transform& transform = {});
+		explicit GameObject();
 
 		~GameObject();
 		GameObject(const GameObject& other) = delete;

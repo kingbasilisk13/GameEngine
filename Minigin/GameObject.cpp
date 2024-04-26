@@ -4,11 +4,11 @@
 #include "SdlSoundSystem.h"
 #include "ServiceLocator.h"
 
-dae::GameObject::GameObject(const Transform& transform)
+dae::GameObject::GameObject()
 	: m_PositionIsDirty(false)
 	  , m_RemovalListIsDirty(false)
-	  , m_LocalTransform(transform)
-	  , m_WorldTransform(transform)
+	  , m_LocalTransform({})
+	  , m_WorldTransform({})
 	  , m_Scene(nullptr)
 	  , m_Parent(nullptr)
 {

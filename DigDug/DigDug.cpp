@@ -4,6 +4,8 @@
 #endif
 #endif
 
+#include <windows.h>
+
 #include "ControllerInput.h"
 
 #include "Minigin.h"
@@ -41,23 +43,22 @@ void InitializeGame()
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
 	//background
-	dae::Transform position{};
-	position.SetPosition(0.f, 0.f, 0.f);
-	auto go = std::make_shared<dae::GameObject>(position);
+	auto go = std::make_shared<dae::GameObject>();
+	go->SetLocalPosition({0,0,0});
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), dae::ResourceManager::GetInstance().LoadTexture("background.tga")));
 	scene.Add(go);
 
 
 	//logo
-	position.SetPosition(216.f, 180.f, 0.f);
-	go = std::make_shared<dae::GameObject>(position);
+	go = std::make_shared<dae::GameObject>();
+	go->SetLocalPosition({ 216.f, 180.f, 0.f });
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), dae::ResourceManager::GetInstance().LoadTexture("logo.tga")));
 	scene.Add(go);
 
 
 	//title
-	position.SetPosition(80.f, 20.f, 0.f);
-	go = std::make_shared<dae::GameObject>(position);
+	go = std::make_shared<dae::GameObject>();
+	go->SetLocalPosition({ 80.f, 20.f, 0.f });
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
 	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), font, "Programming 4 Assignment"));
@@ -65,8 +66,8 @@ void InitializeGame()
 
 
 	//fps
-	position.SetPosition();
-	go = std::make_shared<dae::GameObject>(position);
+	go = std::make_shared<dae::GameObject>();
+	go->SetLocalPosition({});
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), font));
@@ -78,8 +79,8 @@ void InitializeGame()
 	const float speedP1{ 100.f };
 	const float speedP2{ 200.f };
 
-	position.SetPosition({ 216.f, 180.f, 0.f });
-	const auto player1 = std::make_shared<dae::GameObject>(position);
+	const auto player1 = std::make_shared<dae::GameObject>();
+	player1->SetLocalPosition({ 216.f, 180.f, 0.f });
 	player1->AddComponent(std::make_unique<dae::RenderComponent>(player1.get(), dae::ResourceManager::GetInstance().LoadTexture("Player1.png")));
 	player1->AddComponent(std::make_unique<dae::MovementComponent>(player1.get(), speedP1));
 	player1->AddComponent(std::make_unique<dae::HealthComponent>(player1.get(), 3));
@@ -139,7 +140,10 @@ void InitializeGame()
 
 
 
-	const auto player2 = std::make_shared<dae::GameObject>(position);
+	const auto player2 = std::make_shared<dae::GameObject>();
+
+	player2->SetLocalPosition({ 216.f, 180.f, 0.f });
+
 	player2->AddComponent(std::make_unique<dae::RenderComponent>(player2.get(), dae::ResourceManager::GetInstance().LoadTexture("Player2.png")));
 	player2->AddComponent(std::make_unique<dae::MovementComponent>(player2.get(), speedP2));
 	player2->AddComponent(std::make_unique<dae::HealthComponent>(player2.get(), 3));
@@ -206,8 +210,10 @@ void InitializeGame()
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 
 	//health display 1
-	position.SetPosition({ 0.f, 140.f, 0.f });
-	const auto player1HealthObserver = std::make_shared<dae::GameObject>(position);
+	const auto player1HealthObserver = std::make_shared<dae::GameObject>();
+
+	player1HealthObserver->SetLocalPosition({ 0.f, 140.f, 0.f });
+
 	player1HealthObserver->AddComponent(std::make_unique<dae::RenderComponent>(player1HealthObserver.get()));
 	player1HealthObserver->AddComponent(std::make_unique<dae::TextComponent>(player1HealthObserver.get(), font, "# lives: 3"));
 	player1HealthObserver->AddComponent(std::make_unique<dae::PlayerObserverComponent>(player1HealthObserver.get()));
@@ -217,8 +223,10 @@ void InitializeGame()
 
 
 	//score display 1
-	position.SetPosition({ 0.f, 160.f, 0.f });
-	const auto player1ScoreObserver = std::make_shared<dae::GameObject>(position);
+	const auto player1ScoreObserver = std::make_shared<dae::GameObject>();
+
+	player1ScoreObserver->SetLocalPosition({ 0.f, 160.f, 0.f });
+
 	player1ScoreObserver->AddComponent(std::make_unique<dae::RenderComponent>(player1ScoreObserver.get()));
 	player1ScoreObserver->AddComponent(std::make_unique<dae::TextComponent>(player1ScoreObserver.get(), font, "Score: 0"));
 	player1ScoreObserver->AddComponent(std::make_unique<dae::PlayerObserverComponent>(player1ScoreObserver.get()));
@@ -230,8 +238,10 @@ void InitializeGame()
 
 
 	//health display 2
-	position.SetPosition({ 0.f, 180.f, 0.f });
-	const auto player2HealthObserver = std::make_shared<dae::GameObject>(position);
+	const auto player2HealthObserver = std::make_shared<dae::GameObject>();
+
+	player2HealthObserver->SetLocalPosition({ 0.f, 180.f, 0.f });
+
 	player2HealthObserver->AddComponent(std::make_unique<dae::RenderComponent>(player2HealthObserver.get()));
 	player2HealthObserver->AddComponent(std::make_unique<dae::TextComponent>(player2HealthObserver.get(), font, "# lives: 3"));
 	player2HealthObserver->AddComponent(std::make_unique<dae::PlayerObserverComponent>(player2HealthObserver.get()));
@@ -240,8 +250,10 @@ void InitializeGame()
 	player2->GetComponent<dae::HealthComponent>()->SubscribeToHealthChangedEvent(player2HealthObserver->GetComponent<dae::PlayerObserverComponent>());
 
 	//score display 2
-	position.SetPosition({ 0.f, 200.f, 0.f });
-	const auto player2ScoreObserver = std::make_shared<dae::GameObject>(position);
+	const auto player2ScoreObserver = std::make_shared<dae::GameObject>();
+
+	player2ScoreObserver->SetLocalPosition({ 0.f, 200.f, 0.f });
+
 	player2ScoreObserver->AddComponent(std::make_unique<dae::RenderComponent>(player2ScoreObserver.get()));
 	player2ScoreObserver->AddComponent(std::make_unique<dae::TextComponent>(player2ScoreObserver.get(), font, "Score: 0"));
 	player2ScoreObserver->AddComponent(std::make_unique<dae::PlayerObserverComponent>(player2ScoreObserver.get()));
@@ -252,15 +264,20 @@ void InitializeGame()
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
 
 	//controls display
-	position.SetPosition({ 0.f, 60.f, 0.f });
-	const auto controlsDisplay1 = std::make_shared<dae::GameObject>(position);
+	const auto controlsDisplay1 = std::make_shared<dae::GameObject>();
+
+	controlsDisplay1->SetLocalPosition({ 0.f, 60.f, 0.f });
+
 	controlsDisplay1->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay1.get()));
 	controlsDisplay1->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay1.get(), font,
 		"Using the D-Pad to move the yellow sprite, X to inflict damage, A and B To increase their score."));
 	scene.Add(controlsDisplay1);
 
-	position.SetPosition({ 0.f, 90.f, 0.f });
-	const auto controlsDisplay2 = std::make_shared<dae::GameObject>(position);
+	
+	const auto controlsDisplay2 = std::make_shared<dae::GameObject>();
+
+	controlsDisplay2->SetLocalPosition({ 0.f, 90.f, 0.f });
+
 	controlsDisplay2->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay2.get()));
 	controlsDisplay2->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay2.get(), font,
 		"Using WASD to move the blue sprite, C to inflict damage, Z and X To increase their score."));

@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Commands">
       <UniqueIdentifier>{c116d4ad-07d1-40f9-9ac3-d35e83b311cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{7527d123-874c-4212-9029-358de445cfe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{81aa25bd-f2cf-4562-aaaf-8b6493426df3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DigDug.cpp">

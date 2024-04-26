@@ -4,7 +4,9 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <SDL_mixer.h>
+
+//todo: this needs to be pimpled away in watever class it uses
+//#include <SDL_mixer.h>
 #include "Minigin.h"
 #include "InputManager.h"
 #include "SceneManager.h"
