@@ -58,6 +58,18 @@
     <Filter Include="Header Files\Singletons\Base">
       <UniqueIdentifier>{e4d54e2e-d089-4535-a62f-bf0a5bc1f120}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ServiceLocators">
+      <UniqueIdentifier>{7139336a-348f-4ff3-934b-bf0a6bcc15b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ServiceLocators\Sound">
+      <UniqueIdentifier>{33f6326e-459b-4979-90c5-710dfb6cb88d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ServiceLocators">
+      <UniqueIdentifier>{3ee8b141-a2ef-4e90-967c-abbaa68b3ba3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ServiceLocators\Sound">
+      <UniqueIdentifier>{d8198f5d-b61e-483a-bb6c-bd4cf5dd02aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
@@ -186,6 +198,24 @@
     <ClInclude Include="ControllerInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IHandler.h">
+      <Filter>Header Files\Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceLocator.h">
+      <Filter>Header Files\ServiceLocators</Filter>
+    </ClInclude>
+    <ClInclude Include="ISoundSystem.h">
+      <Filter>Header Files\ServiceLocators\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SdlSoundSystem.h">
+      <Filter>Header Files\ServiceLocators\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggingSoundSystem.h">
+      <Filter>Header Files\ServiceLocators\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="NullSoundSystem.h">
+      <Filter>Header Files\ServiceLocators\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
@@ -266,9 +296,6 @@
     <ClCompile Include="MemoryTestImGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Command.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="GameComponentCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
@@ -301,6 +328,21 @@
     </ClCompile>
     <ClCompile Include="EventManager.cpp">
       <Filter>Source Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Source Files\ServiceLocators</Filter>
+    </ClCompile>
+    <ClCompile Include="SdlSoundSystem.cpp">
+      <Filter>Source Files\ServiceLocators\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggingSoundSystem.cpp">
+      <Filter>Source Files\ServiceLocators\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="NullSoundSystem.cpp">
+      <Filter>Source Files\ServiceLocators\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Source Files\Commands</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include "Minigin.h"
 #include "InputManager.h"
 #include "SceneManager.h"
@@ -92,8 +93,6 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 {
 	const auto& input = InputManager::GetInstance();
 
-	auto& eventManager = EventManager::GetInstance();
-
 	load();
 
 	const auto& renderer = Renderer::GetInstance();
@@ -136,10 +135,6 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 			lag -= m_FixedTimeStep;
 		}
 		sceneManager.Update();
-
-		//event managers processes the next event
-		eventManager.ProcessEvent();
-
 
 		//wat is late update? just a second update. But it is not just calling the update a second time. it is a special update just be specific objects, like the camera.
 		//updates of any kind always happen before the render.

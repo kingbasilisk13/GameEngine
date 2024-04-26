@@ -1,6 +1,8 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "Scene.h"
+#include "SdlSoundSystem.h"
+#include "ServiceLocator.h"
 
 dae::GameObject::GameObject(const Transform& transform)
 	: m_PositionIsDirty(false)

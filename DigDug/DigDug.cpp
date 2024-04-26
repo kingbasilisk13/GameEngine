@@ -4,9 +4,6 @@
 #endif
 #endif
 
-//todo: deze include mag er niet staan. maak een aparte enum in uw engine die je dan gebruikt om te translaten naar de correcte code in de input manager.
-//xinput
-
 #include "ControllerInput.h"
 
 #include "Minigin.h"
@@ -19,16 +16,26 @@
 #include "HealthComponent.h"
 #include "InputManager.h"
 #include "KillCommand.h"
+#include "LoggingSoundSystem.h"
 #include "SetDirectionCommand.h"
 #include "MovementComponent.h"
+#include "NullSoundSystem.h"
 #include "PlayerObserverComponent.h"
 #include "RenderComponent.h"
 #include "ScoreCommand.h"
 #include "ScoreComponent.h"
+#include "SdlSoundSystem.h"
+#include "ServiceLocator.h"
 #include "Transform.h"
 
 void InitializeGame()
 {
+//#if _DEBUG
+//	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SdlSoundSystem>()));
+//#else
+//	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SdlSoundSystem>());
+//#endif
+
 	//todo: STARTING A THREAD IS EXPENSIVE, DO NOT MAKE THIS MISTAKE
 
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");

@@ -2055,7 +2055,7 @@ ImFileHandle ImFileOpen(const char* filename, const char* mode)
 
     // Use stack buffer if possible, otherwise heap buffer. Sizes include zero terminator.
     // We don't rely on current ImGuiContext as this is implied to be a helper function which doesn't depend on it (see #7314).
-    wchar_t local_temp_stack[FILENAME_MAX];
+    wchar_t local_temp_stack[FILENAME_MAX]{};
     ImVector<wchar_t> local_temp_heap;
     if (filename_wsize + mode_wsize > IM_ARRAYSIZE(local_temp_stack))
         local_temp_heap.resize(filename_wsize + mode_wsize);
@@ -2142,7 +2142,7 @@ int ImTextCharFromUtf8(unsigned int* out_char, const char* in_text, const char* 
 
     // Copy at most 'len' bytes, stop copying at 0 or past in_text_end. Branch predictor does a good job here,
     // so it is fast even with excessive branching.
-    unsigned char s[4];
+    unsigned char s[4]{};
     s[0] = in_text + 0 < in_text_end ? in_text[0] : 0;
     s[1] = in_text + 1 < in_text_end ? in_text[1] : 0;
     s[2] = in_text + 2 < in_text_end ? in_text[2] : 0;
@@ -2847,7 +2847,7 @@ void ImGuiListClipper::End()
     ItemsCount = -1;
 }
 
-void ImGuiListClipper::IncludeItemsByIndex(int item_begin, int item_end)
+void ImGuiListClipper::IncludeItemsByIndex(int item_begin, int item_end) const
 {
     ImGuiListClipperData* data = (ImGuiListClipperData*)TempData;
     IM_ASSERT(DisplayStart < 0); // Only allowed after Begin() and if there has not been a specified range yet.
@@ -5129,7 +5129,7 @@ void ImGui::Render()
     }
 
     // Add ImDrawList to render
-    ImGuiWindow* windows_to_render_top_most[2];
+    ImGuiWindow* windows_to_render_top_most[2]{};
     windows_to_render_top_most[0] = (g.NavWindowingTarget && !(g.NavWindowingTarget->Flags & ImGuiWindowFlags_NoBringToFrontOnFocus)) ? g.NavWindowingTarget->RootWindow : NULL;
     windows_to_render_top_most[1] = (g.NavWindowingTarget ? g.NavWindowingListWindow : NULL);
     for (ImGuiWindow* window : g.Windows)
@@ -7177,13 +7177,13 @@ void ImGui::BringWindowToDisplayBehind(ImGuiWindow* window, ImGuiWindow* behind_
     int pos_beh = FindWindowDisplayIndex(behind_window);
     if (pos_wnd < pos_beh)
     {
-        size_t copy_bytes = (pos_beh - pos_wnd - 1) * sizeof(ImGuiWindow*);
+        const size_t copy_bytes = (static_cast<unsigned long long>(pos_beh) - pos_wnd - 1) * sizeof(ImGuiWindow*);
         memmove(&g.Windows.Data[pos_wnd], &g.Windows.Data[pos_wnd + 1], copy_bytes);
         g.Windows[pos_beh - 1] = window;
     }
     else
     {
-        size_t copy_bytes = (pos_wnd - pos_beh) * sizeof(ImGuiWindow*);
+        const size_t copy_bytes = (static_cast<unsigned long long>(pos_wnd) - pos_beh) * sizeof(ImGuiWindow*);
         memmove(&g.Windows.Data[pos_beh + 1], &g.Windows.Data[pos_beh], copy_bytes);
         g.Windows[pos_beh] = window;
     }
@@ -7816,7 +7816,7 @@ void ImGui::SetWindowFontScale(float scale)
 void ImGui::PushFocusScope(ImGuiID id)
 {
     ImGuiContext& g = *GImGui;
-    ImGuiFocusScopeData data;
+    ImGuiFocusScopeData data{};
     data.ID = id;
     data.WindowID = g.CurrentWindow->ID;
     g.FocusScopeStack.push_back(data);
@@ -8291,7 +8291,7 @@ static void ImGui::UpdateKeyRoutingTable(ImGuiKeyRoutingTable* rt)
     for (ImGuiKey key = ImGuiKey_NamedKey_BEGIN; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1))
     {
         const int new_routing_start_idx = rt->EntriesNext.Size;
-        ImGuiKeyRoutingData* routing_entry;
+        ImGuiKeyRoutingData* routing_entry = nullptr;
         for (int old_routing_idx = rt->Index[key - ImGuiKey_NamedKey_BEGIN]; old_routing_idx != -1; old_routing_idx = routing_entry->NextEntryIndex)
         {
             routing_entry = &rt->Entries[old_routing_idx];
@@ -8341,7 +8341,7 @@ ImGuiKeyRoutingData* ImGui::GetShortcutRoutingData(ImGuiKeyChord key_chord)
     //  - Shortcut(ImGuiMod_Ctrl | ImGuiMod_Shift);                // Not legal
     ImGuiContext& g = *GImGui;
     ImGuiKeyRoutingTable* rt = &g.KeysRoutingTable;
-    ImGuiKeyRoutingData* routing_data;
+    ImGuiKeyRoutingData* routing_data = nullptr;
     ImGuiKey key = (ImGuiKey)(key_chord & ~ImGuiMod_Mask_);
     ImGuiKey mods = (ImGuiKey)(key_chord & ImGuiMod_Mask_);
     if (key == ImGuiKey_None)
@@ -15093,7 +15093,7 @@ void ImGui::DebugNodeStorage(ImGuiStorage* storage, const char* label)
 void ImGui::DebugNodeTabBar(ImGuiTabBar* tab_bar, const char* label)
 {
     // Standalone tab bars (not associated to docking/windows functionality) currently hold no discernible strings.
-    char buf[256];
+    char buf[256]{};
     char* p = buf;
     const char* buf_end = buf + IM_ARRAYSIZE(buf);
     const bool is_active = (tab_bar->PrevFrameVisible >= GetFrameCount() - 2);

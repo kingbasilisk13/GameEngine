@@ -725,7 +725,7 @@ struct ImGuiTextIndex
     int             EndOffset = 0;                          // Because we don't own text buffer we need to maintain EndOffset (may bake in LineOffsets?)
 
     void            clear()                                 { LineOffsets.clear(); EndOffset = 0; }
-    int             size()                                  { return LineOffsets.Size; }
+    int             size() const { return LineOffsets.Size; }
     const char*     get_line_begin(const char* base, int n) { return base + LineOffsets[n]; }
     const char*     get_line_end(const char* base, int n)   { return base + (n + 1 < LineOffsets.Size ? (LineOffsets[n + 1] - 1) : EndOffset); }
     void            append(const char* base, int old_size, int new_size);

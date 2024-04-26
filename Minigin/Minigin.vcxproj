@@ -208,10 +208,15 @@
     <ClInclude Include="GameComponentCommand.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="IHandler.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="KillCommand.h" />
+    <ClInclude Include="LoggingSoundSystem.h" />
     <ClInclude Include="MemoryTestImGui.h" />
     <ClInclude Include="Minigin.h" />
+    <ClInclude Include="NullSoundSystem.h" />
+    <ClInclude Include="SdlSoundSystem.h" />
+    <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="SetDirectionCommand.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="IObserver.h" />
@@ -225,6 +230,7 @@
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="ISoundSystem.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
@@ -252,9 +258,13 @@
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="KillCommand.cpp" />
+    <ClCompile Include="LoggingSoundSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MemoryTestImGui.cpp" />
     <ClCompile Include="Minigin.cpp" />
+    <ClCompile Include="NullSoundSystem.cpp" />
+    <ClCompile Include="SdlSoundSystem.cpp" />
+    <ClCompile Include="ServiceLocator.cpp" />
     <ClCompile Include="SetDirectionCommand.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="PlayerObserverComponent.cpp" />

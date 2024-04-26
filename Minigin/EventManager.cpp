@@ -1,39 +1,36 @@
 #include "EventManager.h"
-
+#include <algorithm>
+#include "IHandler.h"
 #include "IObserver.h"
 
-void dae::EventManager::SendEvent(Event event)
+
+void dae::EventManager::Subscribe(EventType eventType, IHandler* handler)
 {
-	m_EventQueue.push(event);
+
+	m_Events[eventType].push_back(handler);
 }
 
-void dae::EventManager::Subscribe(IObserver* observer)
+void dae::EventManager::RemoveHandler(const IHandler* handler)
 {
-	m_Observers.push_back(observer);
-}
-
-void dae::EventManager::UnSubscribe(const IObserver* observer)
-{
-	std::erase_if(m_Observers, [&](const IObserver* ptr)
-		{
-			if (ptr == observer)
-			{
-				return true;
-			}
-			return false;
-		});
-}
-
-void dae::EventManager::ProcessEvent()
-{
-	if(!m_EventQueue.empty())
+	for (const auto& test : m_Events)
 	{
-		const Event event = m_EventQueue.front();
-		m_EventQueue.pop();
-		for (const auto observer : m_Observers)
-		{
-			observer->OnNotify(nullptr, event);
-		}
+		EventType bob = test.first;
+
+		UnSubscribe(bob, handler);
 	}
-	
 }
+
+void dae::EventManager::BroadcastEvent(EventType eventType, std::tuple<std::any> data)
+{
+	std::for_each(m_Events[eventType].begin(), m_Events[eventType].end(), [&](IHandler* handler)
+	{
+			handler->HandleEvent(eventType, data);
+	});
+
+}
+
+void dae::EventManager::UnSubscribe(EventType eventType, const IHandler* handler)
+{
+	m_Events[eventType].erase(std::remove(m_Events[eventType].begin(), m_Events[eventType].end(), handler), m_Events[eventType].end());
+}
+

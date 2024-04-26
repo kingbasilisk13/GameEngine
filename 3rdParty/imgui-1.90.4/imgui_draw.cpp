@@ -2627,7 +2627,7 @@ static bool ImFontAtlasBuildWithStbTruetype(ImFontAtlas* atlas)
     atlas->TexHeight = (atlas->Flags & ImFontAtlasFlags_NoPowerOfTwoHeight) ? (atlas->TexHeight + 1) : ImUpperPowerOfTwo(atlas->TexHeight);
     atlas->TexUvScale = ImVec2(1.0f / atlas->TexWidth, 1.0f / atlas->TexHeight);
     atlas->TexPixelsAlpha8 = (unsigned char*)IM_ALLOC(atlas->TexWidth * atlas->TexHeight);
-    memset(atlas->TexPixelsAlpha8, 0, atlas->TexWidth * atlas->TexHeight);
+    memset(atlas->TexPixelsAlpha8, 0, static_cast<size_t>(atlas->TexWidth) * atlas->TexHeight);
     spc.pixels = atlas->TexPixelsAlpha8;
     spc.height = atlas->TexHeight;
 
@@ -3227,14 +3227,14 @@ void ImFontGlyphRangesBuilder::AddRanges(const ImWchar* ranges)
             AddChar((ImWchar)c);
 }
 
-void ImFontGlyphRangesBuilder::BuildRanges(ImVector<ImWchar>* out_ranges)
+void ImFontGlyphRangesBuilder::BuildRanges(ImVector<ImWchar>* out_ranges) const
 {
     const int max_codepoint = IM_UNICODE_CODEPOINT_MAX;
     for (int n = 0; n <= max_codepoint; n++)
         if (GetBit(n))
         {
             out_ranges->push_back((ImWchar)n);
-            while (n < max_codepoint && GetBit(n + 1))
+            while (n < max_codepoint && GetBit(static_cast<size_t>(n) + 1))
                 n++;
             out_ranges->push_back((ImWchar)n);
         }
@@ -3377,7 +3377,7 @@ void ImFont::BuildLookupTable()
 
 // API is designed this way to avoid exposing the 4K page size
 // e.g. use with IsGlyphRangeUnused(0, 255)
-bool ImFont::IsGlyphRangeUnused(unsigned int c_begin, unsigned int c_last)
+bool ImFont::IsGlyphRangeUnused(unsigned int c_begin, unsigned int c_last) const
 {
     unsigned int page_begin = (c_begin / 4096);
     unsigned int page_last = (c_last / 4096);
@@ -3388,7 +3388,7 @@ bool ImFont::IsGlyphRangeUnused(unsigned int c_begin, unsigned int c_last)
     return true;
 }
 
-void ImFont::SetGlyphVisible(ImWchar c, bool visible)
+void ImFont::SetGlyphVisible(ImWchar c, bool visible) const
 {
     if (ImFontGlyph* glyph = (ImFontGlyph*)(void*)FindGlyph((ImWchar)c))
         glyph->Visible = visible ? 1 : 0;

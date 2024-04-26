@@ -9,7 +9,6 @@
 #include <SDL_events.h>
 #include "Command.h"
 
-//todo: ask if now that XInput.h is gone that it is correct?
 class dae::InputManager::InputImpl
 {
 public:

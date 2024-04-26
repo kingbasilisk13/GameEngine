@@ -4,6 +4,8 @@
 
 namespace dae
 {
+	class Subject;
+
 	enum class Event
 	{
 		SubjectIsDeleted,
@@ -13,8 +15,8 @@ namespace dae
 
 	class IObserver
 	{
-		friend class Subject;
 	public:
+		virtual ~IObserver() = default;
 		virtual void OnNotify(Subject* component, Event event) = 0;
 
 		//called when subscribing to a subject. Save a pointer to said subject in a vector.
