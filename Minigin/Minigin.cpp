@@ -22,8 +22,12 @@
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl2.h"
+#include "NullSoundSystem.h"
+#include "ServiceLocator.h"
 
 SDL_Window* g_window{};
+
+std::unique_ptr<dae::ISoundSystem> dae::ServiceLocator::m_SoundSystemInstance{ std::make_unique<dae::NullSoundSystem>() };
 
 void PrintSdlVersion()
 {

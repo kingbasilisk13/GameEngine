@@ -14,13 +14,13 @@ dae::ISoundSystem& dae::ServiceLocator::GetSoundSystem()
 
 void dae::ServiceLocator::RegisterSoundSystem(std::unique_ptr<ISoundSystem>&& soundSystem)
 {
-	/*if(soundSystem == nullptr)
+	
+	if(soundSystem == nullptr)
 	{
 		m_SoundSystemInstance = std::make_unique<NullSoundSystem>();
 	}
 	else
 	{
 		m_SoundSystemInstance = std::move(soundSystem);
-	}*/
-	m_SoundSystemInstance = soundSystem == nullptr ? std::make_unique<NullSoundSystem>() : std::move(soundSystem);
+	}
 }

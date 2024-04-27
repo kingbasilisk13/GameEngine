@@ -32,11 +32,11 @@
 
 void InitializeGame()
 {
-//#if _DEBUG
-//	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SdlSoundSystem>()));
-//#else
-//	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SdlSoundSystem>());
-//#endif
+#if _DEBUG
+	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SdlSoundSystem>()));
+#else
+	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SdlSoundSystem>());
+#endif
 
 	//todo: STARTING A THREAD IS EXPENSIVE, DO NOT MAKE THIS MISTAKE
 
