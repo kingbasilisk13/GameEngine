@@ -1,4 +1,6 @@
 #pragma once
+#include <map>
+#include <string>
 
 namespace dae
 {
@@ -14,11 +16,8 @@ namespace dae
 		ISoundSystem& operator=(const ISoundSystem& other) = delete;
 		ISoundSystem& operator=(ISoundSystem&& other) = delete;
 
-
 		virtual void Play(const sound_id id, const float volume) = 0;
 
-
-		//other functions
-		
+		virtual void Initialize(const std::string dataPath, const std::map<int, std::string> audioList) = 0;
 	};
 }

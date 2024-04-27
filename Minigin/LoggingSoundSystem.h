@@ -19,8 +19,13 @@ namespace dae
 
 		void Play(const sound_id id, const float volume) override;
 
+		void Initialize(const std::string dataPath, const std::map<int, std::string> audioList) override;
+
 	private:
 		std::unique_ptr<ISoundSystem> m_RealSoundSystem;
+
+		std::map<int, std::string> m_AudioList;
+
 	};
 }
 

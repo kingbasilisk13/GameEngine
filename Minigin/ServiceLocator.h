@@ -14,7 +14,7 @@ namespace dae
 		static ISoundSystem& GetSoundSystem();
 		static void RegisterSoundSystem(std::unique_ptr<ISoundSystem>&& soundSystem);
 
-	//private:
+	private:
 		
 	};
 }

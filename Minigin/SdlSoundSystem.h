@@ -1,15 +1,15 @@
 #pragma once
-#include <SDL_mixer.h>
+#include <memory>
 
 #include "ISoundSystem.h"
 
-
 namespace dae
 {
+
 	class SdlSoundSystem final: public ISoundSystem
 	{
 	public:
-		SdlSoundSystem() = default;
+		SdlSoundSystem();
 		~SdlSoundSystem() override;
 
 		SdlSoundSystem(const SdlSoundSystem& other) = delete;
@@ -20,9 +20,11 @@ namespace dae
 
 		void Play(const sound_id id, const float volume) override;
 
+		void Initialize(const std::string dataPath, const std::map<int, std::string> audioList) override;
 
 	private:
-		Mix_Music* music;
+		class MixerImpl;
+		MixerImpl* m_Pimpl{};
 	};
 }
 

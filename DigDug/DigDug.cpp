@@ -39,9 +39,51 @@ void InitializeGame()
 #endif
 
 
-	dae::ServiceLocator::GetSoundSystem().Play(0, 0);
+	std::map<int, std::string> audioList;
 
-	//todo: STARTING A THREAD IS EXPENSIVE, DO NOT MAKE THIS MISTAKE
+
+	//split up in music and sound effects.
+	//audioList[1] = "01 Credit Sound.mp3";
+	audioList[1] = "01 Credit Sound.wav";
+	//audioList[2] = "02 Start Music.mp3";
+	audioList[2] = "02 Start Music.wav";
+	//audioList[3] = "03 In-Game Music.mp3";
+	audioList[3] = "03 In-Game Music.wav";
+	//audioList[4] = "04 Dig Dug Shot.mp3";
+	//audioList[5] = "05 Dig Dug Pumping.mp3";
+	audioList[5] = "05 Dig Dug Pumping.wav";
+	//audioList[6] = "06 Monster Blow.mp3";
+	//audioList[7] = "07 Last One Sound.mp3";
+	//audioList[8] = "08 Last One Music.mp3";
+	//audioList[9] = "09 Stage Clear.mp3";
+	//audioList[10] = "10 Name Entry.mp3";
+	//audioList[11] = "11 Monster Moving.mp3";
+	//audioList[12] = "12 Fygar Flame.mp3";
+	//audioList[13] = "13 Rock Dropping.mp3";
+	//audioList[14] = "14 Rock Hit.mp3";
+	audioList[14] = "14 Rock Hit.wav";
+	//audioList[15] = "15 Rock Broken.mp3";
+	audioList[15] = "15 Rock Broken.wav";
+	//audioList[16] = "16 Extend Sound.mp3";
+	audioList[16] = "16 Extend Sound.wav";
+	//audioList[17] = "17 Bonus Sound.mp3";
+	audioList[17] = "17 Bonus Sound.wav";
+	//audioList[18] = "18 Hurry-Up Sound.mp3";
+	//audioList[19] = "19 Hurry-Up Music.mp3";
+	//audioList[20] = "20 Miss.mp3";
+	//audioList[21] = "21 Game Over.mp3";
+	audioList[21] = "21 Game Over.wav";
+	//audioList[22] = "22 High Score.mp3";
+	audioList[22] = "22 High Score.wav";
+
+	dae::ServiceLocator::GetSoundSystem().Initialize("../Data/Sound/", audioList);
+
+	dae::ServiceLocator::GetSoundSystem().Play(1, 5);
+	dae::ServiceLocator::GetSoundSystem().Play(2, 5);
+	dae::ServiceLocator::GetSoundSystem().Play(3, 5);
+	dae::ServiceLocator::GetSoundSystem().Play(5, 5);
+
+
 
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
