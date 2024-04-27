@@ -38,6 +38,9 @@ void InitializeGame()
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SdlSoundSystem>());
 #endif
 
+
+	dae::ServiceLocator::GetSoundSystem().Play(0, 0);
+
 	//todo: STARTING A THREAD IS EXPENSIVE, DO NOT MAKE THIS MISTAKE
 
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");

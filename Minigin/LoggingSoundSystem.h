@@ -10,7 +10,7 @@ namespace dae
 	public:
 		explicit LoggingSoundSystem(std::unique_ptr<ISoundSystem>&& soundSystem);
 
-		//~LoggingSoundSystem() override = default;
+		~LoggingSoundSystem() override = default;
 
 		LoggingSoundSystem(const LoggingSoundSystem& other) = delete;
 		LoggingSoundSystem(LoggingSoundSystem&& other) = delete;

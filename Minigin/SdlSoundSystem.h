@@ -1,5 +1,8 @@
 #pragma once
+#include <SDL_mixer.h>
+
 #include "ISoundSystem.h"
+
 
 namespace dae
 {
@@ -7,7 +10,7 @@ namespace dae
 	{
 	public:
 		SdlSoundSystem() = default;
-		//~SdlSoundSystem() override = default;
+		~SdlSoundSystem() override;
 
 		SdlSoundSystem(const SdlSoundSystem& other) = delete;
 		SdlSoundSystem(SdlSoundSystem&& other) = delete;
@@ -16,6 +19,10 @@ namespace dae
 
 
 		void Play(const sound_id id, const float volume) override;
+
+
+	private:
+		Mix_Music* music;
 	};
 }
 
