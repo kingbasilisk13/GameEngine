@@ -60,6 +60,9 @@
     <ClCompile Include="SetDirectionCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
+    <ClCompile Include="ReleaseButtonCommand.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KillCommand.h">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="TimerComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ReleaseButtonCommand.h">
+      <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

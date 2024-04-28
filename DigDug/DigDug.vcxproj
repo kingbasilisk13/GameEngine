@@ -165,6 +165,7 @@
     <ClCompile Include="KillCommand.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="PlayerObserverComponent.cpp" />
+    <ClCompile Include="ReleaseButtonCommand.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreCommand.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="KillCommand.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="PlayerObserverComponent.h" />
+    <ClInclude Include="ReleaseButtonCommand.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />

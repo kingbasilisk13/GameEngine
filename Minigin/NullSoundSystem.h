@@ -15,9 +15,17 @@ namespace dae
 		NullSoundSystem& operator=(const NullSoundSystem& other) = delete;
 		NullSoundSystem& operator=(NullSoundSystem&& other) = delete;
 
-		void Play(const sound_id , const float ) override{}
+		void PlaySoundEffect(const sound_id , const float , const int ) override{}
 
-		void Initialize(const std::string , const std::map<int, std::string> ) override{}
+		void PlayMusic(const sound_id , const float , const int ) override {}
+
+		void PauseMusic() override {}
+
+		void ResumeMusic() override {}
+
+		void StopMusic() override {}
+
+		void Initialize(const std::string , const std::map<int, std::string> , const std::map<int, std::string> ) override{}
 	};
 }
 

@@ -20,7 +20,7 @@ public:
 
 	void SetMovementSpeed(const float movementSpeed);
 
-	void AddToMovementDirection(const glm::vec3 direction);
+	void SetMovementDirection(const glm::vec3 direction);
 
 private:
 	float m_MovementSpeed{};

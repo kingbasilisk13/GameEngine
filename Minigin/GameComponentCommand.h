@@ -11,6 +11,11 @@ namespace dae
 		explicit GameComponentCommand(BaseComponent* actor);
 		~GameComponentCommand() override;
 
+		GameComponentCommand(const GameComponentCommand& other) = delete;
+		GameComponentCommand(GameComponentCommand&& other) = delete;
+		GameComponentCommand& operator=(const GameComponentCommand& other) = delete;
+		GameComponentCommand& operator=(GameComponentCommand&& other) = delete;
+
 	protected:
 		[[nodiscard]] BaseComponent* GetGameComponent() const;
 

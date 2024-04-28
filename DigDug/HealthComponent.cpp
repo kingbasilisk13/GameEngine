@@ -1,5 +1,8 @@
 #include "HealthComponent.h"
 
+#include "ISoundSystem.h"
+#include "ServiceLocator.h"
+
 
 HealthComponent::HealthComponent(dae::GameObject* gameObject, const int numberOfLives)
 :BaseComponent(gameObject)
@@ -23,6 +26,9 @@ void HealthComponent::Render() const
 void HealthComponent::Kill()
 {
 	m_Lives -= 1;
+
+	dae::ServiceLocator::GetSoundSystem().PlaySoundEffect(23, 50, 0);
+
 	m_HealthChangedEvent->Notify(dae::Event::ActorDied);
 }
 

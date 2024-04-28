@@ -73,6 +73,7 @@ void dae::Renderer::Destroy()
 	}
 }
 
+//draw a texture at a certain location with the dimensions of the image.
 void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const float y) const
 {
 	SDL_Rect dst{};
@@ -82,6 +83,7 @@ void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const flo
 	SDL_RenderCopy(GetSDLRenderer(), texture, nullptr, &dst);
 }
 
+//draw a texture at a certain location with self chosen dimensions.
 void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const float y, const float width, const float height) const
 {
 	SDL_Rect dst{};
@@ -90,6 +92,32 @@ void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const flo
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
 	SDL_RenderCopy(GetSDLRenderer(), texture, nullptr, &dst);
+}
+
+
+void dae::Renderer::RenderTexture(
+	SDL_Texture* texture, 
+	float destinationX, 
+	float destinationY, 
+	float destinationWidth, 
+	float destinationHeight, 
+	float sourceX, 
+	float sourceY, 
+	float sourceWidth, 
+	float sourceHeight) const
+{
+	SDL_Rect dst{};
+	dst.x = static_cast<int>(destinationX);
+	dst.y = static_cast<int>(destinationY);
+	dst.w = static_cast<int>(destinationWidth);
+	dst.h = static_cast<int>(destinationHeight);
+
+	SDL_Rect source{};
+	dst.x = static_cast<int>(sourceX);
+	dst.y = static_cast<int>(sourceY);
+	dst.w = static_cast<int>(sourceWidth);
+	dst.h = static_cast<int>(sourceHeight);
+	SDL_RenderCopy(GetSDLRenderer(), texture, &source, &dst);
 }
 
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }

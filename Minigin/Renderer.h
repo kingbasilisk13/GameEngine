@@ -25,6 +25,19 @@ namespace dae
 		void RenderTexture(SDL_Texture* texture, float x, float y) const;
 		void RenderTexture(SDL_Texture* texture, float x, float y, float width, float height) const;
 
+
+		//used for animations
+		void RenderTexture(
+			SDL_Texture* texture, 
+			float destinationX, 
+			float destinationY, 
+			float destinationWidth, 
+			float destinationHeight, 
+			float sourceX, 
+			float sourceY,
+			float sourceWidth,
+			float sourceHeight) const;
+
 		SDL_Renderer* GetSDLRenderer() const;
 
 		const SDL_Color& GetBackgroundColor() const { return m_clearColor; }

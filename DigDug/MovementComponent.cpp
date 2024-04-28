@@ -30,8 +30,7 @@ void MovementComponent::SetMovementSpeed(const float movementSpeed)
 	m_MovementSpeed = movementSpeed;
 }
 
-void MovementComponent::AddToMovementDirection(const glm::vec3 direction)
+void MovementComponent::SetMovementDirection(const glm::vec3 direction)
 {
-	m_Direction.x += direction.x;
-	m_Direction.y += direction.y;
+	m_Direction = direction;
 }

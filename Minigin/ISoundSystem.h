@@ -16,8 +16,16 @@ namespace dae
 		ISoundSystem& operator=(const ISoundSystem& other) = delete;
 		ISoundSystem& operator=(ISoundSystem&& other) = delete;
 
-		virtual void Play(const sound_id id, const float volume) = 0;
+		virtual void PlaySoundEffect(const sound_id id, const float volume, const int numberOfLoops) = 0;
 
-		virtual void Initialize(const std::string dataPath, const std::map<int, std::string> audioList) = 0;
+		virtual void PlayMusic(const sound_id id, const float volume, const int numberOfLoops) = 0;
+
+		virtual void PauseMusic() = 0;
+
+		virtual void ResumeMusic() = 0;
+
+		virtual void StopMusic() = 0;
+
+		virtual void Initialize(const std::string dataPath, const std::map<int, std::string> soundEffectList, const std::map<int, std::string> musicList) = 0;
 	};
 }

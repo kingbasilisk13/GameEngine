@@ -23,12 +23,15 @@
 #include "MovementComponent.h"
 #include "NullSoundSystem.h"
 #include "PlayerObserverComponent.h"
+#include "ReleaseButtonCommand.h"
 #include "RenderComponent.h"
 #include "ScoreCommand.h"
 #include "ScoreComponent.h"
 #include "SdlSoundSystem.h"
 #include "ServiceLocator.h"
 #include "Transform.h"
+
+
 
 void InitializeGame()
 {
@@ -39,52 +42,41 @@ void InitializeGame()
 #endif
 
 
-	std::map<int, std::string> audioList;
+	std::map<int, std::string> soundEffectList;
+	std::map<int, std::string> musicList;
 
 
 	//split up in music and sound effects.
-	//audioList[1] = "01 Credit Sound.mp3";
-	audioList[1] = "01 Credit Sound.wav";
-	//audioList[2] = "02 Start Music.mp3";
-	audioList[2] = "02 Start Music.wav";
-	//audioList[3] = "03 In-Game Music.mp3";
-	audioList[3] = "03 In-Game Music.wav";
-	//audioList[4] = "04 Dig Dug Shot.mp3";
-	//audioList[5] = "05 Dig Dug Pumping.mp3";
-	audioList[5] = "05 Dig Dug Pumping.wav";
-	//audioList[6] = "06 Monster Blow.mp3";
-	//audioList[7] = "07 Last One Sound.mp3";
-	//audioList[8] = "08 Last One Music.mp3";
-	//audioList[9] = "09 Stage Clear.mp3";
-	//audioList[10] = "10 Name Entry.mp3";
-	//audioList[11] = "11 Monster Moving.mp3";
-	//audioList[12] = "12 Fygar Flame.mp3";
-	//audioList[13] = "13 Rock Dropping.mp3";
-	//audioList[14] = "14 Rock Hit.mp3";
-	audioList[14] = "14 Rock Hit.wav";
-	//audioList[15] = "15 Rock Broken.mp3";
-	audioList[15] = "15 Rock Broken.wav";
-	//audioList[16] = "16 Extend Sound.mp3";
-	audioList[16] = "16 Extend Sound.wav";
-	//audioList[17] = "17 Bonus Sound.mp3";
-	audioList[17] = "17 Bonus Sound.wav";
-	//audioList[18] = "18 Hurry-Up Sound.mp3";
-	//audioList[19] = "19 Hurry-Up Music.mp3";
-	//audioList[20] = "20 Miss.mp3";
-	//audioList[21] = "21 Game Over.mp3";
-	audioList[21] = "21 Game Over.wav";
-	//audioList[22] = "22 High Score.mp3";
-	audioList[22] = "22 High Score.wav";
+	soundEffectList[1] = "01 Credit Sound.wav";
+	soundEffectList[2] = "02 Start Music.wav";
+	soundEffectList[4] = "04 Dig Dug Shot.wav";
+	soundEffectList[5] = "05 Dig Dug Pumping.wav";
+	soundEffectList[6] = "06 Monster Blow.wav";
+	soundEffectList[7] = "07 Last One Sound.wav";
+	soundEffectList[8] = "08 Last One Music.wav";
+	soundEffectList[9] = "09 Stage Clear.wav";
+	soundEffectList[10] = "10 Name Entry.wav";
+	soundEffectList[11] = "11 Monster Moving.wav";
+	soundEffectList[12] = "12 Fygar Flame.wav";
+	soundEffectList[13] = "13 Rock Dropping.wav";
+	soundEffectList[14] = "14 Rock Hit.wav";
+	soundEffectList[15] = "15 Rock Broken.wav";
+	soundEffectList[16] = "16 Extend Sound.wav";
+	soundEffectList[17] = "17 Bonus Sound.wav";
+	soundEffectList[18] = "18 Hurry-Up Sound.wav";
+	soundEffectList[19] = "19 Hurry-Up Music.wav";
+	soundEffectList[20] = "20 Miss.wav";
+	soundEffectList[21] = "21 Game Over.wav";
+	soundEffectList[22] = "22 High Score.wav";
+	soundEffectList[23] = "23 PlayerDeathSound.wav";
+	
 
-	dae::ServiceLocator::GetSoundSystem().Initialize("../Data/Sound/", audioList);
+	musicList[3] = "03 In-Game Music.wav";
+	musicList[22] = "22 High Score.wav";
+	musicList[24] = "24 PlayerWalkMusic.wav";
 
-	dae::ServiceLocator::GetSoundSystem().Play(1, 5);
-	dae::ServiceLocator::GetSoundSystem().Play(2, 5);
-	dae::ServiceLocator::GetSoundSystem().Play(3, 5);
-	dae::ServiceLocator::GetSoundSystem().Play(5, 5);
-
-
-
+	dae::ServiceLocator::GetSoundSystem().Initialize("../Data/Sound/", soundEffectList,musicList);
+	dae::ServiceLocator::GetSoundSystem().PlaySoundEffect(99, 50, 0);
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
 	//background
@@ -124,9 +116,13 @@ void InitializeGame()
 	const float speedP1{ 100.f };
 	const float speedP2{ 200.f };
 
+
+
+
+	//todo: add way to animatie character. or just draw first frame.
 	const auto player1 = std::make_shared<dae::GameObject>();
 	player1->SetLocalPosition({ 216.f, 180.f, 0.f });
-	player1->AddComponent(std::make_unique<dae::RenderComponent>(player1.get(), dae::ResourceManager::GetInstance().LoadTexture("Player1.png")));
+	player1->AddComponent(std::make_unique<dae::RenderComponent>(player1.get(), dae::ResourceManager::GetInstance().LoadTexture("DigDug0/Walking.png")));
 	player1->AddComponent(std::make_unique<MovementComponent>(player1.get(), speedP1));
 	player1->AddComponent(std::make_unique<HealthComponent>(player1.get(), 3));
 	player1->AddComponent(std::make_unique<ScoreComponent>(player1.get()));
@@ -183,13 +179,43 @@ void InitializeGame()
 
 
 
+	//////////////////
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<ReleaseButtonCommand>(),
+		SDL_SCANCODE_D,
+		dae::KeyState::Up
+	);
+
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<ReleaseButtonCommand>(),
+		SDL_SCANCODE_A,
+		dae::KeyState::Up
+	);
+
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<ReleaseButtonCommand>(),
+		SDL_SCANCODE_W,
+		dae::KeyState::Up
+	);
+
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<ReleaseButtonCommand>(),
+		SDL_SCANCODE_S,
+		dae::KeyState::Up
+	);
+	///////////////////
+
+
 
 
 	const auto player2 = std::make_shared<dae::GameObject>();
 
 	player2->SetLocalPosition({ 216.f, 180.f, 0.f });
 
-	player2->AddComponent(std::make_unique<dae::RenderComponent>(player2.get(), dae::ResourceManager::GetInstance().LoadTexture("Player2.png")));
+	player2->AddComponent(std::make_unique<dae::RenderComponent>(
+		player2.get(), 
+		dae::ResourceManager::GetInstance().LoadTexture("DigDug1/Walking.png")));
+
 	player2->AddComponent(std::make_unique<MovementComponent>(player2.get(), speedP2));
 	player2->AddComponent(std::make_unique<HealthComponent>(player2.get(), 3));
 	player2->AddComponent(std::make_unique<ScoreComponent>(player2.get()));
@@ -251,6 +277,32 @@ void InitializeGame()
 		dae::KeyState::Pressed
 	);
 
+
+	//////////////////
+	dae::InputManager::GetInstance().AddControllerBinding(
+		std::make_unique<ReleaseButtonCommand>(), 0,
+		dae::ControllerInput::Gamepad_Dpad_Right,
+		dae::KeyState::Up
+	);
+
+	dae::InputManager::GetInstance().AddControllerBinding(
+		std::make_unique<ReleaseButtonCommand>(), 0,
+		dae::ControllerInput::Gamepad_Dpad_Left,
+		dae::KeyState::Up
+	);
+
+	dae::InputManager::GetInstance().AddControllerBinding(
+		std::make_unique<ReleaseButtonCommand>(), 0,
+		dae::ControllerInput::Gamepad_Dpad_Up,
+		dae::KeyState::Up
+	);
+
+	dae::InputManager::GetInstance().AddControllerBinding(
+		std::make_unique<ReleaseButtonCommand>(), 0,
+		dae::ControllerInput::Gamepad_Dpad_Down,
+		dae::KeyState::Up
+	);
+	///////////////////
 
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 
@@ -315,7 +367,7 @@ void InitializeGame()
 
 	controlsDisplay1->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay1.get()));
 	controlsDisplay1->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay1.get(), font,
-	                                                                    "Using the D-Pad to move the yellow sprite, X to inflict damage, A and B To increase their score."));
+	                                                                    "Using the D-Pad to move the yellow sprite and play walking music, X to inflict damage and play death sound, A and B To increase score."));
 	scene.Add(controlsDisplay1);
 
 	
@@ -325,7 +377,7 @@ void InitializeGame()
 
 	controlsDisplay2->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay2.get()));
 	controlsDisplay2->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay2.get(), font,
-	                                                                    "Using WASD to move the blue sprite, C to inflict damage, Z and X To increase their score."));
+	                                                                    "Using WASD to move the blue sprite and play walking music, C to inflict damage and play death sound, Z and X To increase score."));
 	scene.Add(controlsDisplay2);
 }
 
