@@ -5,13 +5,13 @@
 #include "GameObject.h"
 #include "MovementComponent.h"
 
-dae::SetDirectionCommand::SetDirectionCommand(BaseComponent* component, const glm::vec3 direction)
+SetDirectionCommand::SetDirectionCommand(dae::BaseComponent* component, const glm::vec3 direction)
 	: GameComponentCommand(component)
 	, m_Direction(direction)
 {
 }
 
-void dae::SetDirectionCommand::Execute()
+void SetDirectionCommand::Execute()
 {
 	if(m_Direction == glm::vec3 {})
 	{

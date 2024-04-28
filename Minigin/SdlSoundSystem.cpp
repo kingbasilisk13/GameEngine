@@ -24,13 +24,6 @@ public:
 
     ~MixerImpl()
     {
-        for (const auto& snd : m_AudioList | std::views::values)
-        {
-            //Mix_FreeMusic(snd);
-            Mix_FreeChunk(snd);
-        }
-        Mix_CloseAudio();
-
         std::lock_guard<std::mutex> lock(m_Mutex);
 
         m_EventQueue.push(
@@ -41,8 +34,15 @@ public:
                 true
             });
 
-        m_ConditionVariable.notify_one();
+        m_ConditionVariable.notify_all();
 
+
+        for (const auto& snd : m_AudioList | std::views::values)
+        {
+            //Mix_FreeMusic(snd);
+            Mix_FreeChunk(snd);
+        }
+        Mix_CloseAudio();
     }
 
     MixerImpl(const MixerImpl& other) = delete;
@@ -103,8 +103,6 @@ private:
     {
         std::unique_lock<std::mutex> lock(m_Mutex);
 
-        bool exitLoop = false;
-
         do
         {
             m_ConditionVariable.wait(lock, [&]
@@ -117,17 +115,14 @@ private:
 
             if(quit)
             {
-                exitLoop = true;
+                return;
             }
             else
             {
-                //todo: the reason why only 1 sound effect is hears is because you are using them as music.
-                //all music is played on the same channel.
-                
                 Mix_PlayChannel(-1,music, -1);
             }
         }
-        while (!exitLoop);
+        while (true);
     }
 };
 #pragma endregion
@@ -135,14 +130,8 @@ private:
 
 #pragma region SdlSoundSystem
 
-dae::SdlSoundSystem::SdlSoundSystem()
-	:m_Pimpl(new MixerImpl())
-{
-}
-
 dae::SdlSoundSystem::~SdlSoundSystem()
 {
-    //
     delete m_Pimpl;
 }
 
@@ -153,7 +142,7 @@ void dae::SdlSoundSystem::Play(const sound_id id, const float volume)
 
 void dae::SdlSoundSystem::Initialize(const std::string dataPath, const std::map<int, std::string> audioList)
 {
-    //m_Pimpl = new MixerImpl();
+    m_Pimpl = new MixerImpl();
     m_Pimpl->Initialize(dataPath, audioList);
 }
 

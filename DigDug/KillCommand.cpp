@@ -2,12 +2,12 @@
 
 #include "HealthComponent.h"
 
-dae::KillCommand::KillCommand(BaseComponent* component)
+KillCommand::KillCommand(dae::BaseComponent* component)
 	:GameComponentCommand(component)
 {
 }
 
-void dae::KillCommand::Execute()
+void KillCommand::Execute()
 {
 	dynamic_cast<HealthComponent*>(GetGameComponent())->Kill();
 }

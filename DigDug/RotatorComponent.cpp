@@ -2,7 +2,7 @@
 
 #include <SDL_stdinc.h>
 
-dae::RotatorComponent::RotatorComponent(GameObject* gameObject, const float radius, const float speed, const bool clockwise)
+RotatorComponent::RotatorComponent(dae::GameObject* gameObject, const float radius, const float speed, const bool clockwise)
 	: BaseComponent(gameObject)
 	, m_Direction{-1}
 	, m_Radius(radius)
@@ -11,20 +11,20 @@ dae::RotatorComponent::RotatorComponent(GameObject* gameObject, const float radi
 	if (clockwise) m_Direction = 1;
 }
 
-void dae::RotatorComponent::Update()
+void RotatorComponent::Update()
 {
 	CalculateRotation(dae::EngineTime::GetInstance().GetDeltaTime());
 }
 
-void dae::RotatorComponent::FixedUpdate()
+void RotatorComponent::FixedUpdate()
 {
 }
 
-void dae::RotatorComponent::Render() const
+void RotatorComponent::Render() const
 {
 }
 
-void dae::RotatorComponent::CalculateRotation(const float time)
+void RotatorComponent::CalculateRotation(const float time)
 {
 	constexpr float twoPi = 2.f * static_cast<float>(M_PI);
 

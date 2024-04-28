@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseComponent.h"
 
+
+//a component that is part of the engine self, used to render text and textures.
 namespace dae
 {
 	class Texture2D;

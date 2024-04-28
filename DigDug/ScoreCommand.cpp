@@ -2,13 +2,13 @@
 
 #include "ScoreComponent.h"
 
-dae::ScoreCommand::ScoreCommand(BaseComponent* component, const int amountOfPoints)
+ScoreCommand::ScoreCommand(dae::BaseComponent* component, const int amountOfPoints)
 	:GameComponentCommand(component)
 	,m_AmountOfPoints(amountOfPoints)
 {
 }
 
-void dae::ScoreCommand::Execute()
+void ScoreCommand::Execute()
 {
 	dynamic_cast<ScoreComponent*>(GetGameComponent())->IncreaseScore(m_AmountOfPoints);
 }

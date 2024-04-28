@@ -116,7 +116,7 @@ void InitializeGame()
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), font));
-	go->AddComponent(std::make_unique<dae::FpsComponent>(go.get()));
+	go->AddComponent(std::make_unique<FpsComponent>(go.get()));
 	scene.Add(go);
 
 
@@ -127,56 +127,56 @@ void InitializeGame()
 	const auto player1 = std::make_shared<dae::GameObject>();
 	player1->SetLocalPosition({ 216.f, 180.f, 0.f });
 	player1->AddComponent(std::make_unique<dae::RenderComponent>(player1.get(), dae::ResourceManager::GetInstance().LoadTexture("Player1.png")));
-	player1->AddComponent(std::make_unique<dae::MovementComponent>(player1.get(), speedP1));
-	player1->AddComponent(std::make_unique<dae::HealthComponent>(player1.get(), 3));
-	player1->AddComponent(std::make_unique<dae::ScoreComponent>(player1.get()));
+	player1->AddComponent(std::make_unique<MovementComponent>(player1.get(), speedP1));
+	player1->AddComponent(std::make_unique<HealthComponent>(player1.get(), 3));
+	player1->AddComponent(std::make_unique<ScoreComponent>(player1.get()));
 	scene.Add(player1);
 
-	const auto component = player1->GetComponent<dae::MovementComponent>();
+	const auto component = player1->GetComponent<MovementComponent>();
 
-	const auto healthComponentP1 = player1->GetComponent<dae::HealthComponent>();
+	const auto healthComponentP1 = player1->GetComponent<HealthComponent>();
 
-	const auto scoreComponentP1 = player1->GetComponent<dae::ScoreComponent>();
+	const auto scoreComponentP1 = player1->GetComponent<ScoreComponent>();
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<dae::KillCommand>(healthComponentP1),
+		std::make_unique<KillCommand>(healthComponentP1),
 		SDL_SCANCODE_C,
 		dae::KeyState::Down
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<dae::ScoreCommand>(scoreComponentP1, 100),
+		std::make_unique<ScoreCommand>(scoreComponentP1, 100),
 		SDL_SCANCODE_Z,
 		dae::KeyState::Down
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<dae::ScoreCommand>(scoreComponentP1, 10),
+		std::make_unique<ScoreCommand>(scoreComponentP1, 10),
 		SDL_SCANCODE_X,
 		dae::KeyState::Down
 	);
 
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<dae::SetDirectionCommand>(component, glm::vec3(1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(component, glm::vec3(1, 0, 0)),
 		SDL_SCANCODE_D,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<dae::SetDirectionCommand>(component, glm::vec3(-1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(component, glm::vec3(-1, 0, 0)),
 		SDL_SCANCODE_A,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<dae::SetDirectionCommand>(component, glm::vec3(0, -1, 0)),
+		std::make_unique<SetDirectionCommand>(component, glm::vec3(0, -1, 0)),
 		SDL_SCANCODE_W,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<dae::SetDirectionCommand>(component, glm::vec3(0, 1, 0)),
+		std::make_unique<SetDirectionCommand>(component, glm::vec3(0, 1, 0)),
 		SDL_SCANCODE_S,
 		dae::KeyState::Pressed
 	);
@@ -190,19 +190,19 @@ void InitializeGame()
 	player2->SetLocalPosition({ 216.f, 180.f, 0.f });
 
 	player2->AddComponent(std::make_unique<dae::RenderComponent>(player2.get(), dae::ResourceManager::GetInstance().LoadTexture("Player2.png")));
-	player2->AddComponent(std::make_unique<dae::MovementComponent>(player2.get(), speedP2));
-	player2->AddComponent(std::make_unique<dae::HealthComponent>(player2.get(), 3));
-	player2->AddComponent(std::make_unique<dae::ScoreComponent>(player2.get()));
+	player2->AddComponent(std::make_unique<MovementComponent>(player2.get(), speedP2));
+	player2->AddComponent(std::make_unique<HealthComponent>(player2.get(), 3));
+	player2->AddComponent(std::make_unique<ScoreComponent>(player2.get()));
 	scene.Add(player2);
 
-	const auto temp = player2->GetComponent<dae::MovementComponent>();
+	const auto temp = player2->GetComponent<MovementComponent>();
 
-	const auto healthComponentP2 = player2->GetComponent<dae::HealthComponent>();
+	const auto healthComponentP2 = player2->GetComponent<HealthComponent>();
 
-	const auto scoreComponentP2 = player2->GetComponent<dae::ScoreComponent>();
+	const auto scoreComponentP2 = player2->GetComponent<ScoreComponent>();
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<dae::KillCommand>(healthComponentP2),
+		std::make_unique<KillCommand>(healthComponentP2),
 		0,
 		dae::ControllerInput::Gamepad_X,
 		dae::KeyState::Down
@@ -210,42 +210,42 @@ void InitializeGame()
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<dae::ScoreCommand>(scoreComponentP2, 100),
+		std::make_unique<ScoreCommand>(scoreComponentP2, 100),
 		0,
 		dae::ControllerInput::Gamepad_A,
 		dae::KeyState::Down
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<dae::ScoreCommand>(scoreComponentP2, 10),
+		std::make_unique<ScoreCommand>(scoreComponentP2, 10),
 		0,
 		dae::ControllerInput::Gamepad_B,
 		dae::KeyState::Down
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<dae::SetDirectionCommand>(temp, glm::vec3(1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(temp, glm::vec3(1, 0, 0)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Right,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<dae::SetDirectionCommand>(temp, glm::vec3(-1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(temp, glm::vec3(-1, 0, 0)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Left,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<dae::SetDirectionCommand>(temp, glm::vec3(0, -1, 0)),
+		std::make_unique<SetDirectionCommand>(temp, glm::vec3(0, -1, 0)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Up,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<dae::SetDirectionCommand>(temp, glm::vec3(0, 1, 0)),
+		std::make_unique<SetDirectionCommand>(temp, glm::vec3(0, 1, 0)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Down,
 		dae::KeyState::Pressed
@@ -261,10 +261,10 @@ void InitializeGame()
 
 	player1HealthObserver->AddComponent(std::make_unique<dae::RenderComponent>(player1HealthObserver.get()));
 	player1HealthObserver->AddComponent(std::make_unique<dae::TextComponent>(player1HealthObserver.get(), font, "# lives: 3"));
-	player1HealthObserver->AddComponent(std::make_unique<dae::PlayerObserverComponent>(player1HealthObserver.get()));
+	player1HealthObserver->AddComponent(std::make_unique<PlayerObserverComponent>(player1HealthObserver.get()));
 	scene.Add(player1HealthObserver);
 
-	player1->GetComponent<dae::HealthComponent>()->SubscribeToHealthChangedEvent(player1HealthObserver->GetComponent<dae::PlayerObserverComponent>());
+	player1->GetComponent<HealthComponent>()->SubscribeToHealthChangedEvent(player1HealthObserver->GetComponent<PlayerObserverComponent>());
 
 
 	//score display 1
@@ -274,10 +274,10 @@ void InitializeGame()
 
 	player1ScoreObserver->AddComponent(std::make_unique<dae::RenderComponent>(player1ScoreObserver.get()));
 	player1ScoreObserver->AddComponent(std::make_unique<dae::TextComponent>(player1ScoreObserver.get(), font, "Score: 0"));
-	player1ScoreObserver->AddComponent(std::make_unique<dae::PlayerObserverComponent>(player1ScoreObserver.get()));
+	player1ScoreObserver->AddComponent(std::make_unique<PlayerObserverComponent>(player1ScoreObserver.get()));
 	scene.Add(player1ScoreObserver);
 
-	player1->GetComponent<dae::ScoreComponent>()->SubscribeToScoreChangedEvent(player1ScoreObserver->GetComponent<dae::PlayerObserverComponent>());
+	player1->GetComponent<ScoreComponent>()->SubscribeToScoreChangedEvent(player1ScoreObserver->GetComponent<PlayerObserverComponent>());
 
 
 
@@ -289,10 +289,10 @@ void InitializeGame()
 
 	player2HealthObserver->AddComponent(std::make_unique<dae::RenderComponent>(player2HealthObserver.get()));
 	player2HealthObserver->AddComponent(std::make_unique<dae::TextComponent>(player2HealthObserver.get(), font, "# lives: 3"));
-	player2HealthObserver->AddComponent(std::make_unique<dae::PlayerObserverComponent>(player2HealthObserver.get()));
+	player2HealthObserver->AddComponent(std::make_unique<PlayerObserverComponent>(player2HealthObserver.get()));
 	scene.Add(player2HealthObserver);
 
-	player2->GetComponent<dae::HealthComponent>()->SubscribeToHealthChangedEvent(player2HealthObserver->GetComponent<dae::PlayerObserverComponent>());
+	player2->GetComponent<HealthComponent>()->SubscribeToHealthChangedEvent(player2HealthObserver->GetComponent<PlayerObserverComponent>());
 
 	//score display 2
 	const auto player2ScoreObserver = std::make_shared<dae::GameObject>();
@@ -301,10 +301,10 @@ void InitializeGame()
 
 	player2ScoreObserver->AddComponent(std::make_unique<dae::RenderComponent>(player2ScoreObserver.get()));
 	player2ScoreObserver->AddComponent(std::make_unique<dae::TextComponent>(player2ScoreObserver.get(), font, "Score: 0"));
-	player2ScoreObserver->AddComponent(std::make_unique<dae::PlayerObserverComponent>(player2ScoreObserver.get()));
+	player2ScoreObserver->AddComponent(std::make_unique<PlayerObserverComponent>(player2ScoreObserver.get()));
 	scene.Add(player2ScoreObserver);
 
-	player2->GetComponent<dae::ScoreComponent>()->SubscribeToScoreChangedEvent(player2ScoreObserver->GetComponent<dae::PlayerObserverComponent>());
+	player2->GetComponent<ScoreComponent>()->SubscribeToScoreChangedEvent(player2ScoreObserver->GetComponent<PlayerObserverComponent>());
 
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
 
@@ -315,7 +315,7 @@ void InitializeGame()
 
 	controlsDisplay1->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay1.get()));
 	controlsDisplay1->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay1.get(), font,
-		"Using the D-Pad to move the yellow sprite, X to inflict damage, A and B To increase their score."));
+	                                                                    "Using the D-Pad to move the yellow sprite, X to inflict damage, A and B To increase their score."));
 	scene.Add(controlsDisplay1);
 
 	
@@ -325,7 +325,7 @@ void InitializeGame()
 
 	controlsDisplay2->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay2.get()));
 	controlsDisplay2->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay2.get(), font,
-		"Using WASD to move the blue sprite, C to inflict damage, Z and X To increase their score."));
+	                                                                    "Using WASD to move the blue sprite, C to inflict damage, Z and X To increase their score."));
 	scene.Add(controlsDisplay2);
 }
 

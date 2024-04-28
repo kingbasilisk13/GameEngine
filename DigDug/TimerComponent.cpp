@@ -1,15 +1,15 @@
 #include "TimerComponent.h"
 
 #include "FpsComponent.h"
-#include "RenderComponent.h"
+
 #include "Scene.h"
 
-dae::TimerComponent::TimerComponent(GameObject* gameObject)
+TimerComponent::TimerComponent(dae::GameObject* gameObject)
 	:BaseComponent(gameObject)
 {
 }
 
-void dae::TimerComponent::Update()
+void TimerComponent::Update()
 {
 
 	if(m_TaskFinished == false)
@@ -28,10 +28,10 @@ void dae::TimerComponent::Update()
 	}
 }
 
-void dae::TimerComponent::FixedUpdate()
+void TimerComponent::FixedUpdate()
 {
 }
 
-void dae::TimerComponent::Render() const
+void TimerComponent::Render() const
 {
 }

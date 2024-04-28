@@ -4,7 +4,7 @@
 #include "Minigin.h"
 #include "Singleton.h"
 
-//todo: find a way to pass arguments allong with the event.
+//todo: this does not work yet. do not use this.
 namespace dae
 {
 	class IHandler;

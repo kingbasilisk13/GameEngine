@@ -6,18 +6,18 @@
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
 
-dae::PlayerObserverComponent::PlayerObserverComponent(GameObject* gameObject)
+PlayerObserverComponent::PlayerObserverComponent(dae::GameObject* gameObject)
 	: BaseComponent(gameObject)
 	, m_TextComponent(nullptr)
 {
 }
 
-dae::PlayerObserverComponent::~PlayerObserverComponent()
+PlayerObserverComponent::~PlayerObserverComponent()
 {
 	InformAllSubjects(m_Subjects);
 }
 
-void dae::PlayerObserverComponent::Update()
+void PlayerObserverComponent::Update()
 {
 	if (m_ComponentsAreDirty)
 	{
@@ -29,28 +29,28 @@ void dae::PlayerObserverComponent::Update()
 	}
 }
 
-void dae::PlayerObserverComponent::FixedUpdate()
+void PlayerObserverComponent::FixedUpdate()
 {
 }
 
-void dae::PlayerObserverComponent::Render() const
+void PlayerObserverComponent::Render() const
 {
 }
 
 //diferent notifies dictaded how the score changes.
 //kill monster = +10
 //gather point = +100
-void dae::PlayerObserverComponent::OnNotify(Subject* subject, const Event event)
+void PlayerObserverComponent::OnNotify(dae::Subject* subject, const dae::Event event)
 {
 	switch (event) {
-	case Event::ActorDied:
+	case dae::Event::ActorDied:
 		m_TextComponent->ChangeText(std::format("# lives: {}", dynamic_cast<HealthComponent*>(subject->GetOwner())->GetRemainingLives()));
 		break;
-	case Event::ScoreIncreased:
+	case dae::Event::ScoreIncreased:
 		m_TextComponent->ChangeText(std::format("Score: {}", dynamic_cast<ScoreComponent*>(subject->GetOwner())->GetScore()));
 		break;
-	case Event::SubjectIsDeleted:
-		std::erase_if(m_Subjects, [&](const Subject* ptr)
+	case dae::Event::SubjectIsDeleted:
+		std::erase_if(m_Subjects, [&](const dae::Subject* ptr)
 			{
 				if (ptr == subject)
 				{
@@ -61,12 +61,12 @@ void dae::PlayerObserverComponent::OnNotify(Subject* subject, const Event event)
 	}
 }
 
-void dae::PlayerObserverComponent::AddSubject(Subject* subject)
+void PlayerObserverComponent::AddSubject(dae::Subject* subject)
 {
 	m_Subjects.push_back(subject);
 }
 
-void dae::PlayerObserverComponent::InformAllSubjects(std::vector<Subject*> subjects)
+void PlayerObserverComponent::InformAllSubjects(std::vector<dae::Subject*> subjects)
 {
 	for (const auto subject : m_Subjects)
 	{
@@ -74,8 +74,8 @@ void dae::PlayerObserverComponent::InformAllSubjects(std::vector<Subject*> subje
 	}
 }
 
-void dae::PlayerObserverComponent::ReloadPointers()
+void PlayerObserverComponent::ReloadPointers()
 {
-	m_TextComponent = GetOwningGameObject()->GetComponent<TextComponent>();
+	m_TextComponent = GetOwningGameObject()->GetComponent<dae::TextComponent>();
 	m_ComponentsAreDirty = false;
 }

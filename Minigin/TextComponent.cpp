@@ -7,7 +7,7 @@
 #include "RenderComponent.h"
 
 
-dae::TextComponent::TextComponent(GameObject* gameObject, std::shared_ptr<Font> font, std::string text)
+dae::TextComponent::TextComponent(dae::GameObject* gameObject, std::shared_ptr<dae::Font> font, std::string text)
 	:BaseComponent(gameObject)
 	, m_TextureIsDirty(false)
 	, m_Font(std::move(font))
@@ -49,7 +49,7 @@ void dae::TextComponent::ChangeText(const std::string& text)
 	m_TextureIsDirty = true;
 }
 
-void dae::TextComponent::ChangeFont(const std::shared_ptr<Font>& font)
+void dae::TextComponent::ChangeFont(const std::shared_ptr<dae::Font>& font)
 {
 	m_Font = font;
 	m_TextureIsDirty = true;
@@ -57,7 +57,7 @@ void dae::TextComponent::ChangeFont(const std::shared_ptr<Font>& font)
 
 void dae::TextComponent::GetRenderComponent()
 {
-	m_RenderComponent = GetOwningGameObject()->GetComponent<RenderComponent>();
+	m_RenderComponent = GetOwningGameObject()->GetComponent<dae::RenderComponent>();
 }
 
 void dae::TextComponent::GenerateTexture()
@@ -68,7 +68,7 @@ void dae::TextComponent::GenerateTexture()
 	{
 		throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 	}
-	const auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
+	const auto texture = SDL_CreateTextureFromSurface(dae::Renderer::GetInstance().GetSDLRenderer(), surf);
 	if (texture == nullptr)
 	{
 		throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
@@ -76,13 +76,13 @@ void dae::TextComponent::GenerateTexture()
 	SDL_FreeSurface(surf);
 	if(m_RenderComponent != nullptr)
 	{
-		m_RenderComponent->ChangeTexture(std::make_shared<Texture2D>(texture));
+		m_RenderComponent->ChangeTexture(std::make_shared<dae::Texture2D>(texture));
 	}
 	m_TextureIsDirty = false;
 }
 
 void dae::TextComponent::ReloadPointers()
 {
-	m_RenderComponent = GetOwningGameObject()->GetComponent<RenderComponent>();
+	m_RenderComponent = GetOwningGameObject()->GetComponent<dae::RenderComponent>();
 	m_ComponentsAreDirty = false;
 }

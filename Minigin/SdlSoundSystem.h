@@ -9,7 +9,7 @@ namespace dae
 	class SdlSoundSystem final: public ISoundSystem
 	{
 	public:
-		SdlSoundSystem();
+		SdlSoundSystem() = default;
 		~SdlSoundSystem() override;
 
 		SdlSoundSystem(const SdlSoundSystem& other) = delete;

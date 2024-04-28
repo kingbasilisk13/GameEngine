@@ -2,11 +2,6 @@
 #include "ISoundSystem.h"
 #include "NullSoundSystem.h"
 
-//dae::ServiceLocator::ServiceLocator()
-//{
-//	std::unique_ptr<ISoundSystem> ServiceLocator::m_SoundSystemInstance{ std::make_unique<NullSoundSystem>() };
-//}
-
 dae::ISoundSystem& dae::ServiceLocator::GetSoundSystem()
 {
 	return *m_SoundSystemInstance;

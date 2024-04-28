@@ -5,7 +5,7 @@
 #include "TextComponent.h"
 
 
-dae::FpsComponent::FpsComponent(GameObject* gameObject)
+FpsComponent::FpsComponent(dae::GameObject* gameObject)
 	: BaseComponent(gameObject)
 	, m_FrameCount(0)
 	, m_ElapsedTime(0.0f)
@@ -13,7 +13,7 @@ dae::FpsComponent::FpsComponent(GameObject* gameObject)
 {
 }
 
-void dae::FpsComponent::Update()
+void FpsComponent::Update()
 {
 	if(m_ComponentsAreDirty)
 	{
@@ -26,7 +26,7 @@ void dae::FpsComponent::Update()
 
 	m_FrameCount++;
 	
-	m_ElapsedTime += EngineTime::GetInstance().GetDeltaTime();
+	m_ElapsedTime += dae::EngineTime::GetInstance().GetDeltaTime();
 
 	if (m_ElapsedTime >= 1.0f) {
 		const float fps = static_cast<float>(m_FrameCount) / m_ElapsedTime;
@@ -38,16 +38,16 @@ void dae::FpsComponent::Update()
 	}
 }
 
-void dae::FpsComponent::FixedUpdate()
+void FpsComponent::FixedUpdate()
 {
 }
 
-void dae::FpsComponent::Render() const
+void FpsComponent::Render() const
 {
 }
 
-void dae::FpsComponent::ReloadPointers()
+void FpsComponent::ReloadPointers()
 {
-	m_TextComponent = GetOwningGameObject()->GetComponent<TextComponent>();
+	m_TextComponent = GetOwningGameObject()->GetComponent<dae::TextComponent>();
 	m_ComponentsAreDirty = false;
 }

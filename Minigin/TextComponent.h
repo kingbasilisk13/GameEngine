@@ -38,5 +38,3 @@ namespace dae
 		void ReloadPointers() override;
 	};
 }
-
-

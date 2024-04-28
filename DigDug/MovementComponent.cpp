@@ -1,12 +1,12 @@
 #include "MovementComponent.h"
 
-dae::MovementComponent::MovementComponent(GameObject* gameObject, float movementSpeed)
+MovementComponent::MovementComponent(dae::GameObject* gameObject, float movementSpeed)
 	:BaseComponent(gameObject)
 	,m_MovementSpeed(movementSpeed)
 {
 }
 
-void dae::MovementComponent::Update()
+void MovementComponent::Update()
 {
 	if (m_Direction == glm::vec3{}) return;
 
@@ -17,20 +17,20 @@ void dae::MovementComponent::Update()
 	m_Direction = {};
 }
 
-void dae::MovementComponent::FixedUpdate()
+void MovementComponent::FixedUpdate()
 {
 }
 
-void dae::MovementComponent::Render() const
+void MovementComponent::Render() const
 {
 }
 
-void dae::MovementComponent::SetMovementSpeed(const float movementSpeed)
+void MovementComponent::SetMovementSpeed(const float movementSpeed)
 {
 	m_MovementSpeed = movementSpeed;
 }
 
-void dae::MovementComponent::AddToMovementDirection(const glm::vec3 direction)
+void MovementComponent::AddToMovementDirection(const glm::vec3 direction)
 {
 	m_Direction.x += direction.x;
 	m_Direction.y += direction.y;

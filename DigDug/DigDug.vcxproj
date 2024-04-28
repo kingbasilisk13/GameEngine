@@ -160,6 +160,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DigDug.cpp" />
+    <ClCompile Include="FpsComponent.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="KillCommand.cpp" />
+    <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="PlayerObserverComponent.cpp" />
+    <ClCompile Include="RotatorComponent.cpp" />
+    <ClCompile Include="ScoreCommand.cpp" />
+    <ClCompile Include="ScoreComponent.cpp" />
+    <ClCompile Include="SetDirectionCommand.cpp" />
+    <ClCompile Include="TimerComponent.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FpsComponent.h" />
+    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="KillCommand.h" />
+    <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="PlayerObserverComponent.h" />
+    <ClInclude Include="RotatorComponent.h" />
+    <ClInclude Include="ScoreCommand.h" />
+    <ClInclude Include="ScoreComponent.h" />
+    <ClInclude Include="SetDirectionCommand.h" />
+    <ClInclude Include="TimerComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
