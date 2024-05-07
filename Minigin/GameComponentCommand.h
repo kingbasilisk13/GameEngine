@@ -1,10 +1,10 @@
 #pragma once
+#include "BaseComponent.h"
 #include "Command.h"
 
 
 namespace dae
 {
-	class BaseComponent;
 	class GameComponentCommand : public Command
 	{
 	public:

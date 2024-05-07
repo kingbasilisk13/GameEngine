@@ -147,13 +147,12 @@ private:
 
     std::jthread m_SoundThread;
 
+    std::mutex m_Mutex;
     std::queue<SoundDataStruct> m_EventQueue;
 
 	std::map<int, Mix_Chunk*> m_SoundEffectList;
 
     std::map<int, Mix_Music*> m_MusicList;
-
-    std::mutex m_Mutex;
 
     std::condition_variable m_ConditionVariable;
 
@@ -173,17 +172,20 @@ private:
 
     void InfiniteLoop()
     {
-        std::unique_lock<std::mutex> lock(m_Mutex);
-
+        //todo: opemerking, na dat je klaar bent met info van de queue te halen mag je de lock unlocken.
+        //snap niet hoe het dan origineel werkte.
         do
         {
+            std::unique_lock<std::mutex> lock(m_Mutex);
             m_ConditionVariable.wait(lock, [&]
-            {
-	            return (!m_EventQueue.empty());
-            });
+                {
+                    return (!m_EventQueue.empty());
+                });
 
-            const auto& [quit,music, volume, loops] = m_EventQueue.front();
+            const auto& [quit, music, volume, loops] = m_EventQueue.front();
             m_EventQueue.pop();
+            lock.unlock();
+            
 
             if(quit)
             {

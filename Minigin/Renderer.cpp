@@ -91,6 +91,7 @@ void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const flo
 	dst.y = static_cast<int>(y);
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
+
 	SDL_RenderCopy(GetSDLRenderer(), texture, nullptr, &dst);
 }
 

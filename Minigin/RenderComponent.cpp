@@ -1,11 +1,8 @@
-#include <utility>
 #include "RenderComponent.h"
-#include "Renderer.h"
-#include "Texture2D.h"
 
-dae::RenderComponent::RenderComponent(GameObject* gameObject, std::shared_ptr<Texture2D> texture)
+dae::RenderComponent::RenderComponent(GameObject* gameObject, Texture2D* texture)
 	:BaseComponent(gameObject)
-	, m_Texture(std::move(texture))
+	, m_Texture(texture)
 {
 }
 
@@ -17,6 +14,9 @@ void dae::RenderComponent::FixedUpdate()
 {
 }
 
+
+//todo: instead of puttings this render code in the render loop move it to a public function that other components can call in their render loop.
+
 void dae::RenderComponent::Render() const
 {
 	if (m_Texture != nullptr)
@@ -27,7 +27,7 @@ void dae::RenderComponent::Render() const
 	}
 }
 
-void dae::RenderComponent::ChangeTexture(std::shared_ptr<Texture2D> texture)
+void dae::RenderComponent::ChangeTexture(Texture2D* texture)
 {
-	m_Texture = std::move(texture);
+	m_Texture = texture;
 }

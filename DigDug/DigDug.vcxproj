@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="DigDug.cpp" />
     <ClCompile Include="FpsComponent.cpp" />
+    <ClCompile Include="GridComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="KillCommand.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
@@ -174,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FpsComponent.h" />
+    <ClInclude Include="GridComponent.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="KillCommand.h" />
     <ClInclude Include="MovementComponent.h" />

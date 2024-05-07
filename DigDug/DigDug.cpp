@@ -41,6 +41,9 @@ void InitializeGame()
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SdlSoundSystem>());
 #endif
 
+	//todo: je bent niet verplicht om dingen op specifieken manieren te doen. ze geven u de paterns, jij gebruikt ze hoe jij wilt, maar je moet kunnen uitleggen waarom.
+
+	//todo: als je in uw if state class een in hebt die checkt voor een state gelijk aan x of niet dan kan het opgeslpits worden in 2 state classes.
 
 	std::map<int, std::string> soundEffectList;
 	std::map<int, std::string> musicList;
@@ -74,6 +77,7 @@ void InitializeGame()
 	musicList[3] = "03 In-Game Music.wav";
 	musicList[22] = "22 High Score.wav";
 	musicList[24] = "24 PlayerWalkMusic.wav";
+	
 
 	dae::ServiceLocator::GetSoundSystem().Initialize("../Data/Sound/", soundEffectList,musicList);
 	dae::ServiceLocator::GetSoundSystem().PlaySoundEffect(99, 50, 0);

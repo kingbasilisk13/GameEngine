@@ -1,6 +1,11 @@
 #pragma once
 #include "BaseComponent.h"
 
+#include <stdexcept>
+#include <SDL_ttf.h>
+#include "Renderer.h"
+#include "Font.h"
+#include "RenderComponent.h"
 #include <string>
 
 namespace dae
@@ -10,7 +15,7 @@ namespace dae
 	class TextComponent final : public BaseComponent
 	{
 	public:
-		explicit TextComponent(GameObject* gameObject, std::shared_ptr<Font> font, std::string text = " ");
+		explicit TextComponent(GameObject* gameObject, Font* font, std::string text = " ");
 
 		~TextComponent() override = default;
 		TextComponent(const TextComponent& other) = delete;
@@ -23,13 +28,15 @@ namespace dae
 		void Render() const override;
 
 		void ChangeText(const std::string& text);
-		void ChangeFont(const std::shared_ptr<Font>& font);
+		void ChangeFont(Font* font);
 
 	private:
 		bool m_TextureIsDirty;
-		std::shared_ptr<Font> m_Font;
+		Font* m_Font;
 		std::string m_Text;
 		RenderComponent* m_RenderComponent;
+
+		std::unique_ptr<Texture2D> m_Texture;
 
 		void GetRenderComponent();
 

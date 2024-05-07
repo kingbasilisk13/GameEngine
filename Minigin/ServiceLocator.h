@@ -7,7 +7,7 @@ namespace dae
 
 	class ServiceLocator final
 	{
-		static std::unique_ptr<ISoundSystem> m_SoundSystemInstance;
+		
 	public:
 		//ServiceLocator();
 
@@ -15,6 +15,6 @@ namespace dae
 		static void RegisterSoundSystem(std::unique_ptr<ISoundSystem>&& soundSystem);
 
 	private:
-		
+		static std::unique_ptr<ISoundSystem> m_SoundSystemInstance;
 	};
 }
