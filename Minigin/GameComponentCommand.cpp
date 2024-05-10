@@ -1,5 +1,7 @@
 #include "GameComponentCommand.h"
 
+#include "BaseComponent.h"
+
 dae::GameComponentCommand::GameComponentCommand(BaseComponent* actor)
 	:Command()
 	, m_Component(actor)

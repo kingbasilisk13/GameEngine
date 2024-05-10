@@ -1,11 +1,16 @@
 #include <stdexcept>
 #include "Renderer.h"
+
+#include <ranges>
+
 #include "imgui.h"
 #include "SceneManager.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_sdl2.h"
 
 #include "MemoryTestImGui.h"
+#include "Texture2D.h"
+
 
 int GetOpenGLDriverIndex()
 {
@@ -44,6 +49,7 @@ void dae::Renderer::Render() const
 	const auto& color = GetBackgroundColor();
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_renderer);
+
 	SceneManager::GetInstance().Render();
 
 	SDL_RenderFlush(m_renderer);
@@ -54,6 +60,7 @@ void dae::Renderer::Render() const
 	//m_ImGuiObject->DrawImGuiWindow();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 
 	SDL_RenderPresent(m_renderer);
 }
@@ -74,51 +81,84 @@ void dae::Renderer::Destroy()
 }
 
 //draw a texture at a certain location with the dimensions of the image.
-void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const float y) const
+void dae::Renderer::RenderTexture(const int zOrder, Texture2D* texture, const int x, const int y)
 {
-	SDL_Rect dst{};
-	dst.x = static_cast<int>(x);
-	dst.y = static_cast<int>(y);
-	SDL_QueryTexture(texture, nullptr, nullptr, &dst.w, &dst.h);
-	SDL_RenderCopy(GetSDLRenderer(), texture, nullptr, &dst);
+	const glm::ivec2 dimensions = texture->GetSize();
+
+	RenderTexture(
+		zOrder, 
+		texture,
+		x,
+		y,
+		dimensions.x,
+		dimensions.y,
+		0,
+		0,
+		dimensions.x,
+		dimensions.y
+	);
+
 }
 
 //draw a texture at a certain location with self chosen dimensions.
-void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const float y, const float width, const float height) const
+void dae::Renderer::RenderTexture(const int zOrder, Texture2D* texture, const int x, const int y, const int width, const int height)
 {
-	SDL_Rect dst{};
-	dst.x = static_cast<int>(x);
-	dst.y = static_cast<int>(y);
-	dst.w = static_cast<int>(width);
-	dst.h = static_cast<int>(height);
+	const glm::ivec2 dimensions = texture->GetSize();
 
-	SDL_RenderCopy(GetSDLRenderer(), texture, nullptr, &dst);
+	RenderTexture(
+		zOrder,
+		texture,
+		x,
+		y,
+		width,
+		height,
+		0,
+		0,
+		dimensions.x,
+		dimensions.y
+	);
 }
 
 
 void dae::Renderer::RenderTexture(
-	SDL_Texture* texture, 
-	float destinationX, 
-	float destinationY, 
-	float destinationWidth, 
-	float destinationHeight, 
-	float sourceX, 
-	float sourceY, 
-	float sourceWidth, 
-	float sourceHeight) const
+	int zOrder,
+	Texture2D* texture,
+	int destinationX, 
+	int destinationY, 
+	int destinationWidth, 
+	int destinationHeight, 
+	int sourceX, 
+	int sourceY, 
+	int sourceWidth, 
+	int sourceHeight)
 {
 	SDL_Rect dst{};
-	dst.x = static_cast<int>(destinationX);
-	dst.y = static_cast<int>(destinationY);
-	dst.w = static_cast<int>(destinationWidth);
-	dst.h = static_cast<int>(destinationHeight);
+	dst.x = destinationX;
+	dst.y = destinationY;
+	dst.w = destinationWidth;
+	dst.h = destinationHeight;
 
 	SDL_Rect source{};
-	dst.x = static_cast<int>(sourceX);
-	dst.y = static_cast<int>(sourceY);
-	dst.w = static_cast<int>(sourceWidth);
-	dst.h = static_cast<int>(sourceHeight);
-	SDL_RenderCopy(GetSDLRenderer(), texture, &source, &dst);
+	source.x = sourceX;
+	source.y = sourceY;
+	source.w = sourceWidth;
+	source.h = sourceHeight;
+
+
+	RenderInfo info{ zOrder,texture ,source, dst };
+
+	m_RenderMap.emplace(zOrder, info);
+
 }
 
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }
+
+void dae::Renderer::DisplayRenderMap()
+{
+	for (auto& [zOrder, texture, sourceRect, destinationRect] : m_RenderMap | std::views::values)
+	{
+		SDL_RenderCopy(m_renderer, texture->GetSdlTexture(), &sourceRect, &destinationRect);
+	}
+
+	m_RenderMap.clear();
+}

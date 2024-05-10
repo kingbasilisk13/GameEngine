@@ -1,9 +1,28 @@
 #pragma once
+#include <map>
 #include <SDL.h>
 #include "Singleton.h"
 
 namespace dae
 {
+	class Texture2D;
+
+	struct RenderInfo
+	{
+		int zOrder = 0;
+		Texture2D* textureToRender;
+		SDL_Rect sourceRect;
+		SDL_Rect destinationRect;
+
+		RenderInfo(int zorder, Texture2D* texture, SDL_Rect src, SDL_Rect dest)
+		{
+			zOrder = zorder;
+			textureToRender = texture;
+			sourceRect = src;
+			destinationRect = dest;
+		}
+	};
+
 	class MemoryTestImGui;
 	class Texture2D;
 	/**
@@ -11,40 +30,48 @@ namespace dae
 	 */
 	class Renderer final : public Singleton<Renderer>
 	{
-		SDL_Renderer* m_renderer{};
-		SDL_Window* m_window{};
-		SDL_Color m_clearColor{};
-
-		
-
 	public:
 		void Init(SDL_Window* window);
 		void Render() const;
 		void Destroy();
 
-		void RenderTexture(SDL_Texture* texture, float x, float y) const;
-		void RenderTexture(SDL_Texture* texture, float x, float y, float width, float height) const;
+		void RenderTexture(int zOrder, Texture2D* texture, int x, int y);
+		void RenderTexture(int zOrder, Texture2D* texture, int x, int y, int width, int height);
 
 
 		//used for animations
 		void RenderTexture(
-			SDL_Texture* texture, 
-			float destinationX, 
-			float destinationY, 
-			float destinationWidth, 
-			float destinationHeight, 
-			float sourceX, 
-			float sourceY,
-			float sourceWidth,
-			float sourceHeight) const;
+			int zOrder,
+			Texture2D* texture,
+			int destinationX, 
+			int destinationY, 
+			int destinationWidth, 
+			int destinationHeight, 
+			int sourceX, 
+			int sourceY,
+			int sourceWidth,
+			int sourceHeight);
 
-		SDL_Renderer* GetSDLRenderer() const;
+		[[nodiscard]] SDL_Renderer* GetSDLRenderer() const;
 
-		const SDL_Color& GetBackgroundColor() const { return m_clearColor; }
+		[[nodiscard]] const SDL_Color& GetBackgroundColor() const { return m_clearColor; }
+
 		void SetBackgroundColor(const SDL_Color& color) { m_clearColor = color; }
+
+		void DisplayRenderMap();
+
+	private:
+		
+
+		SDL_Renderer* m_renderer{};
+		SDL_Window* m_window{};
+		SDL_Color m_clearColor{};
+
+		std::multimap<int, RenderInfo> m_RenderMap;
 
 		MemoryTestImGui* m_ImGuiObject{};
 
+		
 	};
 }
 

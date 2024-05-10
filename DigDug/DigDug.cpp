@@ -22,6 +22,7 @@
 #include "SetDirectionCommand.h"
 #include "MovementComponent.h"
 #include "NullSoundSystem.h"
+#include "PatrollingState.h"
 #include "PlayerObserverComponent.h"
 #include "ReleaseButtonCommand.h"
 #include "RenderComponent.h"
@@ -29,6 +30,7 @@
 #include "ScoreComponent.h"
 #include "SdlSoundSystem.h"
 #include "ServiceLocator.h"
+#include "StateComponent.h"
 #include "Transform.h"
 
 
@@ -42,7 +44,6 @@ void InitializeGame()
 #endif
 
 	//todo: je bent niet verplicht om dingen op specifieken manieren te doen. ze geven u de paterns, jij gebruikt ze hoe jij wilt, maar je moet kunnen uitleggen waarom.
-
 	//todo: als je in uw if state class een in hebt die checkt voor een state gelijk aan x of niet dan kan het opgeslpits worden in 2 state classes.
 
 	std::map<int, std::string> soundEffectList;
@@ -80,13 +81,13 @@ void InitializeGame()
 	
 
 	dae::ServiceLocator::GetSoundSystem().Initialize("../Data/Sound/", soundEffectList,musicList);
-	dae::ServiceLocator::GetSoundSystem().PlaySoundEffect(99, 50, 0);
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
 	//background
 	auto go = std::make_shared<dae::GameObject>();
 	go->SetLocalPosition({0,0,0});
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), dae::ResourceManager::GetInstance().LoadTexture("background.tga")));
+	go->GetComponent<dae::RenderComponent>()->SetZOrder(-1);
 	scene.Add(go);
 
 
@@ -116,14 +117,28 @@ void InitializeGame()
 	scene.Add(go);
 
 
+	const auto pooka = std::make_shared<dae::GameObject>();
+	pooka->SetLocalPosition({ 216.f, 200.f, 0.f });
+	pooka->AddComponent(std::make_unique<dae::RenderComponent>
+		(
+			pooka.get(), 
+			dae::ResourceManager::GetInstance().LoadTexture("Pooka/Default.png")
+		)
+	);
+
+	pooka->AddComponent(std::make_unique<dae::StateComponent>
+		(
+			pooka.get(),
+			new PatrollingState()
+			)
+	);
+	scene.Add(pooka);
+
 
 	const float speedP1{ 100.f };
 	const float speedP2{ 200.f };
 
 
-
-
-	//todo: add way to animatie character. or just draw first frame.
 	const auto player1 = std::make_shared<dae::GameObject>();
 	player1->SetLocalPosition({ 216.f, 180.f, 0.f });
 	player1->AddComponent(std::make_unique<dae::RenderComponent>(player1.get(), dae::ResourceManager::GetInstance().LoadTexture("DigDug0/Walking.png")));

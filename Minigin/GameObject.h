@@ -80,7 +80,6 @@ namespace dae
 
 		std::vector<GameObject*> m_Children{};
 
-
 #pragma region private functions
 		void AddChild(GameObject* child) { m_Children.push_back(child); }
 

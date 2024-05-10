@@ -208,6 +208,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="IHandler.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="IState.h" />
     <ClInclude Include="LoggingSoundSystem.h" />
     <ClInclude Include="MemoryTestImGui.h" />
     <ClInclude Include="Minigin.h" />
@@ -222,11 +223,13 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="ISoundSystem.h" />
+    <ClInclude Include="StateComponent.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\backends\imgui_impl_opengl3.cpp" />
@@ -257,10 +260,12 @@
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="StateComponent.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="EngineTime.cpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

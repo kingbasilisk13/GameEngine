@@ -1,15 +1,10 @@
 #pragma once
 #include "BaseComponent.h"
-
-#include <stdexcept>
-#include <SDL_ttf.h>
-#include "Renderer.h"
-#include "Font.h"
-#include "RenderComponent.h"
 #include <string>
 
 namespace dae
 {
+	class Renderer;
 	class Font;
 	class RenderComponent;
 	class TextComponent final : public BaseComponent
@@ -32,8 +27,11 @@ namespace dae
 
 	private:
 		bool m_TextureIsDirty;
+
 		Font* m_Font;
+
 		std::string m_Text;
+
 		RenderComponent* m_RenderComponent;
 
 		std::unique_ptr<Texture2D> m_Texture;

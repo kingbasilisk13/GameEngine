@@ -20,7 +20,7 @@ void SetDirectionCommand::Execute()
 		return;
 	}
 
-	dae::ServiceLocator::GetSoundSystem().PlayMusic(24,200,-1);
+	dae::ServiceLocator::GetSoundSystem().PlayMusic(24,50,-1);
 
 	dynamic_cast<MovementComponent*>(GetGameComponent())->SetMovementDirection(glm::normalize(m_Direction));
 }

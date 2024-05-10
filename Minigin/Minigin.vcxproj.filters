@@ -70,6 +70,9 @@
     <Filter Include="Source Files\ServiceLocators\Sound">
       <UniqueIdentifier>{d8198f5d-b61e-483a-bb6c-bd4cf5dd02aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\State">
+      <UniqueIdentifier>{c2b7b819-e6f1-40a5-a0d6-55b10f3f9e99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
@@ -186,6 +189,15 @@
     <ClInclude Include="Font.h">
       <Filter>Header Files\Wrappers</Filter>
     </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="StateComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
@@ -283,6 +295,12 @@
     </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Source Files\Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StateComponent.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

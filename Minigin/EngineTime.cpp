@@ -12,6 +12,5 @@ float dae::EngineTime::GetFixedTimeStep() const
 
 void dae::EngineTime::ChangeDeltaTime(const float deltaTime)
 { m_DeltaTime = deltaTime; }
-
 void dae::EngineTime::SetFixedTimeStep(const float fixedTimeStep)
 { m_FixedTimeStep = fixedTimeStep; }

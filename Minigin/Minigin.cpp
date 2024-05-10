@@ -144,6 +144,7 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 
 		//wat is late update? just a second update. But it is not just calling the update a second time. it is a special update just be specific objects, like the camera.
 		//updates of any kind always happen before the render.
+
 		renderer.Render();
 
 		const auto sleepTime = currentTime + std::chrono::milliseconds(m_FrameRate) - std::chrono::high_resolution_clock::now();

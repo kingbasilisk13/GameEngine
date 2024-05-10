@@ -1,5 +1,11 @@
 #include "TextComponent.h"
 
+#include <stdexcept>
+#include <SDL_ttf.h>
+#include "Renderer.h"
+#include "Font.h"
+#include "RenderComponent.h"
+
 dae::TextComponent::TextComponent(GameObject* gameObject, Font* font, std::string text)
 	:BaseComponent(gameObject)
 	, m_TextureIsDirty(false)
@@ -17,10 +23,12 @@ void dae::TextComponent::Update()
 	{
 		ReloadPointers();
 	}
+
 	if (m_RenderComponent == nullptr)
 	{
 		return;
 	}
+
 
 	if(m_TextureIsDirty)
 	{
@@ -42,15 +50,15 @@ void dae::TextComponent::ChangeText(const std::string& text)
 	m_TextureIsDirty = true;
 }
 
+void dae::TextComponent::GetRenderComponent()
+{
+	m_RenderComponent = GetOwningGameObject()->GetComponent<RenderComponent>();
+}
+
 void dae::TextComponent::ChangeFont(Font* font)
 {
 	m_Font = font;
 	m_TextureIsDirty = true;
-}
-
-void dae::TextComponent::GetRenderComponent()
-{
-	m_RenderComponent = GetOwningGameObject()->GetComponent<RenderComponent>();
 }
 
 void dae::TextComponent::GenerateTexture()
@@ -73,7 +81,7 @@ void dae::TextComponent::GenerateTexture()
 
 	SDL_FreeSurface(surf);
 
-	if(m_RenderComponent != nullptr)
+	if (m_RenderComponent != nullptr)
 	{
 		m_Texture = std::make_unique<Texture2D>(texture);
 		m_RenderComponent->ChangeTexture(m_Texture.get());

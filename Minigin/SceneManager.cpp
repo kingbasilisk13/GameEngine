@@ -1,4 +1,6 @@
 #include "SceneManager.h"
+
+#include "Renderer.h"
 #include "Scene.h"
 
 void dae::SceneManager::Update()
@@ -25,6 +27,8 @@ void dae::SceneManager::Render()
 	{
 		scene->Render();
 	}
+
+	Renderer::GetInstance().DisplayRenderMap();
 }
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)

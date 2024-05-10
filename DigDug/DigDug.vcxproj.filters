@@ -25,6 +25,30 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{81aa25bd-f2cf-4562-aaaf-8b6493426df3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Characters">
+      <UniqueIdentifier>{a013244c-8292-48b0-8ec7-172e29319fa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters\Enemies">
+      <UniqueIdentifier>{c5115133-8e97-4f86-b495-4c0a2f1c4380}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters\Enemies\Pooka">
+      <UniqueIdentifier>{e56a9b81-221a-4db5-95dc-3ab0f9656e7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters\Enemies\Pooka\States">
+      <UniqueIdentifier>{0544c133-46ae-4595-8059-38e33611dcf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters">
+      <UniqueIdentifier>{0945f0fb-e325-441b-9d5e-04c14aa065c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters\Enemies">
+      <UniqueIdentifier>{3291eda1-c7d6-43e9-a660-2e290059c036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters\Enemies\Pooka">
+      <UniqueIdentifier>{673e5e07-3145-4e26-bb41-7c57d066daba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters\Enemies\Pooka\States">
+      <UniqueIdentifier>{94699243-2062-4b9f-9bdf-d92aabbc02cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DigDug.cpp">
@@ -66,6 +90,12 @@
     <ClCompile Include="GridComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="PatrollingState.cpp">
+      <Filter>Source Files\Characters\Enemies\Pooka\States</Filter>
+    </ClCompile>
+    <ClCompile Include="GhostState.cpp">
+      <Filter>Source Files\Characters\Enemies\Pooka\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KillCommand.h">
@@ -103,6 +133,12 @@
     </ClInclude>
     <ClInclude Include="GridComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PatrollingState.h">
+      <Filter>Header Files\Characters\Enemies\Pooka\States</Filter>
+    </ClInclude>
+    <ClInclude Include="GhostState.h">
+      <Filter>Header Files\Characters\Enemies\Pooka\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

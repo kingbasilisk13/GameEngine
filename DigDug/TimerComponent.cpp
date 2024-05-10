@@ -19,8 +19,7 @@ void TimerComponent::Update()
 		if(m_ElapsedTime >= 10.f)
 		{
 			const auto gameObject = GetOwningGameObject();
-			//gameObject->RemoveComponent(gameObject->GetComponent<FpsComponent>());
-			//gameObject->RemoveComponent(gameObject->GetComponent<RenderComponent>());
+
 
 			gameObject->GetScene()->Remove(gameObject);
 			m_TaskFinished = true;

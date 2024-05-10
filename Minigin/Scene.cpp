@@ -68,8 +68,12 @@ void Scene::Render() const
 {
 	for (const auto& object : m_objects)
 	{
+		//collects all the images that need to be renderd.
 		object->Render();
 	}
+
+	//todo: voeg hier een call naar de render singleton dat de buffer rendert.
+
 }
 
 void dae::Scene::HandleObjectRemoval()
