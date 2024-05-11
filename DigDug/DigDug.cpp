@@ -47,6 +47,8 @@ void InitializeMusic()
 	//todo: je bent niet verplicht om dingen op specifieken manieren te doen. ze geven u de paterns, jij gebruikt ze hoe jij wilt, maar je moet kunnen uitleggen waarom.
 	//todo: als je in uw if state class een in hebt die checkt voor een state gelijk aan x of niet dan kan het opgeslpits worden in 2 state classes.
 
+	//todo: intead of using boxes to see if things overlap it is probalby a better idea to use raycasting. draw line from character in direction it is moving. if it hits a box then move in diferent direction.
+
 	std::map<int, std::string> soundEffectList;
 	std::map<int, std::string> musicList;
 
@@ -90,8 +92,8 @@ void InitializePlayers(dae::Scene& scene)
 	const float speedP2{ 200.f };
 
 
-	const auto player1 = std::make_shared<dae::GameObject>();
-	player1->SetLocalPosition({ 216.f, 180.f, 0.f });
+	const auto player1 = std::make_shared<dae::GameObject>("player1");
+	player1->SetLocalPosition({ 216.f, 180.f });
 
 	player1->AddComponent(
 		std::make_unique<dae::RenderComponent>(
@@ -188,9 +190,9 @@ void InitializePlayers(dae::Scene& scene)
 
 
 
-	const auto player2 = std::make_shared<dae::GameObject>();
+	const auto player2 = std::make_shared<dae::GameObject>("player2");
 
-	player2->SetLocalPosition({ 216.f, 180.f, 0.f });
+	player2->SetLocalPosition({ 216.f, 180.f});
 
 	player2->AddComponent(std::make_unique<dae::RenderComponent>(
 		player2.get(),
@@ -286,9 +288,9 @@ void InitializePlayers(dae::Scene& scene)
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 
 	//health display 1
-	const auto player1HealthObserver = std::make_shared<dae::GameObject>();
+	const auto player1HealthObserver = std::make_shared<dae::GameObject>("player1HealthObserver");
 
-	player1HealthObserver->SetLocalPosition({ 0.f, 140.f, 0.f });
+	player1HealthObserver->SetLocalPosition({ 0.f, 140.f});
 
 	player1HealthObserver->AddComponent(std::make_unique<dae::RenderComponent>(player1HealthObserver.get()));
 	player1HealthObserver->AddComponent(std::make_unique<dae::TextComponent>(player1HealthObserver.get(), font, "# lives: 3"));
@@ -299,9 +301,9 @@ void InitializePlayers(dae::Scene& scene)
 
 
 	//score display 1
-	const auto player1ScoreObserver = std::make_shared<dae::GameObject>();
+	const auto player1ScoreObserver = std::make_shared<dae::GameObject>("player1ScoreObserver");
 
-	player1ScoreObserver->SetLocalPosition({ 0.f, 160.f, 0.f });
+	player1ScoreObserver->SetLocalPosition({ 0.f, 160.f});
 
 	player1ScoreObserver->AddComponent(std::make_unique<dae::RenderComponent>(player1ScoreObserver.get()));
 	player1ScoreObserver->AddComponent(std::make_unique<dae::TextComponent>(player1ScoreObserver.get(), font, "Score: 0"));
@@ -314,9 +316,9 @@ void InitializePlayers(dae::Scene& scene)
 
 
 	//health display 2
-	const auto player2HealthObserver = std::make_shared<dae::GameObject>();
+	const auto player2HealthObserver = std::make_shared<dae::GameObject>("player2HealthObserver");
 
-	player2HealthObserver->SetLocalPosition({ 0.f, 180.f, 0.f });
+	player2HealthObserver->SetLocalPosition({ 0.f, 180.f});
 
 	player2HealthObserver->AddComponent(std::make_unique<dae::RenderComponent>(player2HealthObserver.get()));
 	player2HealthObserver->AddComponent(std::make_unique<dae::TextComponent>(player2HealthObserver.get(), font, "# lives: 3"));
@@ -326,9 +328,9 @@ void InitializePlayers(dae::Scene& scene)
 	player2->GetComponent<HealthComponent>()->SubscribeToHealthChangedEvent(player2HealthObserver->GetComponent<PlayerObserverComponent>());
 
 	//score display 2
-	const auto player2ScoreObserver = std::make_shared<dae::GameObject>();
+	const auto player2ScoreObserver = std::make_shared<dae::GameObject>("player2ScoreObserver");
 
-	player2ScoreObserver->SetLocalPosition({ 0.f, 200.f, 0.f });
+	player2ScoreObserver->SetLocalPosition({ 0.f, 200.f});
 
 	player2ScoreObserver->AddComponent(std::make_unique<dae::RenderComponent>(player2ScoreObserver.get()));
 	player2ScoreObserver->AddComponent(std::make_unique<dae::TextComponent>(player2ScoreObserver.get(), font, "Score: 0"));
@@ -343,24 +345,24 @@ void InitializePlayers(dae::Scene& scene)
 void InitializeStaticVisuals(dae::Scene& scene)
 {
 	//background
-	auto go = std::make_shared<dae::GameObject>();
-	go->SetLocalPosition({ 0,0,0 });
+	auto go = std::make_shared<dae::GameObject>("background");
+	go->SetLocalPosition({ 0,0});
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), dae::ResourceManager::GetInstance().LoadTexture("background.tga")));
 	go->GetComponent<dae::RenderComponent>()->SetZOrder(-2);
 	scene.Add(go);
 
 
 	//logo
-	go = std::make_shared<dae::GameObject>();
-	go->SetLocalPosition({ 216.f, 180.f, 0.f });
+	go = std::make_shared<dae::GameObject>("logo");
+	go->SetLocalPosition({ 216.f, 180.f});
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), dae::ResourceManager::GetInstance().LoadTexture("logo.tga")));
 	go->GetComponent<dae::RenderComponent>()->SetZOrder(-1);
 	scene.Add(go);
 
 
 	//title
-	go = std::make_shared<dae::GameObject>();
-	go->SetLocalPosition({ 80.f, 20.f, 0.f });
+	go = std::make_shared<dae::GameObject>("title");
+	go->SetLocalPosition({ 80.f, 20.f});
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
 	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), font, "Programming 4 Assignment"));
@@ -368,7 +370,7 @@ void InitializeStaticVisuals(dae::Scene& scene)
 
 
 	//fps
-	go = std::make_shared<dae::GameObject>();
+	go = std::make_shared<dae::GameObject>("fps");
 	go->SetLocalPosition({});
 	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
@@ -380,9 +382,9 @@ void InitializeStaticVisuals(dae::Scene& scene)
 	//controls display
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
 
-	const auto controlsDisplay1 = std::make_shared<dae::GameObject>();
+	const auto controlsDisplay1 = std::make_shared<dae::GameObject>("controlsDisplay1");
 
-	controlsDisplay1->SetLocalPosition({ 0.f, 60.f, 0.f });
+	controlsDisplay1->SetLocalPosition({ 0.f, 60.f });
 
 	controlsDisplay1->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay1.get()));
 	controlsDisplay1->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay1.get(), font,
@@ -390,9 +392,9 @@ void InitializeStaticVisuals(dae::Scene& scene)
 	scene.Add(controlsDisplay1);
 
 
-	const auto controlsDisplay2 = std::make_shared<dae::GameObject>();
+	const auto controlsDisplay2 = std::make_shared<dae::GameObject>("controlsDisplay2");
 
-	controlsDisplay2->SetLocalPosition({ 0.f, 90.f, 0.f });
+	controlsDisplay2->SetLocalPosition({ 0.f, 90.f });
 
 	controlsDisplay2->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay2.get()));
 	controlsDisplay2->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay2.get(), font,
@@ -410,8 +412,8 @@ void InitializeEnemies(dae::Scene& scene)
 	width /= 2;
 	height /= 2;
 
-	const auto pooka = std::make_shared<dae::GameObject>();
-	pooka->SetLocalPosition({ width, height, 0.f });
+	const auto pooka = std::make_shared<dae::GameObject>("pooka");
+	pooka->SetLocalPosition({ width, height });
 	pooka->AddComponent(std::make_unique<dae::RenderComponent>
 		(
 			pooka.get(),
@@ -423,6 +425,8 @@ void InitializeEnemies(dae::Scene& scene)
 
 	const auto pookaSize = dae::ResourceManager::GetInstance().LoadTexture("Pooka/Default.png")->GetSize();
 
+	renderComponent->SetZOrder(1);
+
 	renderComponent->SizeToContent(false);
 
 	renderComponent->SetDestinationSize(pookaSize.x / 2, pookaSize.y);
@@ -433,15 +437,16 @@ void InitializeEnemies(dae::Scene& scene)
 	pooka->AddComponent(std::make_unique<dae::StateComponent>
 		(
 			pooka.get(),
-			new PatrollingState()
+			new PatrollingState(Direction::left)
 		)
 	);
+	float size = static_cast<float>(pookaSize.y);
 
 	pooka->AddComponent(std::make_unique<dae::BoxComponent>
 		(
 			pooka.get(),
-			static_cast<float>(pookaSize.x / 2),
-			static_cast<float>(pookaSize.y)
+			size,
+			size
 		)
 	);
 
@@ -471,13 +476,12 @@ void InitializeGrid(dae::Scene& scene)
 				continue;
 			}
 
-			const auto tile = std::make_shared<dae::GameObject>();
+			const auto tile = std::make_shared<dae::GameObject>("tile");
 
 			tile->SetLocalPosition(
 				{
 					width + (x * tileSize.x),
-					height - ( y * tileSize.y),
-					0.f
+					height - ( y * tileSize.y)
 				}
 			);
 
@@ -493,8 +497,8 @@ void InitializeGrid(dae::Scene& scene)
 			tile->AddComponent(std::make_unique<dae::BoxComponent>
 				(
 					tile.get(),
-					static_cast<float>(tileSize.x),
-					static_cast<float>(tileSize.y)
+					static_cast<float>(tileSize.x - 1),
+					static_cast<float>(tileSize.y - 1)
 				)
 			);
 			scene.Add(tile);

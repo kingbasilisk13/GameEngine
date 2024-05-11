@@ -38,7 +38,6 @@ void RotatorComponent::CalculateRotation(const float time)
 	GetOwningGameObject()->SetLocalPosition(
 	{
 		cos(m_Angle * m_Direction) * m_Radius,
-		sin(m_Angle * m_Direction) * m_Radius,
-		0
+		sin(m_Angle * m_Direction) * m_Radius
 	});
 }

@@ -4,11 +4,17 @@
 dae::BoxComponent::BoxComponent(GameObject* gameObject,const float width,const float height)
 	:BaseComponent(gameObject)
 {
-	ReCalculateBox(width, height);
+	const glm::vec2 center = gameObject->GetWorldPosition();
+	m_Box = ReCalculateBox(center, width, height);
 }
 
 void dae::BoxComponent::Update()
 {
+	if(GetOwningGameObject()->IsPositionDirty())
+	{
+		const glm::vec2 center = GetOwningGameObject()->GetWorldPosition();
+		m_Box = ReCalculateBox(center, m_Box.width, m_Box.height);
+	}
 }
 
 void dae::BoxComponent::FixedUpdate()
@@ -21,7 +27,8 @@ void dae::BoxComponent::Render() const
 
 void dae::BoxComponent::ChangeDimensions(const float width, const float height)
 {
-	ReCalculateBox(width,height);
+	const glm::vec2 center = GetOwningGameObject()->GetWorldPosition();
+	m_Box = ReCalculateBox(center, width, height);
 }
 
 dae::Rectf dae::BoxComponent::GetBox() const
@@ -29,13 +36,19 @@ dae::Rectf dae::BoxComponent::GetBox() const
 	return m_Box;
 }
 
-void dae::BoxComponent::ReCalculateBox(const float width,const float height)
+dae::Rectf dae::BoxComponent::GetFutureBox(glm::vec2 center) const
 {
-	m_Box.width = width;
-	m_Box.height = height;
+	return ReCalculateBox(center, m_Box.width, m_Box.height);
+}
 
-	const glm::vec3 center = GetOwningGameObject()->GetWorldPosition();
+dae::Rectf dae::BoxComponent::ReCalculateBox(const glm::vec2 center, const float width, const float height)
+{
+	dae::Rectf result{};
+	result.width = width;
+	result.height = height;
 
-	m_Box.left = center.x - (width * 0.5f);
-	m_Box.bottom = center.y + (height * 0.5f);
+	result.left = center.x;
+	result.top = center.y;
+
+	return result;
 }

@@ -14,7 +14,7 @@ bool dae::utils::IsOverlapping(const Rectf& r1, const Rectf& r2)
 		return false;
 	}
 
-	if (r1.bottom > (r2.bottom + r2.height) || r2.bottom > (r1.bottom + r1.height))
+	if (r1.top > (r2.top + r2.height) || r2.top > (r1.top + r1.height))
 	{
 		return false;
 	}

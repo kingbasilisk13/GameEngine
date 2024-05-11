@@ -1,4 +1,6 @@
 #pragma once
+#include <glm/glm.hpp>
+
 #include "IState.h"
 
 class GhostState final : public dae::IState
@@ -23,8 +25,16 @@ public:
 	GhostState& operator=(GhostState&& other) = delete;
 
 private:
-	const float m_WanderTime = 10.f;
+	glm::vec2 m_Target;
 
-	float m_TimePassed = 0.f;
+	const float m_TimeDelay = 5.f;
+
+	float m_PassedTime = 0.f;
+
+	void FindTarget();
+
+	void Move(dae::GameObject* owner);
+
+	bool IsOverlappingWall(dae::GameObject* owner) const;
 };
 

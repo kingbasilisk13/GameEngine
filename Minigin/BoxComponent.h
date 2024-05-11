@@ -26,10 +26,12 @@ namespace dae
 
 		[[nodiscard]] Rectf GetBox() const;
 
+		[[nodiscard]] Rectf GetFutureBox(glm::vec2) const;
+
 	private:
 		Rectf m_Box;
-
-		void ReCalculateBox(float width, float height);
+		
+		[[nodiscard]] static Rectf ReCalculateBox(const glm::vec2 center, const float width, const float height);
 	};
 	
 }

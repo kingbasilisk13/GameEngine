@@ -4,9 +4,10 @@
 #include "SdlSoundSystem.h"
 #include "ServiceLocator.h"
 
-dae::GameObject::GameObject()
+dae::GameObject::GameObject(std::string name)
 	: m_PositionIsDirty(false)
 	  , m_RemovalListIsDirty(false)
+	  , m_ObjectName(std::move(name))
 	  , m_LocalTransform({})
 	  , m_WorldTransform({})
 	  , m_Scene(nullptr)
@@ -93,13 +94,13 @@ void dae::GameObject::SetParentGameObject(GameObject* parentObject, const bool k
 	if (m_Parent) m_Parent->AddChild(this);
 }
 
-void dae::GameObject::SetLocalPosition(const glm::vec3& position)
+void dae::GameObject::SetLocalPosition(const glm::vec2& position)
 {
 	m_LocalTransform.SetPosition(position);
 	SetPositionDirty();
 }
 
-glm::vec3 dae::GameObject::GetWorldPosition()
+glm::vec2 dae::GameObject::GetWorldPosition()
 {
 	if(m_PositionIsDirty)
 	{
@@ -117,9 +118,14 @@ void dae::GameObject::SetPositionDirty()
 	}
 }
 
-void dae::GameObject::Translate(glm::vec3 deltaMovement)
+void dae::GameObject::Translate(glm::vec2 deltaMovement)
 {
 	SetLocalPosition(m_LocalTransform.position + deltaMovement);
+}
+
+std::string dae::GameObject::GetObjectName()
+{
+	return m_ObjectName;
 }
 
 

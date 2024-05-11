@@ -7,14 +7,14 @@ namespace dae
 		Rectf()
 		{
 			left = 0;
-			bottom = 0;
+			top = 0;
 			width = 0;
 			height = 0;
 		}
-		explicit Rectf(float left, float bottom, float width, float height);
+		explicit Rectf(float left, float top, float width, float height);
 
 		float left;
-		float bottom;
+		float top;
 		float width;
 		float height;
 

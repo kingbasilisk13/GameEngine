@@ -6,6 +6,8 @@
 #include "Renderer.h"
 
 
+int dae::Scene::m_CurrentIndex = 0;
+
 std::vector<std::shared_ptr<dae::GameObject>> dae::Scene::GetObjectsInScene() const
 {
 	return m_objects;

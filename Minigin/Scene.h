@@ -36,6 +36,9 @@ namespace dae
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
 
 		void HandleObjectRemoval();
+
+		//todo: figure out how to use dubble buffers for things like movement.
+		static int m_CurrentIndex;
 	};
 
 }

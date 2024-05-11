@@ -1,4 +1,5 @@
 #pragma once
+
 #include <vector>
 #include <string>
 #include <memory>
@@ -11,6 +12,7 @@
 namespace dae
 {
 	class Scene;
+
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
@@ -23,14 +25,21 @@ namespace dae
 
 		void Render();
 
-		void OpenSceneByName(std::string name);
+		void OpenSceneByName(const std::string& name);
+
+		Scene* GetActiveScene();
+		
 
 	private:
 		friend class Singleton<SceneManager>;
+
 		SceneManager() = default;
+
 		std::string m_ActiveScene;
 
 		std::unordered_map<std::string, std::shared_ptr<Scene>> m_MapOfScenes;
+
+		
 
 	};
 }

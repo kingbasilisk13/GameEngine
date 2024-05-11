@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Renderer.h"
+
 #include "Scene.h"
 
 void dae::SceneManager::Update()
@@ -20,7 +21,7 @@ void dae::SceneManager::Render()
 	m_MapOfScenes[m_ActiveScene]->Render();
 }
 
-void dae::SceneManager::OpenSceneByName(std::string name)
+void dae::SceneManager::OpenSceneByName(const std::string& name)
 {
 	if(m_MapOfScenes.contains(name))
 	{
@@ -29,6 +30,11 @@ void dae::SceneManager::OpenSceneByName(std::string name)
 	}
 
 	std::cout << "error : no scene by the name of " << name << " was found.\n";
+}
+
+dae::Scene* dae::SceneManager::GetActiveScene()
+{
+	return m_MapOfScenes[m_ActiveScene].get();
 }
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)

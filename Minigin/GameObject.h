@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "Texture2D.h"
 #include "BaseComponent.h"
+#include <iostream>
 
 namespace dae
 {
@@ -14,7 +15,7 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		explicit GameObject();
+		explicit GameObject(std::string name);
 
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -50,14 +51,21 @@ namespace dae
 
 		[[nodiscard]] GameObject* GetChildAt(const int index)const { return m_Children[index]; }
 
-		void SetLocalPosition(const glm::vec3& position);
+		void SetLocalPosition(const glm::vec2& position);
 
-		glm::vec3 GetWorldPosition();
+		glm::vec2 GetWorldPosition();
 
 		void SetPositionDirty();
 
-		void Translate(glm::vec3 deltaMovement);
+		void Translate(glm::vec2 deltaMovement);
 #pragma endregion 
+
+		[[nodiscard]] bool IsPositionDirty() const
+		{
+			return m_PositionIsDirty;
+		}
+
+		std::string GetObjectName();
 		
 
 	private:
@@ -65,7 +73,10 @@ namespace dae
 
 		bool m_RemovalListIsDirty;
 
-		//every object should have a place in the game.
+		//todo: this could be replaced by a check if object is of type, but is good enough for now.
+		std::string m_ObjectName;
+
+		
 		//it has a local transform and a world transform
 		Transform m_LocalTransform{};
 		Transform m_WorldTransform{};
