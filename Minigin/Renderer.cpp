@@ -28,9 +28,9 @@ int GetOpenGLDriverIndex()
 
 void dae::Renderer::Init(SDL_Window* window)
 {
-	m_window = window;
-	m_renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED);
-	if (m_renderer == nullptr) 
+	m_Window = window;
+	m_Renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED);
+	if (m_Renderer == nullptr) 
 	{
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
@@ -47,12 +47,12 @@ void dae::Renderer::Init(SDL_Window* window)
 void dae::Renderer::Render() const
 {
 	const auto& color = GetBackgroundColor();
-	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
-	SDL_RenderClear(m_renderer);
+	SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
+	SDL_RenderClear(m_Renderer);
 
 	SceneManager::GetInstance().Render();
 
-	SDL_RenderFlush(m_renderer);
+	SDL_RenderFlush(m_Renderer);
 
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
@@ -62,7 +62,7 @@ void dae::Renderer::Render() const
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 
-	SDL_RenderPresent(m_renderer);
+	SDL_RenderPresent(m_Renderer);
 }
 
 void dae::Renderer::Destroy()
@@ -73,10 +73,10 @@ void dae::Renderer::Destroy()
 
 	//delete m_ImGuiObject;
 
-	if (m_renderer != nullptr)
+	if (m_Renderer != nullptr)
 	{
-		SDL_DestroyRenderer(m_renderer);
-		m_renderer = nullptr;
+		SDL_DestroyRenderer(m_Renderer);
+		m_Renderer = nullptr;
 	}
 }
 
@@ -151,14 +151,19 @@ void dae::Renderer::RenderTexture(
 
 }
 
-SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }
+SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_Renderer; }
 
 void dae::Renderer::DisplayRenderMap()
 {
 	for (auto& [zOrder, texture, sourceRect, destinationRect] : m_RenderMap | std::views::values)
 	{
-		SDL_RenderCopy(m_renderer, texture->GetSdlTexture(), &sourceRect, &destinationRect);
+		SDL_RenderCopy(m_Renderer, texture->GetSdlTexture(), &sourceRect, &destinationRect);
 	}
 
 	m_RenderMap.clear();
+}
+
+void dae::Renderer::GetWindowSize(int* width, int* height) const
+{
+	SDL_GetWindowSize(m_Window,width,height);
 }

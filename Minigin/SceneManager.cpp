@@ -1,39 +1,46 @@
 #include "SceneManager.h"
 
+#include <iostream>
+
 #include "Renderer.h"
 #include "Scene.h"
 
 void dae::SceneManager::Update()
 {
-	for(auto& scene : m_Scenes)
-	{
-		scene->Update();
-	}
-
-	
+	m_MapOfScenes[m_ActiveScene]->Update();
 }
 
 void dae::SceneManager::FixedUpdate()
 {
-	for (auto& scene : m_Scenes)
-	{
-		scene->FixedUpdate();
-	}
+	m_MapOfScenes[m_ActiveScene]->FixedUpdate();
 }
 
 void dae::SceneManager::Render()
 {
-	for (const auto& scene : m_Scenes)
+	m_MapOfScenes[m_ActiveScene]->Render();
+}
+
+void dae::SceneManager::OpenSceneByName(std::string name)
+{
+	if(m_MapOfScenes.contains(name))
 	{
-		scene->Render();
+		m_ActiveScene = name;
+		return;
 	}
 
-	Renderer::GetInstance().DisplayRenderMap();
+	std::cout << "error : no scene by the name of " << name << " was found.\n";
 }
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
-	m_Scenes.push_back(scene);
+
+	m_MapOfScenes[name] = scene;
+
+	if(m_ActiveScene.empty())
+	{
+		m_ActiveScene = name;
+	}
+
 	return *scene;
 }

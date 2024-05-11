@@ -3,26 +3,29 @@
 
 #include <algorithm>
 
-using namespace dae;
+#include "Renderer.h"
 
-unsigned int Scene::m_IdCounter = 0;
 
-Scene::Scene(std::string name)
+std::vector<std::shared_ptr<dae::GameObject>> dae::Scene::GetObjectsInScene() const
+{
+	return m_objects;
+}
+
+dae::Scene::Scene(std::string name)
 : m_ObjectAreDirty(false)
-, m_name(std::move(name))
+, m_Name(std::move(name))
 {}
 
 
+dae::Scene::~Scene() = default;
 
-Scene::~Scene() = default;
-
-void Scene::Add(std::shared_ptr<GameObject> object)
+void dae::Scene::Add(std::shared_ptr<GameObject> object)
 {
 	object->SetScene(this);
 	m_objects.emplace_back(std::move(object));
 }
 
-void Scene::Remove(GameObject* object)
+void dae::Scene::Remove(GameObject* object)
 {
 	if(object != nullptr)
 	{
@@ -38,12 +41,12 @@ void Scene::Remove(GameObject* object)
 	}
 }
 
-void Scene::RemoveAll()
+void dae::Scene::RemoveAll()
 {
 	m_objects.clear();
 }
 
-void Scene::Update()
+void dae::Scene::Update()
 {
 	for(const auto& object : m_objects)
 	{
@@ -64,7 +67,7 @@ void dae::Scene::FixedUpdate() const
 	}
 }
 
-void Scene::Render() const
+void dae::Scene::Render() const
 {
 	for (const auto& object : m_objects)
 	{
@@ -73,16 +76,11 @@ void Scene::Render() const
 	}
 
 	//todo: voeg hier een call naar de render singleton dat de buffer rendert.
-
+	Renderer::GetInstance().DisplayRenderMap();
 }
 
 void dae::Scene::HandleObjectRemoval()
 {
-	//this loop can be used if you want to set a dirty flag patern to say hey and object is removed. if you had a pointer to an object make shure it still is in the scene
-	/*for (const auto& component : m_Components) {
-		component->SetComponentDirty();
-	}*/
-
 	for (auto rawPtr : m_RemovalList) {
 		std::erase_if(m_objects, [&](std::shared_ptr<GameObject>& ptr)
 			{

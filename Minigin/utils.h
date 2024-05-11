@@ -2,6 +2,11 @@
 
 #include <vector>
 
+namespace dae
+{
+	struct Rectf;
+}
+
 //todo: vraag of het ok is om dit soort namespace te gebruiken
 namespace dae::utils
 {
@@ -15,17 +20,7 @@ namespace dae::utils
 	//	Vector2f normal;
 	//};
 
-	struct Rectf
-	{
-		Rectf();
-		explicit Rectf(float left, float bottom, float width, float height);
-
-		float left;
-		float bottom;
-		float width;
-		float height;
-
-	};
+	
 
 	float GetDistance(float x1, float y1, float x2, float y2);
 

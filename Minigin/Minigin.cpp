@@ -4,20 +4,14 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-
-//todo: this needs to be pimpled away in watever class it uses
-//#include <SDL_mixer.h>
 #include "Minigin.h"
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-
 #include "EngineTime.h"
-
 #include <chrono>
 #include <thread>
-
 #include "EventManager.h"
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
@@ -82,6 +76,7 @@ dae::Minigin::Minigin(const std::string &dataPath, int frameRate, float fixedTim
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 
+
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
@@ -111,9 +106,6 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 	
 	float lag{ 0.0f };
 
-	//tip: when debugging code it can be handy to clamp delta time so that when the code continues that delta time won't be too large.
-	// if (delta time > 1) delta time = 0.01f;
-
 	time.SetFixedTimeStep(m_FixedTimeStep);
 
 	
@@ -122,12 +114,6 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 	{
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 
-		//this code is meant for debugging. This enshures that stepping through the code does not cause to large of a time gap.
-		/*float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
-		if (deltaTime > 1) deltaTime = 0.01f;
-		time.ChangeDeltaTime(deltaTime);*/
-
-		//comment this code when using the debugging code.
 		time.ChangeDeltaTime(std::chrono::duration<float>(currentTime - lastTime).count());
 
 		lastTime = currentTime;
@@ -137,7 +123,8 @@ void dae::Minigin::Run(const std::function<void()>& load) const
 
 		while (lag >= m_FixedTimeStep)
 		{
-			sceneManager.FixedUpdate();
+			//todo: nog steeds opzoek naar een use case voor dit.
+			//sceneManager.FixedUpdate();
 			lag -= m_FixedTimeStep;
 		}
 		sceneManager.Update();

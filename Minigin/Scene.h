@@ -22,22 +22,20 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
+		std::vector < std::shared_ptr<GameObject>> GetObjectsInScene() const;
+
 	private: 
 		explicit Scene(std::string name);
 
 		bool m_ObjectAreDirty;
 
-		std::string m_name;
+		std::string m_Name;
 
 		std::vector <GameObject*> m_RemovalList{};
 
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
 
-		static unsigned int m_IdCounter;
-
-
 		void HandleObjectRemoval();
-
 	};
 
 }

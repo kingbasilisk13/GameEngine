@@ -199,6 +199,7 @@
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imstb_truetype.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="BoxComponent.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="ControllerInput.h" />
     <ClInclude Include="ControllerWrapper.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="MemoryTestImGui.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="NullSoundSystem.h" />
+    <ClInclude Include="Rectf.h" />
     <ClInclude Include="SdlSoundSystem.h" />
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="IObserver.h" />
@@ -241,6 +243,7 @@
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui_widgets.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="BoxComponent.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="ControllerWrapper.cpp" />
     <ClCompile Include="EventManager.cpp" />

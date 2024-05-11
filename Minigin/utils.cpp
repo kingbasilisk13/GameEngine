@@ -1,5 +1,7 @@
 #include "utils.h"
 
+#include "Rectf.h"
+
 float dae::utils::GetDistance(float x1, float y1, float x2, float y2)
 {
 	return (sqrtf((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));

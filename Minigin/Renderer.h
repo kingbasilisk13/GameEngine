@@ -54,18 +54,20 @@ namespace dae
 
 		[[nodiscard]] SDL_Renderer* GetSDLRenderer() const;
 
-		[[nodiscard]] const SDL_Color& GetBackgroundColor() const { return m_clearColor; }
+		[[nodiscard]] const SDL_Color& GetBackgroundColor() const { return m_ClearColor; }
 
-		void SetBackgroundColor(const SDL_Color& color) { m_clearColor = color; }
+		void SetBackgroundColor(const SDL_Color& color) { m_ClearColor = color; }
 
 		void DisplayRenderMap();
+
+		void GetWindowSize(int* width, int* height) const;
 
 	private:
 		
 
-		SDL_Renderer* m_renderer{};
-		SDL_Window* m_window{};
-		SDL_Color m_clearColor{};
+		SDL_Renderer* m_Renderer{};
+		SDL_Window* m_Window{};
+		SDL_Color m_ClearColor{};
 
 		std::multimap<int, RenderInfo> m_RenderMap;
 

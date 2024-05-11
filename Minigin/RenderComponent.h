@@ -34,6 +34,9 @@ namespace dae
 		//the part of the image that will be drawn.
 		void SetSourceValues(int x, int y, int width, int height);
 
+		//the part of the image that will be drawn.
+		void SetDestinationSize(int width, int height);
+
 
 	private:
 		bool m_SizeToContent;

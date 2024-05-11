@@ -78,3 +78,9 @@ void dae::RenderComponent::SetSourceValues(const int x, const int y, const int w
 	m_SourceWidth = width;
 	m_SourceHeight = height;
 }
+
+void dae::RenderComponent::SetDestinationSize(const int width, const int height)
+{
+	m_DestinationWidth = width;
+	m_DestinationHeight = height;
+}

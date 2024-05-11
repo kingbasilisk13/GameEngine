@@ -6,6 +6,7 @@
 
 #include <windows.h>
 
+#include "BoxComponent.h"
 #include "ControllerInput.h"
 
 #include "Minigin.h"
@@ -26,6 +27,7 @@
 #include "PlayerObserverComponent.h"
 #include "ReleaseButtonCommand.h"
 #include "RenderComponent.h"
+#include "Renderer.h"
 #include "ScoreCommand.h"
 #include "ScoreComponent.h"
 #include "SdlSoundSystem.h"
@@ -34,8 +36,7 @@
 #include "Transform.h"
 
 
-
-void InitializeGame()
+void InitializeMusic()
 {
 #if _DEBUG
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SdlSoundSystem>()));
@@ -73,75 +74,35 @@ void InitializeGame()
 	soundEffectList[21] = "21 Game Over.wav";
 	soundEffectList[22] = "22 High Score.wav";
 	soundEffectList[23] = "23 PlayerDeathSound.wav";
-	
+
 
 	musicList[3] = "03 In-Game Music.wav";
 	musicList[22] = "22 High Score.wav";
 	musicList[24] = "24 PlayerWalkMusic.wav";
-	
-
-	dae::ServiceLocator::GetSoundSystem().Initialize("../Data/Sound/", soundEffectList,musicList);
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
-
-	//background
-	auto go = std::make_shared<dae::GameObject>();
-	go->SetLocalPosition({0,0,0});
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), dae::ResourceManager::GetInstance().LoadTexture("background.tga")));
-	go->GetComponent<dae::RenderComponent>()->SetZOrder(-1);
-	scene.Add(go);
 
 
-	//logo
-	go = std::make_shared<dae::GameObject>();
-	go->SetLocalPosition({ 216.f, 180.f, 0.f });
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), dae::ResourceManager::GetInstance().LoadTexture("logo.tga")));
-	scene.Add(go);
+	dae::ServiceLocator::GetSoundSystem().Initialize("../Data/Sound/", soundEffectList, musicList);
+}
 
-
-	//title
-	go = std::make_shared<dae::GameObject>();
-	go->SetLocalPosition({ 80.f, 20.f, 0.f });
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), font, "Programming 4 Assignment"));
-	scene.Add(go);
-
-
-	//fps
-	go = std::make_shared<dae::GameObject>();
-	go->SetLocalPosition({});
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), font));
-	go->AddComponent(std::make_unique<FpsComponent>(go.get()));
-	scene.Add(go);
-
-
-	const auto pooka = std::make_shared<dae::GameObject>();
-	pooka->SetLocalPosition({ 216.f, 200.f, 0.f });
-	pooka->AddComponent(std::make_unique<dae::RenderComponent>
-		(
-			pooka.get(), 
-			dae::ResourceManager::GetInstance().LoadTexture("Pooka/Default.png")
-		)
-	);
-
-	pooka->AddComponent(std::make_unique<dae::StateComponent>
-		(
-			pooka.get(),
-			new PatrollingState()
-			)
-	);
-	scene.Add(pooka);
-
-
+void InitializePlayers(dae::Scene& scene)
+{
 	const float speedP1{ 100.f };
 	const float speedP2{ 200.f };
 
 
 	const auto player1 = std::make_shared<dae::GameObject>();
 	player1->SetLocalPosition({ 216.f, 180.f, 0.f });
-	player1->AddComponent(std::make_unique<dae::RenderComponent>(player1.get(), dae::ResourceManager::GetInstance().LoadTexture("DigDug0/Walking.png")));
+
+	player1->AddComponent(
+		std::make_unique<dae::RenderComponent>(
+			player1.get(), 
+			dae::ResourceManager::GetInstance().LoadTexture("DigDug0/Walking.png"
+			)
+		)
+	);
+
+
+
 	player1->AddComponent(std::make_unique<MovementComponent>(player1.get(), speedP1));
 	player1->AddComponent(std::make_unique<HealthComponent>(player1.get(), 3));
 	player1->AddComponent(std::make_unique<ScoreComponent>(player1.get()));
@@ -232,7 +193,7 @@ void InitializeGame()
 	player2->SetLocalPosition({ 216.f, 180.f, 0.f });
 
 	player2->AddComponent(std::make_unique<dae::RenderComponent>(
-		player2.get(), 
+		player2.get(),
 		dae::ResourceManager::GetInstance().LoadTexture("DigDug1/Walking.png")));
 
 	player2->AddComponent(std::make_unique<MovementComponent>(player2.get(), speedP2));
@@ -251,7 +212,7 @@ void InitializeGame()
 		0,
 		dae::ControllerInput::Gamepad_X,
 		dae::KeyState::Down
-		
+
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
@@ -321,9 +282,8 @@ void InitializeGame()
 		dae::ControllerInput::Gamepad_Dpad_Down,
 		dae::KeyState::Up
 	);
-	///////////////////
 
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 
 	//health display 1
 	const auto player1HealthObserver = std::make_shared<dae::GameObject>();
@@ -377,27 +337,185 @@ void InitializeGame()
 
 	player2->GetComponent<ScoreComponent>()->SubscribeToScoreChangedEvent(player2ScoreObserver->GetComponent<PlayerObserverComponent>());
 
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
+	
+}
+
+void InitializeStaticVisuals(dae::Scene& scene)
+{
+	//background
+	auto go = std::make_shared<dae::GameObject>();
+	go->SetLocalPosition({ 0,0,0 });
+	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), dae::ResourceManager::GetInstance().LoadTexture("background.tga")));
+	go->GetComponent<dae::RenderComponent>()->SetZOrder(-2);
+	scene.Add(go);
+
+
+	//logo
+	go = std::make_shared<dae::GameObject>();
+	go->SetLocalPosition({ 216.f, 180.f, 0.f });
+	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), dae::ResourceManager::GetInstance().LoadTexture("logo.tga")));
+	go->GetComponent<dae::RenderComponent>()->SetZOrder(-1);
+	scene.Add(go);
+
+
+	//title
+	go = std::make_shared<dae::GameObject>();
+	go->SetLocalPosition({ 80.f, 20.f, 0.f });
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), font, "Programming 4 Assignment"));
+	scene.Add(go);
+
+
+	//fps
+	go = std::make_shared<dae::GameObject>();
+	go->SetLocalPosition({});
+	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), font));
+	go->AddComponent(std::make_unique<FpsComponent>(go.get()));
+	scene.Add(go);
+
 
 	//controls display
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
+
 	const auto controlsDisplay1 = std::make_shared<dae::GameObject>();
 
 	controlsDisplay1->SetLocalPosition({ 0.f, 60.f, 0.f });
 
 	controlsDisplay1->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay1.get()));
 	controlsDisplay1->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay1.get(), font,
-	                                                                    "Using the D-Pad to move the yellow sprite and play walking music, X to inflict damage and play death sound, A and B To increase score."));
+		"Using the D-Pad to move the yellow sprite and play walking music, X to inflict damage and play death sound, A and B To increase score."));
 	scene.Add(controlsDisplay1);
 
-	
+
 	const auto controlsDisplay2 = std::make_shared<dae::GameObject>();
 
 	controlsDisplay2->SetLocalPosition({ 0.f, 90.f, 0.f });
 
 	controlsDisplay2->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay2.get()));
 	controlsDisplay2->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay2.get(), font,
-	                                                                    "Using WASD to move the blue sprite and play walking music, C to inflict damage and play death sound, Z and X To increase score."));
+		"Using WASD to move the blue sprite and play walking music, C to inflict damage and play death sound, Z and X To increase score."));
 	scene.Add(controlsDisplay2);
+}
+
+void InitializeEnemies(dae::Scene& scene)
+{
+	int width;
+	int height;
+
+	dae::Renderer::GetInstance().GetWindowSize(&width, &height);
+
+	width /= 2;
+	height /= 2;
+
+	const auto pooka = std::make_shared<dae::GameObject>();
+	pooka->SetLocalPosition({ width, height, 0.f });
+	pooka->AddComponent(std::make_unique<dae::RenderComponent>
+		(
+			pooka.get(),
+			dae::ResourceManager::GetInstance().LoadTexture("Pooka/Default.png")
+		)
+	);
+
+	const auto renderComponent = pooka->GetComponent<dae::RenderComponent>();
+
+	const auto pookaSize = dae::ResourceManager::GetInstance().LoadTexture("Pooka/Default.png")->GetSize();
+
+	renderComponent->SizeToContent(false);
+
+	renderComponent->SetDestinationSize(pookaSize.x / 2, pookaSize.y);
+
+	renderComponent->SetSourceValues(0, 0, pookaSize.x/2, pookaSize.y);
+
+
+	pooka->AddComponent(std::make_unique<dae::StateComponent>
+		(
+			pooka.get(),
+			new PatrollingState()
+		)
+	);
+
+	pooka->AddComponent(std::make_unique<dae::BoxComponent>
+		(
+			pooka.get(),
+			static_cast<float>(pookaSize.x / 2),
+			static_cast<float>(pookaSize.y)
+		)
+	);
+
+	scene.Add(pooka);
+}
+
+void InitializeGrid(dae::Scene& scene)
+{
+	
+
+	int width;
+	int height;
+
+	dae::Renderer::GetInstance().GetWindowSize(&width,&height);
+
+	const glm::ivec2 tileSize = dae::ResourceManager::GetInstance().LoadTexture("Tiles/WorldTile0.png")->GetSize();
+
+	width /= 2;
+	height /= 2;
+
+	for(int y = -2; y < 2; ++y)
+	{
+		for(int x = -3; x < 3; ++x)
+		{
+			if(y == 0 && (x > -2 && x < 2))
+			{
+				continue;
+			}
+
+			const auto tile = std::make_shared<dae::GameObject>();
+
+			tile->SetLocalPosition(
+				{
+					width + (x * tileSize.x),
+					height - ( y * tileSize.y),
+					0.f
+				}
+			);
+
+			tile->AddComponent(std::make_unique<dae::RenderComponent>
+				(
+					tile.get(),
+					dae::ResourceManager::GetInstance().LoadTexture("Tiles/WorldTile0.png")
+				)
+			);
+
+			
+
+			tile->AddComponent(std::make_unique<dae::BoxComponent>
+				(
+					tile.get(),
+					static_cast<float>(tileSize.x),
+					static_cast<float>(tileSize.y)
+				)
+			);
+			scene.Add(tile);
+		}
+	}
+}
+
+
+void InitializeGame()
+{
+	InitializeMusic();
+
+	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+
+	InitializePlayers(scene);
+
+	InitializeEnemies(scene);
+
+	InitializeStaticVisuals(scene);
+
+	InitializeGrid(scene);
 }
 
 int main(int, char* []) {
