@@ -3,18 +3,13 @@
 
 #include "IState.h"
 
-enum class Direction
-{
-	up,
-	right,
-	down,
-	left
-};
+//todo: remove enum and just use vector. also just change value in class itself, dont make new object of class.
+//todo: remove magic numbers.
 
 class PatrollingState final : public dae::IState
 {
 public:
-	PatrollingState(Direction direction, float timePassed = 0.f);
+	PatrollingState();
 
 	~PatrollingState() override;
 
@@ -35,10 +30,11 @@ public:
 private:
 	const float m_WanderTime = 10.f;
 
-	Direction m_Direction;
+	const float m_Speed = 10.f;
+
+	glm::vec2 m_Direction = {1,0};
 
 	float m_TimePassed = 0.f;
-
 
 	void Move(dae::GameObject* owner);
 

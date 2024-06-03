@@ -10,10 +10,7 @@
 #include "SceneManager.h"
 
 
-PatrollingState::PatrollingState(const Direction direction, const float timePassed)
-	: m_Direction(direction)
-	, m_TimePassed(timePassed)
-	, m_FuturePosition()
+PatrollingState::PatrollingState()
 {
 }
 
@@ -32,21 +29,23 @@ dae::IState* PatrollingState::Update(dae::GameObject* owner)
 
 	if(HitWall(owner))
 	{
+		m_FuturePosition = owner->GetWorldPosition();
 		//todo: this will cause problems because now there is 1 whole frame where the enemy does nothing.
-		switch (m_Direction)
+		if(m_Direction == glm::vec2{0,-1})
 		{
-		case Direction::up:
-			return new PatrollingState(Direction::right,m_TimePassed);
-			break;
-		case Direction::right:
-			return new PatrollingState(Direction::down, m_TimePassed);
-			break;
-		case Direction::down:
-			return new PatrollingState(Direction::left, m_TimePassed);
-			break;
-		case Direction::left:
-			return new PatrollingState(Direction::up, m_TimePassed);
-			break;
+			m_Direction = glm::vec2{ 1,0 };
+		}
+		else if(m_Direction == glm::vec2{ 1,0 })
+		{
+			m_Direction = glm::vec2{ 0,1 };
+		}
+		else if (m_Direction == glm::vec2{ 0,1 })
+		{
+			m_Direction = glm::vec2{ -1,0 };
+		}
+		else if (m_Direction == glm::vec2{ -1,0 })
+		{
+			m_Direction = glm::vec2{ 0,-1 };
 		}
 	}
 
@@ -75,36 +74,7 @@ void PatrollingState::OnExit()
 
 void PatrollingState::Move(dae::GameObject* owner)
 {
-	const float time = dae::EngineTime::GetInstance().GetDeltaTime();
-
-	const float speed = 10.f * time;
-
-	auto position = owner->GetWorldPosition();
-
-	glm::vec2 directionVector = {0,0};
-	switch (m_Direction)
-	{
-	case Direction::up:
-		directionVector = {0,-1};
-		break;
-	case Direction::right:
-		directionVector = { 1,0 };
-		break;
-	case Direction::down:
-		directionVector = { 0,1 };
-		break;
-	case Direction::left:
-		directionVector = { -1,0 };
-		break;
-	}
-
-	position.x += directionVector.x * speed;
-	position.y += directionVector.y * speed;
-
-	//todo: this can be solved using double buffer, but right now I do not know hot to implement it.
-	m_FuturePosition = position;
-
-	
+	m_FuturePosition = owner->GetWorldPosition() + (m_Direction * m_Speed *dae::EngineTime::GetInstance().GetDeltaTime());
 }
 
 bool PatrollingState::HitWall(dae::GameObject* owner) const

@@ -85,6 +85,11 @@ public:
     //pushes sound event to queue
     void PlaySoundEffect(const sound_id id, const float volume, const int numberOfLoops)
     {
+        if (m_AudioIsMuted)
+        {
+            return;
+        }
+
 	    if (const auto it = m_SoundEffectList.find(id); it == m_SoundEffectList.end()) 
         {
             return;
@@ -105,6 +110,11 @@ public:
 
     void PlayMusic(const sound_id id, const float volume, const int numberOfLoops)
     {
+        if (m_AudioIsMuted)
+        {
+            return;
+        }
+
 	    if (const auto it = m_MusicList.find(id); it == m_MusicList.end())
         {
             return;
@@ -140,10 +150,22 @@ public:
         Mix_HaltMusic();
         m_CurrentlyPlayingMusic = nullptr;
     }
-    
+
+    void ToggleAudioMute()
+    {
+        m_AudioIsMuted = !m_AudioIsMuted;
+
+        if (m_AudioIsMuted)
+        {
+            Mix_HaltMusic();
+            m_CurrentlyPlayingMusic = nullptr;
+        }
+    }
 
 private:
-    Mix_Music* m_CurrentlyPlayingMusic = nullptr;
+    bool m_AudioIsMuted = false;
+
+	Mix_Music* m_CurrentlyPlayingMusic = nullptr;
 
     std::jthread m_SoundThread;
 
@@ -230,6 +252,11 @@ void dae::SdlSoundSystem::ResumeMusic()
 void dae::SdlSoundSystem::StopMusic()
 {
     m_Pimpl->StopMusic();
+}
+
+void dae::SdlSoundSystem::ToggleAudioMute()
+{
+    m_Pimpl->ToggleAudioMute();
 }
 
 void dae::SdlSoundSystem::Initialize(const std::string dataPath, const std::map<int, std::string> soundEffectList, const std::map<int, std::string> musicList)

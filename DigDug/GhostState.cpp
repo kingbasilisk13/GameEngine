@@ -33,7 +33,7 @@ dae::IState* GhostState::Update(dae::GameObject* owner)
 			//todo: calculate optimal direction to reach player.
 
 
-			return new PatrollingState(Direction::up);
+			return new PatrollingState();
 		}
 	}
 

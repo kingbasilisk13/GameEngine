@@ -25,6 +25,8 @@ namespace dae
 
 		void StopMusic() override {}
 
+		void ToggleAudioMute() override {}
+
 		void Initialize(const std::string , const std::map<int, std::string> , const std::map<int, std::string> ) override{}
 	};
 }

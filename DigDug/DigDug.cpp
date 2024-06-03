@@ -33,8 +33,11 @@
 #include "SdlSoundSystem.h"
 #include "ServiceLocator.h"
 #include "StateComponent.h"
+#include "ToggleAudioCommand.h"
 #include "Transform.h"
 
+
+//todo: state moet beslisen naar waar het over gaat, event verandert de state niet. kan wel info geven.
 
 void InitializeMusic()
 {
@@ -84,12 +87,29 @@ void InitializeMusic()
 
 
 	dae::ServiceLocator::GetSoundSystem().Initialize("../Data/Sound/", soundEffectList, musicList);
+
+
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<ToggleAudioCommand>(),
+		SDL_SCANCODE_M,
+		dae::KeyState::Down
+	);
+
 }
 
 void InitializePlayers(dae::Scene& scene)
 {
+	int width;
+	int height;
+
+	dae::Renderer::GetInstance().GetWindowSize(&width, &height);
+
+	width /= 2;
+	height /= 2;
+
+
 	const float speedP1{ 100.f };
-	const float speedP2{ 200.f };
+	const float speedP2{ 100.f };
 
 
 	const auto player1 = std::make_shared<dae::GameObject>("player1");
@@ -102,6 +122,20 @@ void InitializePlayers(dae::Scene& scene)
 			)
 		)
 	);
+
+
+	const auto renderComponent = player1->GetComponent<dae::RenderComponent>();
+
+	const auto player1Size = dae::ResourceManager::GetInstance().LoadTexture("DigDug0/Walking.png")->GetSize();
+
+	renderComponent->SetZOrder(1);
+
+	renderComponent->SizeToContent(false);
+
+	renderComponent->SetDestinationSize(player1Size.x, player1Size.y*2);
+
+	renderComponent->SetSourceValues(0, 0, player1Size.x / 2, player1Size.y);
+
 
 
 
@@ -209,12 +243,14 @@ void InitializePlayers(dae::Scene& scene)
 
 	const auto scoreComponentP2 = player2->GetComponent<ScoreComponent>();
 
+
+	//todo: player controlles
+
 	dae::InputManager::GetInstance().AddControllerBinding(
 		std::make_unique<KillCommand>(healthComponentP2),
 		0,
 		dae::ControllerInput::Gamepad_X,
 		dae::KeyState::Down
-
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
@@ -342,66 +378,6 @@ void InitializePlayers(dae::Scene& scene)
 	
 }
 
-void InitializeStaticVisuals(dae::Scene& scene)
-{
-	//background
-	auto go = std::make_shared<dae::GameObject>("background");
-	go->SetLocalPosition({ 0,0});
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), dae::ResourceManager::GetInstance().LoadTexture("background.tga")));
-	go->GetComponent<dae::RenderComponent>()->SetZOrder(-2);
-	scene.Add(go);
-
-
-	//logo
-	go = std::make_shared<dae::GameObject>("logo");
-	go->SetLocalPosition({ 216.f, 180.f});
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get(), dae::ResourceManager::GetInstance().LoadTexture("logo.tga")));
-	go->GetComponent<dae::RenderComponent>()->SetZOrder(-1);
-	scene.Add(go);
-
-
-	//title
-	go = std::make_shared<dae::GameObject>("title");
-	go->SetLocalPosition({ 80.f, 20.f});
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), font, "Programming 4 Assignment"));
-	scene.Add(go);
-
-
-	//fps
-	go = std::make_shared<dae::GameObject>("fps");
-	go->SetLocalPosition({});
-	go->AddComponent(std::make_unique<dae::RenderComponent>(go.get()));
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go->AddComponent(std::make_unique<dae::TextComponent>(go.get(), font));
-	go->AddComponent(std::make_unique<FpsComponent>(go.get()));
-	scene.Add(go);
-
-
-	//controls display
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
-
-	const auto controlsDisplay1 = std::make_shared<dae::GameObject>("controlsDisplay1");
-
-	controlsDisplay1->SetLocalPosition({ 0.f, 60.f });
-
-	controlsDisplay1->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay1.get()));
-	controlsDisplay1->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay1.get(), font,
-		"Using the D-Pad to move the yellow sprite and play walking music, X to inflict damage and play death sound, A and B To increase score."));
-	scene.Add(controlsDisplay1);
-
-
-	const auto controlsDisplay2 = std::make_shared<dae::GameObject>("controlsDisplay2");
-
-	controlsDisplay2->SetLocalPosition({ 0.f, 90.f });
-
-	controlsDisplay2->AddComponent(std::make_unique<dae::RenderComponent>(controlsDisplay2.get()));
-	controlsDisplay2->AddComponent(std::make_unique<dae::TextComponent>(controlsDisplay2.get(), font,
-		"Using WASD to move the blue sprite and play walking music, C to inflict damage and play death sound, Z and X To increase score."));
-	scene.Add(controlsDisplay2);
-}
-
 void InitializeEnemies(dae::Scene& scene)
 {
 	int width;
@@ -437,7 +413,7 @@ void InitializeEnemies(dae::Scene& scene)
 	pooka->AddComponent(std::make_unique<dae::StateComponent>
 		(
 			pooka.get(),
-			new PatrollingState(Direction::left)
+			new PatrollingState()
 		)
 	);
 	float size = static_cast<float>(pookaSize.y);
@@ -455,7 +431,10 @@ void InitializeEnemies(dae::Scene& scene)
 
 void InitializeGrid(dae::Scene& scene)
 {
-	
+	//the grid is 12x12 with 1 layer of no tiles on top
+	//there are 4 layers to 1 level.
+
+	//this can be used to draw the basic grid. to add functionality read data from the level files.
 
 	int width;
 	int height;
@@ -464,16 +443,35 @@ void InitializeGrid(dae::Scene& scene)
 
 	const glm::ivec2 tileSize = dae::ResourceManager::GetInstance().LoadTexture("Tiles/WorldTile0.png")->GetSize();
 
-	width /= 2;
-	height /= 2;
+	width = (width /2) - (6* tileSize.x);
+	height = (height/ 2) +(6 * tileSize.x);
 
-	for(int y = -2; y < 2; ++y)
+	for(int y = 0; y < 12; ++y)
 	{
-		for(int x = -3; x < 3; ++x)
+		for(int x = 0; x < 12; ++x)
 		{
-			if(y == 0 && (x > -2 && x < 2))
+			/*if(y == 0 && (x > -2 && x < 2))
 			{
 				continue;
+			}*/
+
+			std::string texture = "";
+
+			if(y < 3)
+			{
+				texture = "Tiles/WorldTile3.png";
+			}
+			else if( y < 6)
+			{
+				texture = "Tiles/WorldTile2.png";
+			}
+			else if (y < 9)
+			{
+				texture = "Tiles/WorldTile1.png";
+			}
+			else
+			{
+				texture = "Tiles/WorldTile0.png";
 			}
 
 			const auto tile = std::make_shared<dae::GameObject>("tile");
@@ -488,11 +486,9 @@ void InitializeGrid(dae::Scene& scene)
 			tile->AddComponent(std::make_unique<dae::RenderComponent>
 				(
 					tile.get(),
-					dae::ResourceManager::GetInstance().LoadTexture("Tiles/WorldTile0.png")
+					dae::ResourceManager::GetInstance().LoadTexture(texture)
 				)
 			);
-
-			
 
 			tile->AddComponent(std::make_unique<dae::BoxComponent>
 				(
@@ -516,8 +512,6 @@ void InitializeGame()
 	InitializePlayers(scene);
 
 	InitializeEnemies(scene);
-
-	InitializeStaticVisuals(scene);
 
 	InitializeGrid(scene);
 }

@@ -26,6 +26,8 @@ namespace dae
 
 		virtual void StopMusic() = 0;
 
+		virtual void ToggleAudioMute() = 0;
+
 		virtual void Initialize(const std::string dataPath, const std::map<int, std::string> soundEffectList, const std::map<int, std::string> musicList) = 0;
 	};
 }

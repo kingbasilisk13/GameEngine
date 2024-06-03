@@ -49,6 +49,22 @@ void dae::LoggingSoundSystem::StopMusic()
 	std::cout << "STOP\n";
 }
 
+void dae::LoggingSoundSystem::ToggleAudioMute()
+{
+	m_RealSoundSystem->ToggleAudioMute();
+
+	m_AudioIsMuted = !m_AudioIsMuted;
+
+	if(m_AudioIsMuted)
+	{
+		std::cout << "MUTE ALL AUDIO\n";
+	}
+	else
+	{
+		std::cout << "UNMUTE ALL AUDIO\n";
+	}
+}
+
 void dae::LoggingSoundSystem::Initialize(const std::string dataPath, const std::map<int, std::string> soundEffectList, const std::map<int, std::string> musicList)
 {
 	m_SoundEffectList = soundEffectList;

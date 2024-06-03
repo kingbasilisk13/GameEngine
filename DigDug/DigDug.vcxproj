@@ -174,6 +174,7 @@
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="SetDirectionCommand.cpp" />
     <ClCompile Include="TimerComponent.cpp" />
+    <ClCompile Include="ToggleAudioCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FpsComponent.h" />
@@ -190,6 +191,7 @@
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="SetDirectionCommand.h" />
     <ClInclude Include="TimerComponent.h" />
+    <ClInclude Include="ToggleAudioCommand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
