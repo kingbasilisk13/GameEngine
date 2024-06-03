@@ -30,7 +30,7 @@ public:
 private:
 	const float m_WanderTime = 10.f;
 
-	const float m_Speed = 10.f;
+	const float m_Speed = 55.f;
 
 	glm::vec2 m_Direction = {1,0};
 

@@ -3,9 +3,7 @@
 #include "ISoundSystem.h"
 #include "ServiceLocator.h"
 
-ToggleAudioCommand::ToggleAudioCommand()
-{
-}
+ToggleAudioCommand::ToggleAudioCommand() = default;
 
 void ToggleAudioCommand::Execute()
 {

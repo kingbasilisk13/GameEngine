@@ -165,6 +165,7 @@
     <ClCompile Include="GridComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="KillCommand.cpp" />
+    <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="PatrollingState.cpp" />
     <ClCompile Include="PlayerObserverComponent.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="GridComponent.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="KillCommand.h" />
+    <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="PatrollingState.h" />
     <ClInclude Include="PlayerObserverComponent.h" />

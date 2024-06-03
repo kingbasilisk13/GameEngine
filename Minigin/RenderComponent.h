@@ -10,7 +10,16 @@ namespace dae
 	class RenderComponent final : public BaseComponent
 	{
 	public:
-		explicit RenderComponent(GameObject* gameObject, Texture2D* texture = nullptr);
+		explicit RenderComponent(
+			GameObject* gameObject, 
+			int zOrder,
+			int destinationWidth,
+			int destinationHeight,
+			int sourceX,
+			int sourceY,
+			int sourceWidth,
+			int sourceHeight,
+			Texture2D* texture = nullptr);
 
 		~RenderComponent() override = default;
 
@@ -25,22 +34,17 @@ namespace dae
 
 		void ChangeTexture(Texture2D* texture);
 
-		//when true draws the image using the size of the image.
-		void SizeToContent(const bool sizeToContent);
-
 		//the order in witch to draw the image. lower z = background, higher = foreground.
-		void SetZOrder(int zOrder);
+		void ChangeZOrder(int zOrder);
 
 		//the part of the image that will be drawn.
-		void SetSourceValues(int x, int y, int width, int height);
+		void ChangeSourceValues(int x, int y, int width, int height);
 
 		//the part of the image that will be drawn.
-		void SetDestinationSize(int width, int height);
+		void ChangeDestinationSize(int width, int height);
 
 
 	private:
-		bool m_SizeToContent;
-
 		int m_ZOrder;
 
 		int m_DestinationWidth;

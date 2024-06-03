@@ -51,7 +51,7 @@ void PrintSdlVersion()
 		version.major, version.minor, version.patch);
 }
 
-dae::Minigin::Minigin(const std::string &dataPath, int frameRate, float fixedTimeStep):
+dae::Minigin::Minigin(const std::string &dataPath, const int width, const int height, const int frameRate, const float fixedTimeStep):
 	m_FixedTimeStep( fixedTimeStep )
 {
 	m_FrameRate = static_cast<int>((1.f / abs(frameRate)) * 1000);
@@ -67,8 +67,8 @@ dae::Minigin::Minigin(const std::string &dataPath, int frameRate, float fixedTim
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
+		width,
+		height,
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 

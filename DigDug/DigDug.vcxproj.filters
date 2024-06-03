@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Characters\Enemies\Pooka\States">
       <UniqueIdentifier>{94699243-2062-4b9f-9bdf-d92aabbc02cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SelfMadeClasses">
+      <UniqueIdentifier>{ddfeed78-edea-4e51-bbde-1b2ba21587b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SelfMadeClasses">
+      <UniqueIdentifier>{94c1147a-d661-4a0d-be2d-585961517ff2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DigDug.cpp">
@@ -99,6 +105,9 @@
     <ClCompile Include="ToggleAudioCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
+    <ClCompile Include="LevelLoader.cpp">
+      <Filter>Source Files\SelfMadeClasses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KillCommand.h">
@@ -145,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="ToggleAudioCommand.h">
       <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelLoader.h">
+      <Filter>Header Files\SelfMadeClasses</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -53,10 +53,10 @@ dae::IState* PatrollingState::Update(dae::GameObject* owner)
 	const float time = dae::EngineTime::GetInstance().GetDeltaTime();
 	m_TimePassed += time;
 
-	if(m_TimePassed >= m_WanderTime)
+	/*if(m_TimePassed >= m_WanderTime)
 	{
 		return new GhostState();
-	}
+	}*/
 
 	owner->SetLocalPosition(m_FuturePosition);
 

@@ -1,0 +1,6 @@
+0 = empty
+1 = tile
+2 = rock
+3 = pooka
+4 = fygar
+5 = player

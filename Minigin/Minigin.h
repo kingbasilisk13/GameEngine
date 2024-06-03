@@ -7,7 +7,7 @@ namespace dae
 	class Minigin
 	{
 	public:
-		explicit Minigin(const std::string& dataPath, int frameRate = 60, float fixedTimeStep = 0.02f);
+		explicit Minigin(const std::string& dataPath, const int width, const int height, int frameRate = 60, float fixedTimeStep = 0.02f);
 		~Minigin();
 		void Run(const std::function<void()>& load) const;
 
