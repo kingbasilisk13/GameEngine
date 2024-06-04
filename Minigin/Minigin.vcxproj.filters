@@ -204,6 +204,9 @@
     <ClInclude Include="Rectf.h">
       <Filter>Header Files\Structs</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
@@ -309,6 +312,9 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="BoxComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>

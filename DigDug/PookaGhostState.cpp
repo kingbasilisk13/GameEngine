@@ -1,5 +1,6 @@
 #include "PookaGhostState.h"
 
+#include "AnimationComponent.h"
 #include "BoxComponent.h"
 #include "PookaWanderState.h"
 #include "Rectf.h"

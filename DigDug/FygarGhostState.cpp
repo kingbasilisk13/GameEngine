@@ -1,5 +1,6 @@
 #include "FygarGhostState.h"
 
+#include "AnimationComponent.h"
 #include "BoxComponent.h"
 #include "EngineTime.h"
 #include "FygarWanderState.h"
@@ -9,6 +10,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "utils.h"
+
 
 dae::IState* FygarGhostState::HandleInput(dae::GameObject* )
 {
@@ -40,7 +42,6 @@ dae::IState* FygarGhostState::Update(dae::GameObject* owner)
 void FygarGhostState::OnEnter(dae::GameObject* owner)
 {
 	owner->GetComponent<dae::RenderComponent>()->ChangeTexture(dae::ResourceManager::GetInstance().LoadTexture("Fygar/Ghost.png"));
-
 }
 
 void FygarGhostState::OnExit()

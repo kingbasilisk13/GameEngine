@@ -2,9 +2,6 @@
 #include "BaseComponent.h"
 #include "Texture2D.h"
 
-
-
-
 //a component that is part of the engine self, used to render text and textures.
 namespace dae
 {
@@ -18,8 +15,12 @@ namespace dae
 	struct RenderInfo
 	{
 		int zOrder = 0;
+
+		//will be replaced with position of owning object.
 		int destinationX = 0;
+		//will be replaced with position of owning object.
 		int destinationY = 0;
+
 		int destinationWidth = 0;
 		int destinationHeight = 0;
 		int sourceX = 0;
@@ -62,9 +63,16 @@ namespace dae
 		//the part of the image that will be drawn.
 		void ChangeDestinationSize(int width, int height);
 
+		void ChangeImageFlip(FlipImage imageFlip);
+
+		void ChangeAngle(float angle);
+
+		RenderInfo GetRenderInfo() const;
 
 	private:
 		RenderInfo m_RenderInfo;
+
+		glm::vec2 m_OwnerPosition;
 
 		void ShiftToCenter();
 	};

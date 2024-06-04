@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdexcept>
 
+#include "AnimationComponent.h"
 #include "BoxComponent.h"
 #include "ControllerInput.h"
 #include "FygarWanderState.h"
@@ -186,6 +187,21 @@ void LevelLoader::AddTunnel(const int x, const int y, const bool dugOut) const
 		renderInfo.imageFlip = dae::FlipImage::None;
 
 		tunnel->AddComponent(std::make_unique<dae::RenderComponent>(tunnel.get(), renderInfo));
+
+		/*renderInfo.zOrder = 1;
+		renderInfo.destinationX = static_cast<int>(position.x);
+		renderInfo.destinationY = static_cast<int>(position.y);
+		renderInfo.destinationWidth = size.x * m_Scale;
+		renderInfo.destinationHeight = size.y * m_Scale;
+		renderInfo.sourceX = 0;
+		renderInfo.sourceY = 0;
+		renderInfo.sourceWidth = size.x;
+		renderInfo.sourceHeight = size.y;
+		renderInfo.angle = 90;
+		renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("DiggedArea.png");
+		renderInfo.imageFlip = dae::FlipImage::None;
+
+		tunnel->AddComponent(std::make_unique<dae::RenderComponent>(tunnel.get(), renderInfo));*/
 	}
 	else
 	{
@@ -244,6 +260,12 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 	renderInfo.imageFlip = dae::FlipImage::None;
 
 	player1->AddComponent(std::make_unique<dae::RenderComponent>(player1.get(), renderInfo));
+
+	player1->AddComponent(std::make_unique<dae::AnimationComponent>(
+		player1.get(),
+		0.5f,
+		1,
+		2));
 
 	player1->AddComponent(std::make_unique<MovementComponent>(player1.get(), speed));
 	player1->AddComponent(std::make_unique<HealthComponent>(player1.get(), 3));
@@ -420,21 +442,22 @@ void LevelLoader::AddPooka(const int x, const int y) const
 
 	pooka->AddComponent(std::make_unique<dae::RenderComponent>(pooka.get(), renderInfo));
 
+	pooka->AddComponent(std::make_unique<dae::AnimationComponent>(
+		pooka.get(),
+		0.5f,
+		1,
+		2));
 
-	pooka->AddComponent(std::make_unique<dae::StateComponent>
-		(
-			pooka.get(),
-			new PookaWanderState()
-		)
-	);
+
+	pooka->AddComponent(std::make_unique<dae::StateComponent>(pooka.get(),	new PookaWanderState()));
 
 	float size = static_cast<float>(pookaSize.y);
 
 	pooka->AddComponent(std::make_unique<dae::BoxComponent>
 		(
 			pooka.get(),
-			size,
-			size
+			(size* m_Scale)-5,
+			(size* m_Scale)-5
 		)
 	);
 
@@ -468,6 +491,11 @@ void LevelLoader::AddFygar(const int x, const int y) const
 
 	fygar->AddComponent(std::make_unique<dae::RenderComponent>(fygar.get(), renderInfo));
 
+	fygar->AddComponent(std::make_unique<dae::AnimationComponent>(
+		fygar.get(),
+		0.5f,
+		1,
+		2));
 	
 
 	fygar->AddComponent(std::make_unique<dae::StateComponent>

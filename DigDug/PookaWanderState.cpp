@@ -29,11 +29,14 @@ dae::IState* PookaWanderState::Update(dae::GameObject* owner)
 
 	if(HitWall(owner))
 	{
+		auto renderer = owner->GetComponent<dae::RenderComponent>();
+		//up->right->down->left->up ....
 		m_FuturePosition = owner->GetWorldPosition();
 		//todo: this will cause problems because now there is 1 whole frame where the enemy does nothing.
 		if(m_Direction == glm::vec2{0,-1})
 		{
 			m_Direction = glm::vec2{ 1,0 };
+			renderer->ChangeImageFlip(dae::FlipImage::None);
 		}
 		else if(m_Direction == glm::vec2{ 1,0 })
 		{
@@ -42,10 +45,12 @@ dae::IState* PookaWanderState::Update(dae::GameObject* owner)
 		else if (m_Direction == glm::vec2{ 0,1 })
 		{
 			m_Direction = glm::vec2{ -1,0 };
+			renderer->ChangeImageFlip(dae::FlipImage::Horizontaly);
 		}
 		else if (m_Direction == glm::vec2{ -1,0 })
 		{
 			m_Direction = glm::vec2{ 0,-1 };
+			
 		}
 	}
 

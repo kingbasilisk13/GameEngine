@@ -67,6 +67,18 @@
     <Filter Include="Header Files\Characters\Enemies\Fygar\States">
       <UniqueIdentifier>{a826275f-f3e8-414e-8031-58f9180f69d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Characters\DigDug">
+      <UniqueIdentifier>{7188550a-8afc-4897-97ec-1b052859efad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters\DigDug">
+      <UniqueIdentifier>{d4316699-cd28-4f41-800b-7ca2f96ce28f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters\DigDug\States">
+      <UniqueIdentifier>{ca43494a-bd72-4f3e-9890-ebea211e0610}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters\DigDug\States">
+      <UniqueIdentifier>{a28133f1-74d6-4020-93b0-b10f63a52428}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DigDug.cpp">

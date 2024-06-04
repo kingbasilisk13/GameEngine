@@ -90,14 +90,11 @@ SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_Renderer; }
 
 void dae::Renderer::DisplayRenderMap()
 {
-	//point around wich image is rotated.
-	const SDL_Point center{ 0,0 };
-
 	for (auto& info : m_RenderMap | std::views::values)
 	{
 		SDL_Rect dst{};
-		dst.x = info.destinationX;
-		dst.y = info.destinationY;
+		dst.x = info.destinationX - (info.destinationWidth/2);
+		dst.y = info.destinationY - (info.destinationHeight/2);
 		dst.w = info.destinationWidth;
 		dst.h = info.destinationHeight;
 
@@ -110,13 +107,13 @@ void dae::Renderer::DisplayRenderMap()
 		switch (info.imageFlip)
 		{
 		case FlipImage::None:
-			SDL_RenderCopyEx(m_Renderer, info.textureToRender->GetSdlTexture(), &source, &dst, info.angle, &center, SDL_FLIP_NONE);
+			SDL_RenderCopyEx(m_Renderer, info.textureToRender->GetSdlTexture(), &source, &dst, info.angle, NULL, SDL_FLIP_NONE);
 			break;
 		case FlipImage::Horizontaly:
-			SDL_RenderCopyEx(m_Renderer, info.textureToRender->GetSdlTexture(), &source, &dst, info.angle, &center, SDL_FLIP_HORIZONTAL);
+			SDL_RenderCopyEx(m_Renderer, info.textureToRender->GetSdlTexture(), &source, &dst, info.angle, NULL, SDL_FLIP_HORIZONTAL);
 			break;
 		case FlipImage::Verticaly:
-			SDL_RenderCopyEx(m_Renderer, info.textureToRender->GetSdlTexture(), &source, &dst, info.angle, &center, SDL_FLIP_VERTICAL);
+			SDL_RenderCopyEx(m_Renderer, info.textureToRender->GetSdlTexture(), &source, &dst, info.angle, NULL, SDL_FLIP_VERTICAL);
 			break;
 		}
 	}

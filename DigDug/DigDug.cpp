@@ -106,7 +106,9 @@ void InitializeGame()
 
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
-	std::unique_ptr<LevelLoader> test = std::make_unique<LevelLoader>(&scene,"../Data/Levels/L1_2.txt");
+	std::unique_ptr<LevelLoader> test = std::make_unique<LevelLoader>(&scene,"../Data/Levels/L1_1.txt");
+
+	//dae::Renderer::GetInstance().SetBackgroundColor(SDL_Color{0,0,151,225});
 
 }
 
@@ -114,8 +116,6 @@ int main(int, char* []) {
 
 	//todo: alle textures moeten groter gezet worden. 2maal zo groot.
 	dae::Minigin engine("../Data/", 512, 448);
-
-	//const auto size = dae::ResourceManager::GetInstance().LoadTexture("../Data/HighScoreScreen/Background.png")->GetSize();
 
 	engine.Run(InitializeGame);
 	return 0;
