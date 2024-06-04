@@ -47,8 +47,10 @@ dae::Rectf dae::BoxComponent::ReCalculateBox(const glm::vec2 center, const float
 	result.width = width;
 	result.height = height;
 
-	result.left = center.x;
-	result.top = center.y;
+
+	//re calculate the position so it is the actual top left corner and not the center.
+	result.left = center.x - (width / 2);
+	result.top = center.y - (height / 2);
 
 	return result;
 }

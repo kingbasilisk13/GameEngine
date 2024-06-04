@@ -6,12 +6,12 @@
 //todo: remove enum and just use vector. also just change value in class itself, dont make new object of class.
 //todo: remove magic numbers.
 
-class PatrollingState final : public dae::IState
+class PookaWanderState final : public dae::IState
 {
 public:
-	PatrollingState();
+	PookaWanderState();
 
-	~PatrollingState() override;
+	~PookaWanderState() override;
 
 	IState* HandleInput(dae::GameObject* owner) override;
 
@@ -21,14 +21,16 @@ public:
 	void OnExit() override;
 
 
-	PatrollingState(const PatrollingState& other) = delete;
-	PatrollingState(PatrollingState&& other) = delete;
+	PookaWanderState(const PookaWanderState& other) = delete;
+	PookaWanderState(PookaWanderState&& other) = delete;
 
-	PatrollingState& operator=(const PatrollingState& other) = delete;
-	PatrollingState& operator=(PatrollingState&& other) = delete;
+	PookaWanderState& operator=(const PookaWanderState& other) = delete;
+	PookaWanderState& operator=(PookaWanderState&& other) = delete;
 
 private:
-	const float m_WanderTime = 10.f;
+	const int m_MinWanderTime = 10;
+	const int m_MaxWanderTime = 20;
+	float m_WanderTime;
 
 	const float m_Speed = 55.f;
 

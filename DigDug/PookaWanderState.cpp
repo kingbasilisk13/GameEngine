@@ -1,29 +1,29 @@
-#include "PatrollingState.h"
+#include "PookaWanderState.h"
 
 #include "BoxComponent.h"
 #include "EngineTime.h"
 #include "GameObject.h"
-#include "GhostState.h"
+#include "PookaGhostState.h"
 #include "RenderComponent.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "SceneManager.h"
 
 
-PatrollingState::PatrollingState()
+PookaWanderState::PookaWanderState()
+	: m_FuturePosition()
 {
+	m_WanderTime = static_cast<float>(rand() % (m_MaxWanderTime - m_MinWanderTime + 1) + m_MinWanderTime);
 }
 
-PatrollingState::~PatrollingState()
-{
-}
+PookaWanderState::~PookaWanderState() = default;
 
-dae::IState* PatrollingState::HandleInput(dae::GameObject* )
+dae::IState* PookaWanderState::HandleInput(dae::GameObject* )
 {
 	return nullptr;
 }
 
-dae::IState* PatrollingState::Update(dae::GameObject* owner)
+dae::IState* PookaWanderState::Update(dae::GameObject* owner)
 {
 	Move(owner);
 
@@ -53,31 +53,31 @@ dae::IState* PatrollingState::Update(dae::GameObject* owner)
 	const float time = dae::EngineTime::GetInstance().GetDeltaTime();
 	m_TimePassed += time;
 
-	/*if(m_TimePassed >= m_WanderTime)
+	if(m_TimePassed >= m_WanderTime)
 	{
-		return new GhostState();
-	}*/
+		return new PookaGhostState();
+	}
 
 	owner->SetLocalPosition(m_FuturePosition);
 
 	return nullptr;
 }
 
-void PatrollingState::OnEnter(dae::GameObject* owner)
+void PookaWanderState::OnEnter(dae::GameObject* owner)
 {
 	owner->GetComponent<dae::RenderComponent>()->ChangeTexture(dae::ResourceManager::GetInstance().LoadTexture("Pooka/Default.png"));
 }
 
-void PatrollingState::OnExit()
+void PookaWanderState::OnExit()
 {
 }
 
-void PatrollingState::Move(dae::GameObject* owner)
+void PookaWanderState::Move(dae::GameObject* owner)
 {
 	m_FuturePosition = owner->GetWorldPosition() + (m_Direction * m_Speed *dae::EngineTime::GetInstance().GetDeltaTime());
 }
 
-bool PatrollingState::HitWall(dae::GameObject* owner) const
+bool PookaWanderState::HitWall(dae::GameObject* owner) const
 {
 	const auto objects = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsInScene();
 

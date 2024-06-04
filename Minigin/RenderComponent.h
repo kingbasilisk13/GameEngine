@@ -3,23 +3,42 @@
 #include "Texture2D.h"
 
 
+
+
 //a component that is part of the engine self, used to render text and textures.
 namespace dae
 {
+	enum class FlipImage
+	{
+		None,
+		Horizontaly,
+		Verticaly
+	};
+
+	struct RenderInfo
+	{
+		int zOrder = 0;
+		int destinationX = 0;
+		int destinationY = 0;
+		int destinationWidth = 0;
+		int destinationHeight = 0;
+		int sourceX = 0;
+		int sourceY = 0;
+		int sourceWidth = 0;
+		int sourceHeight = 0;
+		float angle = 0;
+		Texture2D* textureToRender = nullptr;
+		FlipImage imageFlip = FlipImage::None;
+	};
+
+	
+
 	//a component that renders a texture on the same position as the game object.
 	class RenderComponent final : public BaseComponent
 	{
 	public:
 		explicit RenderComponent(
-			GameObject* gameObject, 
-			int zOrder,
-			int destinationWidth,
-			int destinationHeight,
-			int sourceX,
-			int sourceY,
-			int sourceWidth,
-			int sourceHeight,
-			Texture2D* texture = nullptr);
+			GameObject* gameObject, RenderInfo renderInfo);
 
 		~RenderComponent() override = default;
 
@@ -45,16 +64,8 @@ namespace dae
 
 
 	private:
-		int m_ZOrder;
+		RenderInfo m_RenderInfo;
 
-		int m_DestinationWidth;
-		int m_DestinationHeight;
-
-		int m_SourcePositionX;
-		int m_SourcePositionY;
-		int m_SourceWidth;
-		int m_SourceHeight;
-
-		Texture2D* m_Texture;
+		void ShiftToCenter();
 	};
 }

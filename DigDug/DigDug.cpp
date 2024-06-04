@@ -24,7 +24,7 @@
 #include "SetDirectionCommand.h"
 #include "MovementComponent.h"
 #include "NullSoundSystem.h"
-#include "PatrollingState.h"
+#include "PookaWanderState.h"
 #include "PlayerObserverComponent.h"
 #include "ReleaseButtonCommand.h"
 #include "RenderComponent.h"

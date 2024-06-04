@@ -7,17 +7,16 @@
 
 #include "BoxComponent.h"
 #include "ControllerInput.h"
+#include "FygarWanderState.h"
 #include "HealthComponent.h"
 #include "InputManager.h"
-#include "KillCommand.h"
-#include "PatrollingState.h"
+#include "PookaWanderState.h"
 #include "RenderComponent.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "StateComponent.h"
 #include "MovementComponent.h"
-#include "ScoreCommand.h"
 #include "ScoreComponent.h"
 #include "SetDirectionCommand.h"
 #include "ReleaseButtonCommand.h"
@@ -32,8 +31,8 @@ LevelLoader::LevelLoader(dae::Scene* scene, std::string levelToLoad)
 
 	m_TileSize *= m_Scale;
 
-	m_Dimensions.x = 0;
-	m_Dimensions.y = (height) - (m_TileSize.y * 12);
+	m_Dimensions.x = m_TileSize.x / 2;
+	m_Dimensions.y = (height) - (m_TileSize.y * 12) - (m_TileSize.y / 2);
 
 
 	ReadLevelFile(levelToLoad);
@@ -46,7 +45,7 @@ void LevelLoader::ReadLevelFile(const std::string& levelToLoad)
     std::ifstream file(levelToLoad);
 
     if (!file.is_open()) {
-        std::cerr << "Error opening file: " << levelToLoad << std::endl;
+        std::cerr << "Error opening file: " << levelToLoad << '\n';
         return;
     }
 
@@ -58,7 +57,7 @@ void LevelLoader::ReadLevelFile(const std::string& levelToLoad)
         lines.push_back(line);
     }
 
-    for(int y = 0; y < lines.size(); ++y)
+    for(int y = 0; y < static_cast<int>(lines.size()); ++y)
     {
 		int x = 0;
         for (char c : lines[y]) 
@@ -111,7 +110,7 @@ void LevelLoader::ReadLevelFile(const std::string& levelToLoad)
 
 void LevelLoader::AddTile(int x, int y) const
 {
-	std::string texture = "";
+	std::string texture;
 
 	if (y < 3)
 	{
@@ -134,27 +133,31 @@ void LevelLoader::AddTile(int x, int y) const
 
 	SetLocation(tile, x, y);
 
+	const auto position = tile->GetWorldPosition();
+
 	const auto size = dae::ResourceManager::GetInstance().LoadTexture(texture)->GetSize();
 
-	tile->AddComponent(std::make_unique<dae::RenderComponent>
-		(
-			tile.get(),
-			0,
-			m_TileSize.x,
-			m_TileSize.y,
-			0,
-			0,
-			size.x,
-			size.y,
-			dae::ResourceManager::GetInstance().LoadTexture(texture)
-		)
-	);
+	dae::RenderInfo renderInfo;
+	renderInfo.zOrder = 0;
+	renderInfo.destinationX = static_cast<int>(position.x);
+	renderInfo.destinationY = static_cast<int>(position.y);
+	renderInfo.destinationWidth = m_TileSize.x;
+	renderInfo.destinationHeight = m_TileSize.y;
+	renderInfo.sourceX = 0;
+	renderInfo.sourceY = 0;
+	renderInfo.sourceWidth = size.x;
+	renderInfo.sourceHeight = size.y;
+	renderInfo.angle = 0;
+	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture(texture);
+	renderInfo.imageFlip = dae::FlipImage::None;
+
+	tile->AddComponent(std::make_unique<dae::RenderComponent>(tile.get(), renderInfo));
 
 	m_Scene->Add(tile);
 }
 
 
-void LevelLoader::AddTunnel(int x, int y, bool dugOut) const
+void LevelLoader::AddTunnel(const int x, const int y, const bool dugOut) const
 {
 	const auto tunnel = std::make_shared<dae::GameObject>("tunnel");
 
@@ -162,46 +165,44 @@ void LevelLoader::AddTunnel(int x, int y, bool dugOut) const
 
 	const auto size = dae::ResourceManager::GetInstance().LoadTexture("DiggedArea.png")->GetSize();
 
+	const auto position = tunnel->GetWorldPosition();
+
+	dae::RenderInfo renderInfo;
+
 	if(dugOut)
 	{
-		tunnel->AddComponent(std::make_unique<dae::RenderComponent>
-			(
-				tunnel.get(),
-				1,
-				size.x * m_Scale,
-				size.y * m_Scale,
-				0,
-				0,
-				size.x,
-				size.y,
-				dae::ResourceManager::GetInstance().LoadTexture("DiggedArea.png")
-			)
-		);
 
-		/*tunnel->AddComponent(std::make_unique<dae::BoxComponent>
-			(
-				tunnel.get(),
-				static_cast<float>(0),
-				static_cast<float>(0)
-			)
-		);*/
+		renderInfo.zOrder = 1;
+		renderInfo.destinationX = static_cast<int>(position.x);
+		renderInfo.destinationY = static_cast<int>(position.y);
+		renderInfo.destinationWidth = size.x * m_Scale;
+		renderInfo.destinationHeight = size.y * m_Scale;
+		renderInfo.sourceX = 0;
+		renderInfo.sourceY = 0;
+		renderInfo.sourceWidth = size.x;
+		renderInfo.sourceHeight = size.y;
+		renderInfo.angle = 0;
+		renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("DiggedArea.png");
+		renderInfo.imageFlip = dae::FlipImage::None;
 
+		tunnel->AddComponent(std::make_unique<dae::RenderComponent>(tunnel.get(), renderInfo));
 	}
 	else
 	{
-		tunnel->AddComponent(std::make_unique<dae::RenderComponent>
-			(
-				tunnel.get(),
-				1,
-				m_TileSize.x * m_Scale,
-				m_TileSize.y * m_Scale,
-				0,
-				0,
-				0,
-				0,
-				dae::ResourceManager::GetInstance().LoadTexture("DiggedArea.png")
-			)
-		);
+		renderInfo.zOrder = 1;
+		renderInfo.destinationX = static_cast<int>(position.x);
+		renderInfo.destinationY = static_cast<int>(position.y);
+		renderInfo.destinationWidth = size.x * m_Scale;
+		renderInfo.destinationHeight = size.y * m_Scale;
+		renderInfo.sourceX = 0;
+		renderInfo.sourceY = 0;
+		renderInfo.sourceWidth = 0;
+		renderInfo.sourceHeight = 0;
+		renderInfo.angle = 0;
+		renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("DiggedArea.png");
+		renderInfo.imageFlip = dae::FlipImage::None;
+
+		tunnel->AddComponent(std::make_unique<dae::RenderComponent>(tunnel.get(), renderInfo));
 
 		tunnel->AddComponent(std::make_unique<dae::BoxComponent>
 			(
@@ -225,23 +226,24 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 
 	const auto player1Size = dae::ResourceManager::GetInstance().LoadTexture("DigDug0/Walking.png")->GetSize();
 
-	const int tempWidth = static_cast<int>(player1Size.x * 0.5f);
+	const int tempWidth = player1Size.x / 2;
 
-	player1->AddComponent(
-		std::make_unique<dae::RenderComponent>(
-			player1.get(),
-			2,
-			tempWidth * m_Scale, 
-			player1Size.y * m_Scale,
-			0,
-			0,
-			tempWidth, 
-			player1Size.y,
-			dae::ResourceManager::GetInstance().LoadTexture("DigDug0/Walking.png"
-			)
-		)
-	);
+	const auto position = player1->GetWorldPosition();
+	dae::RenderInfo renderInfo;
+	renderInfo.zOrder = 2;
+	renderInfo.destinationX = static_cast<int>(position.x);
+	renderInfo.destinationY = static_cast<int>(position.y);
+	renderInfo.destinationWidth = tempWidth * m_Scale;
+	renderInfo.destinationHeight = player1Size.y * m_Scale;
+	renderInfo.sourceX = 0;
+	renderInfo.sourceY = 0;
+	renderInfo.sourceWidth = tempWidth;
+	renderInfo.sourceHeight = player1Size.y;
+	renderInfo.angle = 0;
+	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("DigDug0/Walking.png");
+	renderInfo.imageFlip = dae::FlipImage::None;
 
+	player1->AddComponent(std::make_unique<dae::RenderComponent>(player1.get(), renderInfo));
 
 	player1->AddComponent(std::make_unique<MovementComponent>(player1.get(), speed));
 	player1->AddComponent(std::make_unique<HealthComponent>(player1.get(), 3));
@@ -314,21 +316,22 @@ void LevelLoader::AddPlayer2(const int x, const int y)
 
 	const int tempWidth = static_cast<int>(player2Size.x * 0.5f);
 
-	player2->AddComponent(
-		std::make_unique<dae::RenderComponent>(
-			player2.get(),
-			2,
-			tempWidth * m_Scale,
-			player2Size.y * m_Scale,
-			0,
-			0,
-			tempWidth,
-			player2Size.y,
-			dae::ResourceManager::GetInstance().LoadTexture("DigDug1/Walking.png"
-			)
-		)
-	);
+	const auto position = player2->GetWorldPosition();
+	dae::RenderInfo renderInfo{};
+	renderInfo.zOrder = 2;
+	renderInfo.destinationX = static_cast<int>(position.x);
+	renderInfo.destinationY = static_cast<int>(position.y);
+	renderInfo.destinationWidth = tempWidth * m_Scale;
+	renderInfo.destinationHeight = player2Size.y * m_Scale;
+	renderInfo.sourceX = 0;
+	renderInfo.sourceY = 0;
+	renderInfo.sourceWidth = tempWidth;
+	renderInfo.sourceHeight = player2Size.y;
+	renderInfo.angle = 0;
+	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("DigDug1/Walking.png");
+	renderInfo.imageFlip = dae::FlipImage::None;
 
+	player2->AddComponent(std::make_unique<dae::RenderComponent>(player2.get(), renderInfo));
 
 	player2->AddComponent(std::make_unique<MovementComponent>(player2.get(), speed));
 	player2->AddComponent(std::make_unique<HealthComponent>(player2.get(), 3));
@@ -400,36 +403,42 @@ void LevelLoader::AddPooka(const int x, const int y) const
 	const auto pookaSize = dae::ResourceManager::GetInstance().LoadTexture("Pooka/Default.png")->GetSize();
 	const int tempWidth = static_cast<int>(pookaSize.x * 0.5f);
 
-	pooka->AddComponent(std::make_unique<dae::RenderComponent>
-		(
-			pooka.get(),
-			2,
-			(tempWidth * m_Scale) - 2, 
-			(pookaSize.y * m_Scale) - 2,
-			0,
-			0,
-			tempWidth, 
-			pookaSize.y,
-			dae::ResourceManager::GetInstance().LoadTexture("Pooka/Default.png")
-		)
-	);
+	const auto position = pooka->GetWorldPosition();
+	dae::RenderInfo renderInfo{};
+	renderInfo.zOrder = 2;
+	renderInfo.destinationX = static_cast<int>(position.x);
+	renderInfo.destinationY = static_cast<int>(position.y);
+	renderInfo.destinationWidth = tempWidth * m_Scale;
+	renderInfo.destinationHeight = pookaSize.y * m_Scale;
+	renderInfo.sourceX = 0;
+	renderInfo.sourceY = 0;
+	renderInfo.sourceWidth = tempWidth;
+	renderInfo.sourceHeight = pookaSize.y;
+	renderInfo.angle = 0;
+	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("Pooka/Default.png");
+	renderInfo.imageFlip = dae::FlipImage::None;
+
+	pooka->AddComponent(std::make_unique<dae::RenderComponent>(pooka.get(), renderInfo));
+
 
 	pooka->AddComponent(std::make_unique<dae::StateComponent>
 		(
 			pooka.get(),
-			new PatrollingState()
+			new PookaWanderState()
 		)
 	);
+
 	float size = static_cast<float>(pookaSize.y);
 
 	pooka->AddComponent(std::make_unique<dae::BoxComponent>
 		(
 			pooka.get(),
-			(size * m_Scale) - 2,
-			(size * m_Scale) - 2
+			size,
+			size
 		)
 	);
 
+	
 	m_Scene->Add(pooka);
 }
 
@@ -442,26 +451,29 @@ void LevelLoader::AddFygar(const int x, const int y) const
 	const auto fygarSize = dae::ResourceManager::GetInstance().LoadTexture("Fygar/Default.png")->GetSize();
 	const int tempWidth = static_cast<int>(fygarSize.x * 0.5f);
 
-	fygar->AddComponent(std::make_unique<dae::RenderComponent>
-		(
-			fygar.get(),
-			2,
-			(tempWidth * m_Scale) - 2,
-			(fygarSize.y * m_Scale) - 2,
-			0,
-			0,
-			tempWidth, 
-			fygarSize.y,
-			dae::ResourceManager::GetInstance().LoadTexture("Fygar/Default.png")
-		)
-	);
+	const auto position = fygar->GetWorldPosition();
+	dae::RenderInfo renderInfo{};
+	renderInfo.zOrder = 2;
+	renderInfo.destinationX = static_cast<int>(position.x);
+	renderInfo.destinationY = static_cast<int>(position.y);
+	renderInfo.destinationWidth = tempWidth * m_Scale;
+	renderInfo.destinationHeight = fygarSize.y * m_Scale;
+	renderInfo.sourceX = 0;
+	renderInfo.sourceY = 0;
+	renderInfo.sourceWidth = tempWidth;
+	renderInfo.sourceHeight = fygarSize.y;
+	renderInfo.angle = 0;
+	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("Fygar/Default.png");
+	renderInfo.imageFlip = dae::FlipImage::None;
 
-	//todo: dont you just hate it when you need to repeat code.
+	fygar->AddComponent(std::make_unique<dae::RenderComponent>(fygar.get(), renderInfo));
+
+	
 
 	fygar->AddComponent(std::make_unique<dae::StateComponent>
 		(
 			fygar.get(),
-			new PatrollingState()
+			new FygarWanderState()
 		)
 	);
 	float size = static_cast<float>(fygarSize.y);
@@ -469,8 +481,8 @@ void LevelLoader::AddFygar(const int x, const int y) const
 	fygar->AddComponent(std::make_unique<dae::BoxComponent>
 		(
 			fygar.get(),
-			(size * m_Scale) - 2,
-			(size * m_Scale) - 2
+			size,
+			size
 		)
 	);
 
@@ -486,19 +498,22 @@ void LevelLoader::AddRock(const int x, const int y) const
 
 	const auto size = dae::ResourceManager::GetInstance().LoadTexture("Rock/RockDefault.png")->GetSize();
 
-	rock->AddComponent(std::make_unique<dae::RenderComponent>
-		(
-			rock.get(),
-			2,
-			size.x * m_Scale,
-			size.y * m_Scale,
-			0,
-			0,
-			size.x,
-			size.y,
-			dae::ResourceManager::GetInstance().LoadTexture("Rock/RockDefault.png")
-		)
-	);
+	const auto position = rock->GetWorldPosition();
+	dae::RenderInfo renderInfo{};
+	renderInfo.zOrder = 2;
+	renderInfo.destinationX = static_cast<int>(position.x);
+	renderInfo.destinationY = static_cast<int>(position.y);
+	renderInfo.destinationWidth = size.x * m_Scale;
+	renderInfo.destinationHeight = size.y * m_Scale;
+	renderInfo.sourceX = 0;
+	renderInfo.sourceY = 0;
+	renderInfo.sourceWidth = size.x;
+	renderInfo.sourceHeight = size.y;
+	renderInfo.angle = 0;
+	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("Rock/RockDefault.png");
+	renderInfo.imageFlip = dae::FlipImage::None;
+
+	rock->AddComponent(std::make_unique<dae::RenderComponent>(rock.get(), renderInfo));
 
 	rock->AddComponent(std::make_unique<dae::BoxComponent>
 		(

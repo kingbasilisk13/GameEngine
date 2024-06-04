@@ -1,30 +1,19 @@
 #include "RenderComponent.h"
 #include "Renderer.h"
 
-dae::RenderComponent::RenderComponent(
-	GameObject* gameObject, 
-	int zOrder,
-	int destinationWidth,
-	int destinationHeight,
-	int sourceX,
-	int sourceY,
-	int sourceWidth,
-	int sourceHeight,
-	Texture2D* texture)
+dae::RenderComponent::RenderComponent(GameObject* gameObject, RenderInfo renderInfo)
 	: BaseComponent(gameObject)
-	, m_ZOrder(zOrder)
-	, m_DestinationWidth(destinationWidth)
-	, m_DestinationHeight(destinationHeight)
-	, m_SourcePositionX(sourceX)
-	, m_SourcePositionY(sourceY)
-	, m_SourceWidth(sourceWidth)
-	, m_SourceHeight(sourceHeight)
-	, m_Texture(texture)
+	,m_RenderInfo(renderInfo)
 {
+	ShiftToCenter();
 }
 
 void dae::RenderComponent::Update()
 {
+	const auto position = GetOwningGameObject()->GetWorldPosition();
+	m_RenderInfo.destinationX = static_cast<int>(position.x);
+	m_RenderInfo.destinationY = static_cast<int>(position.y);
+	ShiftToCenter();
 }
 
 void dae::RenderComponent::FixedUpdate()
@@ -33,45 +22,44 @@ void dae::RenderComponent::FixedUpdate()
 
 void dae::RenderComponent::Render() const
 {
-	if (m_Texture != nullptr)
+	if (m_RenderInfo.textureToRender != nullptr)
 	{
-		const auto position = GetOwningGameObject()->GetWorldPosition();
+		
 
-		Renderer::GetInstance().RenderTexture(
-			m_ZOrder,
-			m_Texture,
-			static_cast<int>(position.x),
-			static_cast<int>(position.y),
-			m_DestinationWidth,
-			m_DestinationHeight,
-			m_SourcePositionX,
-			m_SourcePositionY,
-			m_SourceWidth,
-			m_SourceHeight
-		);
+		
+
+
+		//render component renders image in such a way that the center of the image alligns with the destination possition
+		Renderer::GetInstance().RenderTexture(m_RenderInfo);
 	}
 }
 
 void dae::RenderComponent::ChangeTexture(Texture2D* texture)
 {
-	m_Texture = texture;
+	m_RenderInfo.textureToRender = texture;
 }
 
 void dae::RenderComponent::ChangeZOrder(const int zOrder)
 {
-	m_ZOrder = zOrder;
+	m_RenderInfo.zOrder = zOrder;
 }
 
 void dae::RenderComponent::ChangeSourceValues(const int x, const int y, const int width, const int height)
 {
-	m_SourcePositionX = x;
-	m_SourcePositionY = y;
-	m_SourceWidth = width;
-	m_SourceHeight = height;
+	m_RenderInfo.sourceX = x;
+	m_RenderInfo.sourceY = y;
+	m_RenderInfo.sourceWidth = width;
+	m_RenderInfo.sourceHeight = height;
 }
 
 void dae::RenderComponent::ChangeDestinationSize(const int width, const int height)
 {
-	m_DestinationWidth = width;
-	m_DestinationHeight = height;
+	m_RenderInfo.destinationWidth = width;
+	m_RenderInfo.destinationHeight = height;
+}
+
+void dae::RenderComponent::ShiftToCenter()
+{
+	m_RenderInfo.destinationX = m_RenderInfo.destinationX - (m_RenderInfo.destinationWidth / 2);
+	m_RenderInfo.destinationY = m_RenderInfo.destinationY - (m_RenderInfo.destinationHeight / 2);
 }

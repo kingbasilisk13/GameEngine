@@ -55,6 +55,18 @@
     <Filter Include="Header Files\SelfMadeClasses">
       <UniqueIdentifier>{94c1147a-d661-4a0d-be2d-585961517ff2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Characters\Enemies\Fygar">
+      <UniqueIdentifier>{f132ad74-10a5-47d0-a424-4fd37f282969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters\Enemies\Fygar">
+      <UniqueIdentifier>{76c7f736-9063-4140-b9ef-1e3da43eb2aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters\Enemies\Fygar\States">
+      <UniqueIdentifier>{cc33d2e5-2112-4b1b-9363-cac6cd240b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters\Enemies\Fygar\States">
+      <UniqueIdentifier>{a826275f-f3e8-414e-8031-58f9180f69d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DigDug.cpp">
@@ -96,10 +108,10 @@
     <ClCompile Include="GridComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="PatrollingState.cpp">
+    <ClCompile Include="PookaWanderState.cpp">
       <Filter>Source Files\Characters\Enemies\Pooka\States</Filter>
     </ClCompile>
-    <ClCompile Include="GhostState.cpp">
+    <ClCompile Include="PookaGhostState.cpp">
       <Filter>Source Files\Characters\Enemies\Pooka\States</Filter>
     </ClCompile>
     <ClCompile Include="ToggleAudioCommand.cpp">
@@ -107,6 +119,12 @@
     </ClCompile>
     <ClCompile Include="LevelLoader.cpp">
       <Filter>Source Files\SelfMadeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="FygarGhostState.cpp">
+      <Filter>Source Files\Characters\Enemies\Fygar\States</Filter>
+    </ClCompile>
+    <ClCompile Include="FygarWanderState.cpp">
+      <Filter>Source Files\Characters\Enemies\Fygar\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,10 +164,10 @@
     <ClInclude Include="GridComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="PatrollingState.h">
+    <ClInclude Include="PookaWanderState.h">
       <Filter>Header Files\Characters\Enemies\Pooka\States</Filter>
     </ClInclude>
-    <ClInclude Include="GhostState.h">
+    <ClInclude Include="PookaGhostState.h">
       <Filter>Header Files\Characters\Enemies\Pooka\States</Filter>
     </ClInclude>
     <ClInclude Include="ToggleAudioCommand.h">
@@ -157,6 +175,12 @@
     </ClInclude>
     <ClInclude Include="LevelLoader.h">
       <Filter>Header Files\SelfMadeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="FygarGhostState.h">
+      <Filter>Header Files\Characters\Enemies\Fygar\States</Filter>
+    </ClInclude>
+    <ClInclude Include="FygarWanderState.h">
+      <Filter>Header Files\Characters\Enemies\Fygar\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

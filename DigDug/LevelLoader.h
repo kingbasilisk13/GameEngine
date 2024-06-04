@@ -28,6 +28,8 @@ public:
 private:
 	bool m_AlreadySpawnedP1 = false;
 
+	const int m_ReduceEnemyCollisionSize = 10;
+
 	dae::Scene* m_Scene;
 
 	glm::ivec2 m_TileSize;

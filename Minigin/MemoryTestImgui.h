@@ -11,7 +11,7 @@ constexpr int size2{ 99999 };
 
 namespace dae
 {
-	struct Transform
+	struct TransformTest
 	{
 		float matrix[16] = {
 			1,0,0,0,
@@ -23,14 +23,14 @@ namespace dae
 	class GameObject3D
 	{
 	public:
-		Transform transform{};
+		TransformTest transform{};
 		int ID{};
 	};
 
 	class GameObject3DAlt
 	{
 	public:
-		Transform* transform = new Transform();
+		TransformTest* transform = new TransformTest();
 		int ID{};
 
 		~GameObject3DAlt()

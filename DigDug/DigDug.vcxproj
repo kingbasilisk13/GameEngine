@@ -161,13 +161,15 @@
   <ItemGroup>
     <ClCompile Include="DigDug.cpp" />
     <ClCompile Include="FpsComponent.cpp" />
-    <ClCompile Include="GhostState.cpp" />
+    <ClCompile Include="FygarGhostState.cpp" />
+    <ClCompile Include="FygarWanderState.cpp" />
+    <ClCompile Include="PookaGhostState.cpp" />
     <ClCompile Include="GridComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="KillCommand.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
-    <ClCompile Include="PatrollingState.cpp" />
+    <ClCompile Include="PookaWanderState.cpp" />
     <ClCompile Include="PlayerObserverComponent.cpp" />
     <ClCompile Include="ReleaseButtonCommand.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
@@ -179,13 +181,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FpsComponent.h" />
-    <ClInclude Include="GhostState.h" />
+    <ClInclude Include="FygarGhostState.h" />
+    <ClInclude Include="FygarWanderState.h" />
+    <ClInclude Include="PookaGhostState.h" />
     <ClInclude Include="GridComponent.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="KillCommand.h" />
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="MovementComponent.h" />
-    <ClInclude Include="PatrollingState.h" />
+    <ClInclude Include="PookaWanderState.h" />
     <ClInclude Include="PlayerObserverComponent.h" />
     <ClInclude Include="ReleaseButtonCommand.h" />
     <ClInclude Include="RotatorComponent.h" />

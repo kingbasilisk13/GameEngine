@@ -1,25 +1,27 @@
-#include "GhostState.h"
+#include "FygarGhostState.h"
 
 #include "BoxComponent.h"
-#include "PatrollingState.h"
-#include "Rectf.h"
+#include "EngineTime.h"
+#include "FygarWanderState.h"
+#include "GameObject.h"
 #include "RenderComponent.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "SceneManager.h"
+#include "utils.h"
 
-dae::IState* GhostState::HandleInput(dae::GameObject* )
+dae::IState* FygarGhostState::HandleInput(dae::GameObject* )
 {
 	return nullptr;
 }
 
-dae::IState* GhostState::Update(dae::GameObject* owner)
+dae::IState* FygarGhostState::Update(dae::GameObject* owner)
 {
 	FindTarget();
 
 	Move(owner);
 
-	if(m_PassedTime < m_TimeDelay)
+	if (m_PassedTime < m_TimeDelay)
 	{
 		const float time = dae::EngineTime::GetInstance().GetDeltaTime();
 		m_PassedTime += time;
@@ -28,34 +30,30 @@ dae::IState* GhostState::Update(dae::GameObject* owner)
 	{
 		if (!IsOverlappingWall(owner))
 		{
-			glm::vec2 direction = m_Target - owner->GetWorldPosition();
-
-			//todo: calculate optimal direction to reach player.
-
-
-			return new PatrollingState();
+			return new FygarWanderState();
 		}
 	}
 
 	return nullptr;
 }
 
-void GhostState::OnEnter(dae::GameObject* owner)
+void FygarGhostState::OnEnter(dae::GameObject* owner)
 {
-	owner->GetComponent<dae::RenderComponent>()->ChangeTexture(dae::ResourceManager::GetInstance().LoadTexture("Pooka/Ghost.png"));
+	owner->GetComponent<dae::RenderComponent>()->ChangeTexture(dae::ResourceManager::GetInstance().LoadTexture("Fygar/Ghost.png"));
+
 }
 
-void GhostState::OnExit()
+void FygarGhostState::OnExit()
 {
 }
 
-void GhostState::FindTarget()
+void FygarGhostState::FindTarget()
 {
 	const auto objects = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsInScene();
 
-	for(const auto& object : objects)
+	for (const auto& object : objects)
 	{
-		if(object->GetObjectName() == "player1")
+		if (object->GetObjectName() == "player1")
 		{
 			m_Target = object->GetWorldPosition();
 			return;
@@ -63,11 +61,11 @@ void GhostState::FindTarget()
 	}
 }
 
-void GhostState::Move(dae::GameObject* owner)
+void FygarGhostState::Move(dae::GameObject* owner) const
 {
 	const float time = dae::EngineTime::GetInstance().GetDeltaTime();
 
-	const float speed = 10.f * time;
+	const float speed = m_Speed * time;
 
 	auto position = owner->GetWorldPosition();
 
@@ -78,7 +76,7 @@ void GhostState::Move(dae::GameObject* owner)
 	owner->SetLocalPosition(position);
 }
 
-bool GhostState::IsOverlappingWall(dae::GameObject* owner) const
+bool FygarGhostState::IsOverlappingWall(dae::GameObject* owner)
 {
 	const auto objects = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsInScene();
 
@@ -86,7 +84,7 @@ bool GhostState::IsOverlappingWall(dae::GameObject* owner) const
 
 	for (auto& object : objects)
 	{
-		if (object->GetObjectName() == "tile" && object->HasComponent<dae::BoxComponent>())
+		if (object->GetObjectName() == "tunnel" && object->HasComponent<dae::BoxComponent>())
 		{
 			dae::Rectf otherObject = object->GetComponent<dae::BoxComponent>()->GetBox();
 

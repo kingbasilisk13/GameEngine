@@ -9,6 +9,7 @@
 #include "backends/imgui_impl_sdl2.h"
 
 #include "MemoryTestImGui.h"
+#include "RenderComponent.h"
 #include "Texture2D.h"
 
 
@@ -80,86 +81,45 @@ void dae::Renderer::Destroy()
 	}
 }
 
-//draw a texture at a certain location with the dimensions of the image.
-void dae::Renderer::RenderTexture(const int zOrder, Texture2D* texture, const int x, const int y)
+void dae::Renderer::RenderTexture(RenderInfo renderInfo)
 {
-	const glm::ivec2 dimensions = texture->GetSize();
-
-	RenderTexture(
-		zOrder, 
-		texture,
-		x,
-		y,
-		dimensions.x,
-		dimensions.y,
-		0,
-		0,
-		dimensions.x,
-		dimensions.y
-	);
-
-}
-
-//draw a texture at a certain location with self chosen dimensions.
-void dae::Renderer::RenderTexture(const int zOrder, Texture2D* texture, const int x, const int y, const int width, const int height)
-{
-	const glm::ivec2 dimensions = texture->GetSize();
-
-	RenderTexture(
-		zOrder,
-		texture,
-		x,
-		y,
-		width,
-		height,
-		0,
-		0,
-		dimensions.x,
-		dimensions.y
-	);
-}
-
-
-void dae::Renderer::RenderTexture(
-	int zOrder,
-	Texture2D* texture,
-	int destinationX, 
-	int destinationY, 
-	int destinationWidth, 
-	int destinationHeight, 
-	int sourceX, 
-	int sourceY, 
-	int sourceWidth, 
-	int sourceHeight)
-{
-	SDL_Rect dst{};
-	dst.x = destinationX;
-	dst.y = destinationY;
-	dst.w = destinationWidth;
-	dst.h = destinationHeight;
-
-	SDL_Rect source{};
-	source.x = sourceX;
-	source.y = sourceY;
-	source.w = sourceWidth;
-	source.h = sourceHeight;
-
-
-	RenderInfo info{ zOrder,texture ,source, dst };
-
-	m_RenderMap.emplace(zOrder, info);
-
+	m_RenderMap.emplace(renderInfo.zOrder, renderInfo);
 }
 
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_Renderer; }
 
 void dae::Renderer::DisplayRenderMap()
 {
-	for (auto& [zOrder, texture, sourceRect, destinationRect] : m_RenderMap | std::views::values)
-	{
-		SDL_RenderCopy(m_Renderer, texture->GetSdlTexture(), &sourceRect, &destinationRect);
-	}
+	//point around wich image is rotated.
+	const SDL_Point center{ 0,0 };
 
+	for (auto& info : m_RenderMap | std::views::values)
+	{
+		SDL_Rect dst{};
+		dst.x = info.destinationX;
+		dst.y = info.destinationY;
+		dst.w = info.destinationWidth;
+		dst.h = info.destinationHeight;
+
+		SDL_Rect source{};
+		source.x = info.sourceX;
+		source.y = info.sourceY;
+		source.w = info.sourceWidth;
+		source.h = info.sourceHeight;
+
+		switch (info.imageFlip)
+		{
+		case FlipImage::None:
+			SDL_RenderCopyEx(m_Renderer, info.textureToRender->GetSdlTexture(), &source, &dst, info.angle, &center, SDL_FLIP_NONE);
+			break;
+		case FlipImage::Horizontaly:
+			SDL_RenderCopyEx(m_Renderer, info.textureToRender->GetSdlTexture(), &source, &dst, info.angle, &center, SDL_FLIP_HORIZONTAL);
+			break;
+		case FlipImage::Verticaly:
+			SDL_RenderCopyEx(m_Renderer, info.textureToRender->GetSdlTexture(), &source, &dst, info.angle, &center, SDL_FLIP_VERTICAL);
+			break;
+		}
+	}
 	m_RenderMap.clear();
 }
 
