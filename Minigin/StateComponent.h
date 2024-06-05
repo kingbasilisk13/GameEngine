@@ -22,6 +22,8 @@ namespace dae
 		void FixedUpdate() override;
 		void Render() const override;
 
+		IState* GetCurrentState() const;
+
 	private:
 		IState* m_CurrentState;
 

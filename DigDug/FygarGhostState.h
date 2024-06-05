@@ -10,8 +10,6 @@ public:
 	FygarGhostState() = default;
 	~FygarGhostState() override = default;
 
-	IState* HandleInput(dae::GameObject* owner) override;
-
 	IState* Update(dae::GameObject* owner) override;
 
 	void OnEnter(dae::GameObject* owner) override;
@@ -25,7 +23,7 @@ public:
 	FygarGhostState& operator=(FygarGhostState&& other) = delete;
 
 private:
-	glm::vec2 m_Target;
+	glm::vec2 m_Target{};
 
 	const float m_TimeDelay = 5.f;
 	const float m_Speed = 30.f;

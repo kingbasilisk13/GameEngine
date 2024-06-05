@@ -138,6 +138,24 @@
     <ClCompile Include="FygarWanderState.cpp">
       <Filter>Source Files\Characters\Enemies\Fygar\States</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerIdleState.cpp">
+      <Filter>Source Files\Characters\DigDug\States</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerWalkingState.cpp">
+      <Filter>Source Files\Characters\DigDug\States</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAttackingState.cpp">
+      <Filter>Source Files\Characters\DigDug\States</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDyingState.cpp">
+      <Filter>Source Files\Characters\DigDug\States</Filter>
+    </ClCompile>
+    <ClCompile Include="RegisterInputCommand.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchLevelCommand.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KillCommand.h">
@@ -193,6 +211,27 @@
     </ClInclude>
     <ClInclude Include="FygarWanderState.h">
       <Filter>Header Files\Characters\Enemies\Fygar\States</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerIdleState.h">
+      <Filter>Header Files\Characters\DigDug\States</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerWalkingState.h">
+      <Filter>Header Files\Characters\DigDug\States</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAttackingState.h">
+      <Filter>Header Files\Characters\DigDug\States</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDyingState.h">
+      <Filter>Header Files\Characters\DigDug\States</Filter>
+    </ClInclude>
+    <ClInclude Include="IPlayerStateBase.h">
+      <Filter>Header Files\Characters\DigDug\States</Filter>
+    </ClInclude>
+    <ClInclude Include="RegisterInputCommand.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchLevelCommand.h">
+      <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

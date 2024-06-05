@@ -34,3 +34,8 @@ void dae::StateComponent::FixedUpdate()
 void dae::StateComponent::Render() const
 {
 }
+
+dae::IState* dae::StateComponent::GetCurrentState() const
+{
+	return m_CurrentState;
+}

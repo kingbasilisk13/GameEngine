@@ -37,6 +37,11 @@ dae::Scene* dae::SceneManager::GetActiveScene()
 	return m_MapOfScenes[m_ActiveScene].get();
 }
 
+std::string dae::SceneManager::GetActiveSceneName()
+{
+	return m_ActiveScene;
+}
+
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));

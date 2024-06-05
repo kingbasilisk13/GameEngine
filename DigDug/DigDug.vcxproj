@@ -163,6 +163,10 @@
     <ClCompile Include="FpsComponent.cpp" />
     <ClCompile Include="FygarGhostState.cpp" />
     <ClCompile Include="FygarWanderState.cpp" />
+    <ClCompile Include="PlayerAttackingState.cpp" />
+    <ClCompile Include="PlayerDyingState.cpp" />
+    <ClCompile Include="PlayerIdleState.cpp" />
+    <ClCompile Include="PlayerWalkingState.cpp" />
     <ClCompile Include="PookaGhostState.cpp" />
     <ClCompile Include="GridComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
@@ -171,11 +175,13 @@
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="PookaWanderState.cpp" />
     <ClCompile Include="PlayerObserverComponent.cpp" />
+    <ClCompile Include="RegisterInputCommand.cpp" />
     <ClCompile Include="ReleaseButtonCommand.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreCommand.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="SetDirectionCommand.cpp" />
+    <ClCompile Include="SwitchLevelCommand.cpp" />
     <ClCompile Include="TimerComponent.cpp" />
     <ClCompile Include="ToggleAudioCommand.cpp" />
   </ItemGroup>
@@ -183,6 +189,11 @@
     <ClInclude Include="FpsComponent.h" />
     <ClInclude Include="FygarGhostState.h" />
     <ClInclude Include="FygarWanderState.h" />
+    <ClInclude Include="IPlayerStateBase.h" />
+    <ClInclude Include="PlayerAttackingState.h" />
+    <ClInclude Include="PlayerDyingState.h" />
+    <ClInclude Include="PlayerIdleState.h" />
+    <ClInclude Include="PlayerWalkingState.h" />
     <ClInclude Include="PookaGhostState.h" />
     <ClInclude Include="GridComponent.h" />
     <ClInclude Include="HealthComponent.h" />
@@ -191,11 +202,13 @@
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="PookaWanderState.h" />
     <ClInclude Include="PlayerObserverComponent.h" />
+    <ClInclude Include="RegisterInputCommand.h" />
     <ClInclude Include="ReleaseButtonCommand.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="SetDirectionCommand.h" />
+    <ClInclude Include="SwitchLevelCommand.h" />
     <ClInclude Include="TimerComponent.h" />
     <ClInclude Include="ToggleAudioCommand.h" />
   </ItemGroup>

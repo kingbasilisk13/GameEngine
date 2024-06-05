@@ -19,11 +19,6 @@ FygarWanderState::FygarWanderState(): m_FuturePosition()
 
 FygarWanderState::~FygarWanderState() = default;
 
-dae::IState* FygarWanderState::HandleInput(dae::GameObject*)
-{
-	return nullptr;
-}
-
 dae::IState* FygarWanderState::Update(dae::GameObject* owner)
 {
 	Move(owner);

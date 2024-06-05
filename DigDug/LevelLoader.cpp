@@ -18,6 +18,8 @@
 #include "Scene.h"
 #include "StateComponent.h"
 #include "MovementComponent.h"
+#include "PlayerWalkingState.h"
+#include "RegisterInputCommand.h"
 #include "ScoreComponent.h"
 #include "SetDirectionCommand.h"
 #include "ReleaseButtonCommand.h"
@@ -268,12 +270,23 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 		2));
 
 	player1->AddComponent(std::make_unique<MovementComponent>(player1.get(), speed));
+
 	player1->AddComponent(std::make_unique<HealthComponent>(player1.get(), 3));
+
+	player1->AddComponent(std::make_unique<dae::StateComponent>(player1.get(), new PlayerWalkingState(PlayerInput::right, dae::FlipImage::None)));
+
+	//todo: may need to remove this component.
 	player1->AddComponent(std::make_unique<ScoreComponent>(player1.get()));
+
 	m_Scene->Add(player1);
 
 	const auto component = player1->GetComponent<MovementComponent>();
 
+	//todo: problem. because each level is loaded in at the same time. the key bindings get added each time.
+	//todo: maybe it is better to seperate the keybindings in 2 groups. general key bindings. (aka mute button) and player specific. aka set these in the states
+
+
+#pragma region movement
 	dae::InputManager::GetInstance().AddKeyBinding(
 		std::make_unique<SetDirectionCommand>(component, glm::vec3(1, 0, 0)),
 		SDL_SCANCODE_D,
@@ -297,30 +310,36 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 		SDL_SCANCODE_S,
 		dae::KeyState::Pressed
 	);
+#pragma endregion movement
 
+
+	const auto stateComponent = player1->GetComponent<dae::StateComponent>();
+
+#pragma region input
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<ReleaseButtonCommand>(),
+		std::make_unique<RegisterInputCommand>(stateComponent,PlayerInput::right),
 		SDL_SCANCODE_D,
-		dae::KeyState::Up
+		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<ReleaseButtonCommand>(),
+		std::make_unique<RegisterInputCommand>(stateComponent, PlayerInput::left),
 		SDL_SCANCODE_A,
-		dae::KeyState::Up
+		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<ReleaseButtonCommand>(),
+		std::make_unique<RegisterInputCommand>(stateComponent, PlayerInput::up),
 		SDL_SCANCODE_W,
-		dae::KeyState::Up
+		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<ReleaseButtonCommand>(),
+		std::make_unique<RegisterInputCommand>(stateComponent, PlayerInput::down),
 		SDL_SCANCODE_S,
-		dae::KeyState::Up
+		dae::KeyState::Pressed
 	);
+#pragma endregion input
 
 	m_AlreadySpawnedP1 = true;
 }

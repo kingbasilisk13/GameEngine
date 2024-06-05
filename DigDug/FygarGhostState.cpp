@@ -11,12 +11,6 @@
 #include "SceneManager.h"
 #include "utils.h"
 
-
-dae::IState* FygarGhostState::HandleInput(dae::GameObject* )
-{
-	return nullptr;
-}
-
 dae::IState* FygarGhostState::Update(dae::GameObject* owner)
 {
 	FindTarget();

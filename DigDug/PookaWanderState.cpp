@@ -18,11 +18,6 @@ PookaWanderState::PookaWanderState()
 
 PookaWanderState::~PookaWanderState() = default;
 
-dae::IState* PookaWanderState::HandleInput(dae::GameObject* )
-{
-	return nullptr;
-}
-
 dae::IState* PookaWanderState::Update(dae::GameObject* owner)
 {
 	Move(owner);

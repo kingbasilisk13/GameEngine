@@ -10,8 +10,6 @@ public:
 	PookaGhostState() = default;
 	~PookaGhostState() override = default;
 
-	IState* HandleInput(dae::GameObject* owner) override;
-
 	IState* Update(dae::GameObject* owner) override;
 
 	void OnEnter(dae::GameObject* owner) override;

@@ -9,11 +9,6 @@
 #include "Scene.h"
 #include "SceneManager.h"
 
-dae::IState* PookaGhostState::HandleInput(dae::GameObject* )
-{
-	return nullptr;
-}
-
 dae::IState* PookaGhostState::Update(dae::GameObject* owner)
 {
 	FindTarget();

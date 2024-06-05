@@ -27,4 +27,7 @@ private:
 
 	glm::vec3 m_Direction{};
 
+	int m_WindowWidth;
+	int m_WindowHeight;
+
 };

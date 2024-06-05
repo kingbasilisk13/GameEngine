@@ -28,6 +28,7 @@ namespace dae
 		void OpenSceneByName(const std::string& name);
 
 		Scene* GetActiveScene();
+		std::string GetActiveSceneName();
 		
 
 	private:

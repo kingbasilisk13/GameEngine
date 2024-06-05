@@ -34,6 +34,7 @@
 #include "SdlSoundSystem.h"
 #include "ServiceLocator.h"
 #include "StateComponent.h"
+#include "SwitchLevelCommand.h"
 #include "ToggleAudioCommand.h"
 #include "Transform.h"
 
@@ -104,9 +105,25 @@ void InitializeGame()
 {
 	InitializeMusic();
 
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	auto& scene1 = dae::SceneManager::GetInstance().CreateScene("L1_1");
+	auto temp1 = LevelLoader(&scene1, "../Data/Levels/L1_1.txt");
 
-	std::unique_ptr<LevelLoader> test = std::make_unique<LevelLoader>(&scene,"../Data/Levels/L1_1.txt");
+	auto& scene2 = dae::SceneManager::GetInstance().CreateScene("L2_1");
+	auto temp2 =LevelLoader(&scene2, "../Data/Levels/L2_1.txt");
+
+	auto& scene3 = dae::SceneManager::GetInstance().CreateScene("L3_1");
+	auto temp3 = LevelLoader(&scene3, "../Data/Levels/L3_1.txt");
+
+
+	dae::SceneManager::GetInstance().OpenSceneByName("L1_1");
+
+	std::vector<std::string> level = {"L1_1","L2_1","L3_1"};
+
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<SwitchLevelCommand>(level),
+		SDL_SCANCODE_F1,
+		dae::KeyState::Down
+	);
 
 	//dae::Renderer::GetInstance().SetBackgroundColor(SDL_Color{0,0,151,225});
 

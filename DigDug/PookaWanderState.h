@@ -13,8 +13,6 @@ public:
 
 	~PookaWanderState() override;
 
-	IState* HandleInput(dae::GameObject* owner) override;
-
 	IState* Update(dae::GameObject* owner) override;
 
 	void OnEnter(dae::GameObject* owner) override;
