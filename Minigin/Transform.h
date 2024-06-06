@@ -7,8 +7,6 @@ namespace dae
 	struct Transform
 	{
 		glm::vec2 position;
-		glm::vec3 rotation;
-		glm::vec3 scale;
 
 		void SetPosition(const float x = 0.f, const float y = 0.f)
 		{

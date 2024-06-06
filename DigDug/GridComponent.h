@@ -17,5 +17,6 @@ public:
 	void Render() const override;
 
 private:
+	std::vector<glm::ivec2> m_GridPositions;
 
 };

@@ -35,7 +35,7 @@ LevelLoader::LevelLoader(dae::Scene* scene, std::string levelToLoad)
 	m_TileSize *= m_Scale;
 
 	m_Dimensions.x = m_TileSize.x / 2;
-	m_Dimensions.y = (height) - (m_TileSize.y * 12) - (m_TileSize.y / 2);
+	m_Dimensions.y = (height) - (m_TileSize.y * 11) - (m_TileSize.y/2);
 
 
 	ReadLevelFile(levelToLoad);
@@ -59,6 +59,14 @@ void LevelLoader::ReadLevelFile(const std::string& levelToLoad)
 	{
         lines.push_back(line);
     }
+
+	//12x12 grid
+
+	for(int i = 0; i < 12; ++i)
+	{
+		m_XValues.push_back((m_Dimensions.x + (i * m_TileSize.x)));
+		m_YValues.push_back((m_Dimensions.y + (i * m_TileSize.y)));
+	}
 
     for(int y = 0; y < static_cast<int>(lines.size()); ++y)
     {
@@ -270,6 +278,19 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 		2));
 
 	player1->AddComponent(std::make_unique<MovementComponent>(player1.get(), speed));
+
+	const auto movementComponent = player1->GetComponent<MovementComponent>();
+
+	glm::vec2 tL{};
+	tL.x = static_cast<float>(m_XValues[0]);
+	tL.y = static_cast<float>(m_YValues[0]);
+
+	glm::vec2 bR{};
+	bR.x = static_cast<float>(m_XValues[11]);
+	bR.y = static_cast<float>(m_YValues[11]);
+
+	movementComponent->SetBounds(tL,bR);
+	movementComponent->SetGridValues(m_XValues, m_YValues);
 
 	player1->AddComponent(std::make_unique<HealthComponent>(player1.get(), 3));
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <string>
+#include <vector>
 #include <glm/vec2.hpp>
 
 namespace dae
@@ -35,6 +36,9 @@ private:
 	glm::ivec2 m_TileSize;
 
 	glm::ivec2 m_Dimensions;
+
+	std::vector<int> m_XValues;
+	std::vector<int> m_YValues;
 
 	const int m_Scale = 2;
 

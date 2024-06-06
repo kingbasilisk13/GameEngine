@@ -20,14 +20,32 @@ public:
 
 	void SetMovementSpeed(const float movementSpeed);
 
-	void SetMovementDirection(const glm::vec3 direction);
+	void SetMovementDirection(const glm::vec2 direction);
+
+	void SetBounds(glm::vec2 topLeft, glm::vec2 bottomRight);
+
+	void SetGridValues(const std::vector<int>& xValues, const std::vector<int>& yValues);
 
 private:
 	float m_MovementSpeed{};
 
-	glm::vec3 m_Direction{};
+	glm::vec2 m_Direction{};
+	glm::vec2 m_LastDirection{};
 
 	int m_WindowWidth;
 	int m_WindowHeight;
+
+	bool m_UseCustomBound = false;
+
+	glm::vec2 m_TopLeftBoundPosition{};
+	glm::vec2 m_BottomRightBoundPosition{};
+
+	static bool CheckPassingOverBounds(glm::vec2 newPosition, glm::vec2 topLeft, glm::vec2 bottomRight);
+
+	std::vector<int> m_XValues;
+	std::vector<int> m_YValues;
+
+
+	bool PerformProhibitedMovement(glm::vec2 newPosition) const;
 
 };
