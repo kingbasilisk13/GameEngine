@@ -1,15 +1,15 @@
-#include "MovementComponent.h"
+#include "GridMovementComponent.h"
 
 #include "Renderer.h"
 
-MovementComponent::MovementComponent(dae::GameObject* gameObject, float movementSpeed)
+GridMovementComponent::GridMovementComponent(dae::GameObject* gameObject, float movementSpeed)
 	:BaseComponent(gameObject)
 	,m_MovementSpeed(movementSpeed)
 {
 	dae::Renderer::GetInstance().GetWindowSize(&m_WindowWidth, &m_WindowHeight);
 }
 
-void MovementComponent::Update()
+void GridMovementComponent::Update()
 {
 	if (m_Direction == glm::vec2{})
 	{
@@ -31,7 +31,7 @@ void MovementComponent::Update()
 		return;
 	}
 
-	const float radius = 1;
+	const float radius = 2;
 
 
 	if(m_Direction != m_LastDirection && m_Direction != (-m_LastDirection))
@@ -116,25 +116,25 @@ void MovementComponent::Update()
 
 }
 
-void MovementComponent::FixedUpdate()
+void GridMovementComponent::FixedUpdate()
 {
 }
 
-void MovementComponent::Render() const
+void GridMovementComponent::Render() const
 {
 }
 
-void MovementComponent::SetMovementSpeed(const float movementSpeed)
+void GridMovementComponent::SetMovementSpeed(const float movementSpeed)
 {
 	m_MovementSpeed = movementSpeed;
 }
 
-void MovementComponent::SetMovementDirection(const glm::vec2 direction)
+void GridMovementComponent::SetMovementDirection(const glm::vec2 direction)
 {
 	m_Direction = direction;
 }
 
-void MovementComponent::SetBounds(const glm::vec2 topLeft, const glm::vec2 bottomRight)
+void GridMovementComponent::SetBounds(const glm::vec2 topLeft, const glm::vec2 bottomRight)
 {
 	m_TopLeftBoundPosition = topLeft;
 	m_BottomRightBoundPosition = bottomRight;
@@ -142,18 +142,18 @@ void MovementComponent::SetBounds(const glm::vec2 topLeft, const glm::vec2 botto
 	m_UseCustomBound = true;
 }
 
-void MovementComponent::SetGridValues(const std::vector<int>& xValues, const std::vector<int>& yValues)
+void GridMovementComponent::SetGridValues(const std::vector<int>& xValues, const std::vector<int>& yValues)
 {
 	m_XValues = xValues;
 	m_YValues = yValues;
 }
 
-bool MovementComponent::CheckPassingOverBounds(const glm::vec2 newPosition, const glm::vec2 topLeft, const glm::vec2 bottomRight)
+bool GridMovementComponent::CheckPassingOverBounds(const glm::vec2 newPosition, const glm::vec2 topLeft, const glm::vec2 bottomRight)
 {
 	return (newPosition.x >= topLeft.x && newPosition.x <= bottomRight.x && newPosition.y >= topLeft.y && newPosition.y <= bottomRight.y);
 }
 
-bool MovementComponent::PerformProhibitedMovement(const glm::vec2 newPosition) const
+bool GridMovementComponent::PerformProhibitedMovement(const glm::vec2 newPosition) const
 {
 	if (m_UseCustomBound)
 	{

@@ -93,7 +93,7 @@
     <ClCompile Include="HealthComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="MovementComponent.cpp">
+    <ClCompile Include="GridMovementComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="PlayerObserverComponent.cpp">
@@ -156,6 +156,9 @@
     <ClCompile Include="SwitchLevelCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
+    <ClCompile Include="BoxDeletionComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KillCommand.h">
@@ -167,7 +170,7 @@
     <ClInclude Include="HealthComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="MovementComponent.h">
+    <ClInclude Include="GridMovementComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="PlayerObserverComponent.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="SwitchLevelCommand.h">
       <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxDeletionComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

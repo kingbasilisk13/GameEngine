@@ -7,6 +7,7 @@
 
 #include "AnimationComponent.h"
 #include "BoxComponent.h"
+#include "BoxDeletionComponent.h"
 #include "ControllerInput.h"
 #include "FygarWanderState.h"
 #include "HealthComponent.h"
@@ -17,7 +18,7 @@
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "StateComponent.h"
-#include "MovementComponent.h"
+#include "GridMovementComponent.h"
 #include "PlayerWalkingState.h"
 #include "RegisterInputCommand.h"
 #include "ScoreComponent.h"
@@ -198,20 +199,6 @@ void LevelLoader::AddTunnel(const int x, const int y, const bool dugOut) const
 
 		tunnel->AddComponent(std::make_unique<dae::RenderComponent>(tunnel.get(), renderInfo));
 
-		/*renderInfo.zOrder = 1;
-		renderInfo.destinationX = static_cast<int>(position.x);
-		renderInfo.destinationY = static_cast<int>(position.y);
-		renderInfo.destinationWidth = size.x * m_Scale;
-		renderInfo.destinationHeight = size.y * m_Scale;
-		renderInfo.sourceX = 0;
-		renderInfo.sourceY = 0;
-		renderInfo.sourceWidth = size.x;
-		renderInfo.sourceHeight = size.y;
-		renderInfo.angle = 90;
-		renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("DiggedArea.png");
-		renderInfo.imageFlip = dae::FlipImage::None;
-
-		tunnel->AddComponent(std::make_unique<dae::RenderComponent>(tunnel.get(), renderInfo));*/
 	}
 	else
 	{
@@ -237,6 +224,8 @@ void LevelLoader::AddTunnel(const int x, const int y, const bool dugOut) const
 				static_cast<float>(m_TileSize.y)
 			)
 		);
+
+		tunnel->AddComponent(std::make_unique<BoxDeletionComponent>(tunnel.get()));
 	}
 
 	m_Scene->Add(tunnel);
@@ -277,9 +266,11 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 		1,
 		2));
 
-	player1->AddComponent(std::make_unique<MovementComponent>(player1.get(), speed));
+	
 
-	const auto movementComponent = player1->GetComponent<MovementComponent>();
+	player1->AddComponent(std::make_unique<GridMovementComponent>(player1.get(), speed));
+
+	const auto movementComponent = player1->GetComponent<GridMovementComponent>();
 
 	glm::vec2 tL{};
 	tL.x = static_cast<float>(m_XValues[0]);
@@ -299,9 +290,17 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 	//todo: may need to remove this component.
 	player1->AddComponent(std::make_unique<ScoreComponent>(player1.get()));
 
+	player1->AddComponent(std::make_unique<dae::BoxComponent>
+		(
+			player1.get(),
+			static_cast<float>(m_TileSize.x/2),
+			static_cast<float>(m_TileSize.y/2)
+		)
+	);
+
 	m_Scene->Add(player1);
 
-	const auto component = player1->GetComponent<MovementComponent>();
+	const auto component = player1->GetComponent<GridMovementComponent>();
 
 	//todo: problem. because each level is loaded in at the same time. the key bindings get added each time.
 	//todo: maybe it is better to seperate the keybindings in 2 groups. general key bindings. (aka mute button) and player specific. aka set these in the states
@@ -395,12 +394,12 @@ void LevelLoader::AddPlayer2(const int x, const int y)
 
 	player2->AddComponent(std::make_unique<dae::RenderComponent>(player2.get(), renderInfo));
 
-	player2->AddComponent(std::make_unique<MovementComponent>(player2.get(), speed));
+	player2->AddComponent(std::make_unique<GridMovementComponent>(player2.get(), speed));
 	player2->AddComponent(std::make_unique<HealthComponent>(player2.get(), 3));
 	player2->AddComponent(std::make_unique<ScoreComponent>(player2.get()));
 	m_Scene->Add(player2);
 
-	const auto component = player2->GetComponent<MovementComponent>();
+	const auto component = player2->GetComponent<GridMovementComponent>();
 
 	dae::InputManager::GetInstance().AddControllerBinding(
 		std::make_unique<SetDirectionCommand>(component, glm::vec3(1, 0, 0)),

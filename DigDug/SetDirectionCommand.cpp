@@ -4,7 +4,7 @@
 
 #include "GameObject.h"
 #include "ISoundSystem.h"
-#include "MovementComponent.h"
+#include "GridMovementComponent.h"
 #include "ServiceLocator.h"
 
 SetDirectionCommand::SetDirectionCommand(dae::BaseComponent* component, const glm::vec3 direction)
@@ -22,5 +22,5 @@ void SetDirectionCommand::Execute()
 
 	dae::ServiceLocator::GetSoundSystem().PlayMusic(24,50,-1);
 
-	dynamic_cast<MovementComponent*>(GetGameComponent())->SetMovementDirection(glm::normalize(m_Direction));
+	dynamic_cast<GridMovementComponent*>(GetGameComponent())->SetMovementDirection(glm::normalize(m_Direction));
 }

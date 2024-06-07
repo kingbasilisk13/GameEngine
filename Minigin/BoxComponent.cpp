@@ -10,9 +10,11 @@ dae::BoxComponent::BoxComponent(GameObject* gameObject,const float width,const f
 
 void dae::BoxComponent::Update()
 {
-	if(GetOwningGameObject()->IsPositionDirty())
+	const auto owner = GetOwningGameObject();
+
+	if(owner->IsPositionDirty())
 	{
-		const glm::vec2 center = GetOwningGameObject()->GetWorldPosition();
+		const glm::vec2 center = owner->GetWorldPosition();
 		m_Box = ReCalculateBox(center, m_Box.width, m_Box.height);
 	}
 }

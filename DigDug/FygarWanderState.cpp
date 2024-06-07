@@ -79,8 +79,8 @@ void FygarWanderState::Move(dae::GameObject* owner)
 
 bool FygarWanderState::HitWall(dae::GameObject* owner) const
 {
-	const auto objects = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsInScene();
-
+	const auto objects = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectsByName("tunnel");
+	
 	const dae::Rectf thisObject = owner->GetComponent<dae::BoxComponent>()->GetFutureBox(m_FuturePosition);
 
 	for (auto& object : objects)

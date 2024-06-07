@@ -2,17 +2,17 @@
 #include "BaseComponent.h"
 
 
-
-class MovementComponent final : public dae::BaseComponent
+//a component that moves the game object in a grid like pattern. requires the setting of direction each frame to move.
+class GridMovementComponent final : public dae::BaseComponent
 {
 public:
-	explicit MovementComponent(dae::GameObject* gameObject, float movementSpeed);
+	explicit GridMovementComponent(dae::GameObject* gameObject, float movementSpeed);
 
-	~MovementComponent() override = default;
-	MovementComponent(const MovementComponent& other) = delete;
-	MovementComponent(MovementComponent&& other) = delete;
-	MovementComponent& operator=(const MovementComponent& other) = delete;
-	MovementComponent& operator=(MovementComponent&& other) = delete;
+	~GridMovementComponent() override = default;
+	GridMovementComponent(const GridMovementComponent& other) = delete;
+	GridMovementComponent(GridMovementComponent&& other) = delete;
+	GridMovementComponent& operator=(const GridMovementComponent& other) = delete;
+	GridMovementComponent& operator=(GridMovementComponent&& other) = delete;
 
 	void Update() override;
 	void FixedUpdate() override;

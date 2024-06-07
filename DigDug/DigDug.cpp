@@ -22,7 +22,7 @@
 #include "LevelLoader.h"
 #include "LoggingSoundSystem.h"
 #include "SetDirectionCommand.h"
-#include "MovementComponent.h"
+#include "GridMovementComponent.h"
 #include "NullSoundSystem.h"
 #include "PookaWanderState.h"
 #include "PlayerObserverComponent.h"

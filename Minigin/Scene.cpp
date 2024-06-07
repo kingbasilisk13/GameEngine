@@ -13,6 +13,36 @@ std::vector<std::shared_ptr<dae::GameObject>> dae::Scene::GetObjectsInScene() co
 	return m_objects;
 }
 
+std::vector<std::shared_ptr<dae::GameObject>> dae::Scene::GetObjectsByName(std::string name) const
+{
+	std::vector<std::shared_ptr<GameObject>> results;
+
+	for (auto gameObject : m_objects)
+	{
+		if(gameObject->GetObjectName() == name)
+		{
+			results.push_back(gameObject);
+		}
+	}
+
+	return results;
+}
+
+std::shared_ptr<dae::GameObject> dae::Scene::GetObjectByName(std::string name) const
+{
+	std::vector<std::shared_ptr<GameObject>> results;
+
+	for (auto gameObject : m_objects)
+	{
+		if (gameObject->GetObjectName() == name)
+		{
+			return gameObject;
+		}
+	}
+
+	return nullptr;
+}
+
 dae::Scene::Scene(std::string name)
 : m_ObjectAreDirty(false)
 , m_Name(std::move(name))

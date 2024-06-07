@@ -106,12 +106,12 @@ private:
 //
 //
 //
-//	//player1->AddComponent(std::make_unique<MovementComponent>(player1.get(), speedP1));
+//	//player1->AddComponent(std::make_unique<GridMovementComponent>(player1.get(), speedP1));
 //	//player1->AddComponent(std::make_unique<HealthComponent>(player1.get(), 3));
 //	//player1->AddComponent(std::make_unique<ScoreComponent>(player1.get()));
 //	//scene.Add(player1);
 //
-//	//const auto component = player1->GetComponent<MovementComponent>();
+//	//const auto component = player1->GetComponent<GridMovementComponent>();
 //
 //	//const auto healthComponentP1 = player1->GetComponent<HealthComponent>();
 //
@@ -199,12 +199,12 @@ private:
 //		player2.get(),
 //		dae::ResourceManager::GetInstance().LoadTexture("DigDug1/Walking.png")));
 //
-//	player2->AddComponent(std::make_unique<MovementComponent>(player2.get(), speedP2));
+//	player2->AddComponent(std::make_unique<GridMovementComponent>(player2.get(), speedP2));
 //	player2->AddComponent(std::make_unique<HealthComponent>(player2.get(), 3));
 //	player2->AddComponent(std::make_unique<ScoreComponent>(player2.get()));
 //	scene.Add(player2);
 //
-//	const auto temp = player2->GetComponent<MovementComponent>();
+//	const auto temp = player2->GetComponent<GridMovementComponent>();
 //
 //	const auto healthComponentP2 = player2->GetComponent<HealthComponent>();
 //
