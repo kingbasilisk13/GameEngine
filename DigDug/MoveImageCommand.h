@@ -14,14 +14,11 @@ namespace dae
 class MoveImageCommand final : public dae::GameComponentCommand
 {
 public:
-	MoveImageCommand(dae::BaseComponent* component, std::string activeScene, std::vector<glm::vec2> positions );
+	MoveImageCommand(dae::BaseComponent* component, std::string boundSceneName, std::vector<glm::vec2> positions );
 
 	void Execute() override;
 
 private:
-	//a string that keeps track of wich level the command should be active in.
-	std::string m_ActiveScene;
-
 	//positions of the image.
 	std::vector<glm::vec2> m_Positions;
 };

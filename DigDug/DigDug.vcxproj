@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AcceptSelectedGameModeCommand.cpp" />
     <ClCompile Include="BoxDeletionComponent.cpp" />
     <ClCompile Include="DigDug.cpp" />
     <ClCompile Include="FpsComponent.cpp" />
@@ -172,7 +173,6 @@
     <ClCompile Include="PlayerWalkingState.cpp" />
     <ClCompile Include="PookaGhostState.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
-    <ClCompile Include="KillCommand.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="GridMovementComponent.cpp" />
     <ClCompile Include="PookaWanderState.cpp" />
@@ -182,12 +182,14 @@
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreCommand.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
+    <ClCompile Include="SelectGameModeCommand.cpp" />
     <ClCompile Include="SetDirectionCommand.cpp" />
     <ClCompile Include="SkipLevelCommand.cpp" />
     <ClCompile Include="TimerComponent.cpp" />
     <ClCompile Include="ToggleAudioCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AcceptSelectedGameModeCommand.h" />
     <ClInclude Include="BoxDeletionComponent.h" />
     <ClInclude Include="FpsComponent.h" />
     <ClInclude Include="FygarGhostState.h" />
@@ -202,7 +204,6 @@
     <ClInclude Include="PookaGhostState.h" />
     <ClInclude Include="GridComponent.h" />
     <ClInclude Include="HealthComponent.h" />
-    <ClInclude Include="KillCommand.h" />
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="GridMovementComponent.h" />
     <ClInclude Include="PookaWanderState.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
+    <ClInclude Include="SelectGameModeCommand.h" />
     <ClInclude Include="SetDirectionCommand.h" />
     <ClInclude Include="SkipLevelCommand.h" />
     <ClInclude Include="TimerComponent.h" />

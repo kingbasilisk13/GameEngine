@@ -4,8 +4,8 @@
 #include "IPlayerStateBase.h"
 #include "StateComponent.h"
 
-RegisterInputCommand::RegisterInputCommand(dae::BaseComponent* component, const PlayerInput input)
-	: GameComponentCommand(component)
+RegisterInputCommand::RegisterInputCommand(dae::BaseComponent* component, std::string boundSceneName, const PlayerInput input)
+	: GameComponentCommand(component,boundSceneName)
 	,m_Input(input)
 {
 }

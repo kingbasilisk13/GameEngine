@@ -25,9 +25,10 @@
 #include "SetDirectionCommand.h"
 #include "ReleaseButtonCommand.h"
 
-LevelLoader::LevelLoader(dae::Scene* scene, std::string levelToLoad)
+LevelLoader::LevelLoader(dae::Scene* scene, const std::string& levelToLoad, const GameMode gameMode)
 	:m_Scene(scene)
-	,m_TileSize(dae::ResourceManager::GetInstance().LoadTexture("Tiles/WorldTile0.png")->GetSize())
+	, m_GameMode(gameMode)
+	, m_TileSize(dae::ResourceManager::GetInstance().LoadTexture("Tiles/WorldTile0.png")->GetSize())
 {
 	int width;
 	int height;
@@ -272,11 +273,11 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 
 	const auto movementComponent = player1->GetComponent<GridMovementComponent>();
 
-	glm::vec2 tL{};
+	glm::vec2 tL;
 	tL.x = static_cast<float>(m_XValues[0]);
 	tL.y = static_cast<float>(m_YValues[0]);
 
-	glm::vec2 bR{};
+	glm::vec2 bR;
 	bR.x = static_cast<float>(m_XValues[11]);
 	bR.y = static_cast<float>(m_YValues[11]);
 
@@ -305,28 +306,29 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 	//todo: problem. because each level is loaded in at the same time. the key bindings get added each time.
 	//todo: maybe it is better to seperate the keybindings in 2 groups. general key bindings. (aka mute button) and player specific. aka set these in the states
 
+	const auto sceneName = m_Scene->GetSceneName();
 
 #pragma region movement
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<SetDirectionCommand>(component, glm::vec3(1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName,glm::vec3(1, 0, 0)),
 		SDL_SCANCODE_D,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<SetDirectionCommand>(component, glm::vec3(-1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(-1, 0, 0)),
 		SDL_SCANCODE_A,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<SetDirectionCommand>(component, glm::vec3(0, -1, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(0, -1, 0)),
 		SDL_SCANCODE_W,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<SetDirectionCommand>(component, glm::vec3(0, 1, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(0, 1, 0)),
 		SDL_SCANCODE_S,
 		dae::KeyState::Pressed
 	);
@@ -337,25 +339,25 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 
 #pragma region input
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<RegisterInputCommand>(stateComponent,PlayerInput::right),
+		std::make_unique<RegisterInputCommand>(stateComponent, sceneName,PlayerInput::right),
 		SDL_SCANCODE_D,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<RegisterInputCommand>(stateComponent, PlayerInput::left),
+		std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::left),
 		SDL_SCANCODE_A,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<RegisterInputCommand>(stateComponent, PlayerInput::up),
+		std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::up),
 		SDL_SCANCODE_W,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<RegisterInputCommand>(stateComponent, PlayerInput::down),
+		std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::down),
 		SDL_SCANCODE_S,
 		dae::KeyState::Pressed
 	);
@@ -401,29 +403,31 @@ void LevelLoader::AddPlayer2(const int x, const int y)
 
 	const auto component = player2->GetComponent<GridMovementComponent>();
 
+	const auto sceneName = m_Scene->GetSceneName();
+
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<SetDirectionCommand>(component, glm::vec3(1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(1, 0, 0)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Right,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<SetDirectionCommand>(component, glm::vec3(-1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(-1, 0, 0)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Left,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<SetDirectionCommand>(component, glm::vec3(0, -1, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(0, -1, 0)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Up,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<SetDirectionCommand>(component, glm::vec3(0, 1, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(0, 1, 0)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Down,
 		dae::KeyState::Pressed

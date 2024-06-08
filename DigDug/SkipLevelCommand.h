@@ -7,7 +7,7 @@
 class SkipLevelCommand final : public dae::Command
 {
 public:
-	SkipLevelCommand(std::vector<std::string> vectorOfLevels);
+	explicit SkipLevelCommand(std::vector<std::string> vectorOfLevels);
 
 	void Execute() override;
 

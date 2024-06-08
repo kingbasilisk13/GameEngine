@@ -4,6 +4,8 @@
 #include <vector>
 #include <glm/vec2.hpp>
 
+enum class GameMode;
+
 namespace dae
 {
 	class GameObject;
@@ -17,7 +19,7 @@ namespace dae
 class LevelLoader
 {
 public:
-	LevelLoader(dae::Scene* scene, std::string levelToLoad);
+	LevelLoader(dae::Scene* scene, const std::string& levelToLoad, GameMode gameMode);
 
 	~LevelLoader();
 
@@ -32,6 +34,8 @@ private:
 	const int m_ReduceEnemyCollisionSize = 10;
 
 	dae::Scene* m_Scene;
+
+	GameMode m_GameMode;
 
 	glm::ivec2 m_TileSize;
 

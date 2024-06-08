@@ -2,9 +2,10 @@
 
 #include "BaseComponent.h"
 
-dae::GameComponentCommand::GameComponentCommand(BaseComponent* actor)
+dae::GameComponentCommand::GameComponentCommand(BaseComponent* actor, std::string boundSceneName)
 	:Command()
 	, m_Component(actor)
+	,m_BoundSceneName(boundSceneName)
 {
 }
 
@@ -18,4 +19,9 @@ dae::BaseComponent* dae::GameComponentCommand::GetGameComponent() const
 
 void dae::GameComponentCommand::Execute()
 {
+}
+
+std::string dae::GameComponentCommand::GetBoundSceneName() const
+{
+	return m_BoundSceneName;
 }

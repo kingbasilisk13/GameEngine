@@ -8,6 +8,7 @@
 #include "imgui_impl_sdl2.h"
 #include <SDL_events.h>
 #include "Command.h"
+#include "GameComponentCommand.h"
 
 class dae::InputManager::InputImpl
 {
@@ -93,6 +94,43 @@ public:
 		m_ControllerBindings.emplace_back(controllerIndex, button, state, std::move(command));
 	}
 
+	void RemoveBoundLevelCommands(const std::string& levelName)
+	{
+		if(!m_KeyBindings.empty())
+		{
+			std::erase_if(m_KeyBindings, [levelName](const KeyBinding& binding)
+			{
+				const auto temp = dynamic_cast<GameComponentCommand*>(binding.command.get());
+				if (temp)
+				{
+					if (temp->GetBoundSceneName() == levelName)
+					{
+						return true;
+					}
+				}
+				return false;
+			});
+		}
+
+		if (!m_ControllerBindings.empty())
+		{
+			std::erase_if(m_ControllerBindings, [levelName](const ControllerBinding& binding)
+				{
+					const auto temp = dynamic_cast<GameComponentCommand*>(binding.command.get());
+					if (temp)
+					{
+						if (temp->GetBoundSceneName() == levelName)
+						{
+							return true;
+						}
+					}
+					return false;
+				});
+		}
+
+		
+	}
+
 private:
 	struct KeyBinding
 	{
@@ -170,6 +208,15 @@ void dae::InputManager::AddControllerBinding(
 	, const KeyState state) const
 {
 	m_Pimpl->AddControllerBinding(std::move(command), controllerIndex, button,state);
+}
+
+void dae::InputManager::RemoveBoundLevelCommands(const std::string& levelName) const
+{
+	//checks if this singleton has not been deleted already.
+	if(this && m_Pimpl)
+	{
+		m_Pimpl->RemoveBoundLevelCommands(levelName);
+	}
 }
 
 dae::InputManager::InputManager()

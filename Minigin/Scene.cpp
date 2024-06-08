@@ -3,10 +3,8 @@
 
 #include <algorithm>
 
+#include "InputManager.h"
 #include "Renderer.h"
-
-
-int dae::Scene::m_CurrentIndex = 0;
 
 std::vector<std::shared_ptr<dae::GameObject>> dae::Scene::GetObjectsInScene() const
 {
@@ -43,13 +41,26 @@ std::shared_ptr<dae::GameObject> dae::Scene::GetObjectByName(std::string name) c
 	return nullptr;
 }
 
+std::string dae::Scene::GetSceneName() const
+{
+	return m_Name;
+}
+
+void dae::Scene::AddOnLevelLoudFunction(const std::function<void()>& function)
+{
+	m_OnSceneActiveFunctions.push_back(function);
+}
+
 dae::Scene::Scene(std::string name)
 : m_ObjectAreDirty(false)
 , m_Name(std::move(name))
 {}
 
 
-dae::Scene::~Scene() = default;
+dae::Scene::~Scene()
+{
+	InputManager::GetInstance().RemoveBoundLevelCommands(m_Name);
+}
 
 void dae::Scene::Add(std::shared_ptr<GameObject> object)
 {
@@ -109,6 +120,14 @@ void dae::Scene::Render() const
 
 	//todo: voeg hier een call naar de render singleton dat de buffer rendert.
 	Renderer::GetInstance().DisplayRenderMap();
+}
+
+void dae::Scene::ExecuteOnLevelLoadFunctions()
+{
+	for (auto function : m_OnSceneActiveFunctions)
+	{
+		function();
+	}
 }
 
 void dae::Scene::HandleObjectRemoval()

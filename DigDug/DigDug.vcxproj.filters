@@ -79,11 +79,14 @@
     <Filter Include="Source Files\Characters\DigDug\States">
       <UniqueIdentifier>{a28133f1-74d6-4020-93b0-b10f63a52428}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Commands\GameModeCommands">
+      <UniqueIdentifier>{b42628b2-dcc0-49ed-83bd-da9ed079bc14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Commands\GameModeCommands">
+      <UniqueIdentifier>{14f4b68d-13eb-4dd4-a3eb-1f06424da790}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="KillCommand.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="FpsComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -162,11 +165,14 @@
     <ClCompile Include="DigDug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AcceptSelectedGameModeCommand.cpp">
+      <Filter>Source Files\Commands\GameModeCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectGameModeCommand.cpp">
+      <Filter>Source Files\Commands\GameModeCommands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KillCommand.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="FpsComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -247,6 +253,12 @@
     </ClInclude>
     <ClInclude Include="MoveImageCommand.h">
       <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectGameModeCommand.h">
+      <Filter>Header Files\Commands\GameModeCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="AcceptSelectedGameModeCommand.h">
+      <Filter>Header Files\Commands\GameModeCommands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

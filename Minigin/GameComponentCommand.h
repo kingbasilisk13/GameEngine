@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 #include "Command.h"
 
 namespace dae
@@ -8,7 +10,7 @@ namespace dae
 	class GameComponentCommand : public Command
 	{
 	public:
-		explicit GameComponentCommand(BaseComponent* actor);
+		explicit GameComponentCommand(BaseComponent* actor, std::string boundSceneName);
 		~GameComponentCommand() override;
 
 		GameComponentCommand(const GameComponentCommand& other) = delete;
@@ -16,14 +18,18 @@ namespace dae
 		GameComponentCommand& operator=(const GameComponentCommand& other) = delete;
 		GameComponentCommand& operator=(GameComponentCommand&& other) = delete;
 
+		void Execute() override;
+
+		[[nodiscard]] std::string GetBoundSceneName() const;
+
 	protected:
 		[[nodiscard]] BaseComponent* GetGameComponent() const;
 
-	public:
-		void Execute() override;
-
 	private:
 		BaseComponent* m_Component;
+
+		//the scene in which this command get executed.
+		std::string m_BoundSceneName;
 	};
 }
 

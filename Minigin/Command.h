@@ -18,5 +18,10 @@ namespace dae
 		Command& operator=(Command&& other) = delete;
 
 		virtual void Execute() = 0;
+
+		[[nodiscard]] bool IsMarkedForDeletion() const;
+		void MarkedForDeletion();
+	private:
+		bool m_MarkedForDeletion = false;
 	};
 }

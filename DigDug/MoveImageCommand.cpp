@@ -5,9 +5,8 @@
 #include "RenderComponent.h"
 #include "SceneManager.h"
 
-MoveImageCommand::MoveImageCommand(dae::BaseComponent* component, std::string activeScene, std::vector<glm::vec2> positions)
-	:GameComponentCommand(component)
-	,m_ActiveScene(std::move(activeScene))
+MoveImageCommand::MoveImageCommand(dae::BaseComponent* component, std::string boundSceneName, std::vector<glm::vec2> positions)
+	:GameComponentCommand(component,boundSceneName)
 	,m_Positions(std::move(positions))
 {
 }
@@ -16,7 +15,7 @@ void MoveImageCommand::Execute()
 {
 	const auto currentSceneName = dae::SceneManager::GetInstance().GetActiveSceneName();
 
-	if(currentSceneName != m_ActiveScene)
+	if(currentSceneName != GetBoundSceneName())
 	{
 		return;
 	}

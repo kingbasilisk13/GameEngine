@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <memory>
 #include <SDL_syswm.h>
+#include <string>
 
 #include "Singleton.h"
 
@@ -29,6 +30,10 @@ namespace dae
 			, const int controllerIndex
 			, const ControllerInput button
 			, const KeyState state) const;
+
+		//removes all commands bound to a specifick scene.
+		void RemoveBoundLevelCommands(const std::string& levelName) const;
+
 
 	private:
 		friend class Singleton<InputManager>;

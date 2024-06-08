@@ -1,9 +1,11 @@
 #include "ScoreCommand.h"
 
+#include <utility>
+
 #include "ScoreComponent.h"
 
-ScoreCommand::ScoreCommand(dae::BaseComponent* component, const int amountOfPoints)
-	:GameComponentCommand(component)
+ScoreCommand::ScoreCommand(dae::BaseComponent* component, std::string boundSceneName, const int amountOfPoints)
+	:GameComponentCommand(component, std::move(boundSceneName))
 	,m_AmountOfPoints(amountOfPoints)
 {
 }

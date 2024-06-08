@@ -10,7 +10,7 @@ enum class GameMode
 class GameModeSelectorComponent final : public dae::BaseComponent
 {
 public:
-	explicit GameModeSelectorComponent(dae::GameObject* gameObject, std::vector<glm::vec2> positions);
+	explicit GameModeSelectorComponent(dae::GameObject* gameObject);
 
 	~GameModeSelectorComponent() override = default;
 	GameModeSelectorComponent(const GameModeSelectorComponent& other) = delete;
@@ -22,6 +22,15 @@ public:
 	void FixedUpdate() override;
 	void Render() const override;
 
+	void SetSelectedGameMode(GameMode gameMode);
+	void LoadLevelsBasedOnGameMode() const;
+
+	[[nodiscard]] GameMode GetCurrentGameMode() const;
+
 private:
 	GameMode m_GameMode = GameMode::singlePlayer;
+
+	void LoadSoloLevel() const;
+	void LoadCoopLevel() const;
+	void LoadVsLevel() const;
 };

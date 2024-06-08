@@ -1,4 +1,6 @@
 #pragma once
+#include <functional>
+
 #include "SceneManager.h"
 
 namespace dae
@@ -7,6 +9,7 @@ namespace dae
 	class Scene final
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
+		friend void dae::SceneManager::OpenSceneByName(const std::string& name);
 	public:
 		void Add(std::shared_ptr<GameObject> object);
 		void Remove(GameObject* object);
@@ -16,16 +19,22 @@ namespace dae
 		void FixedUpdate() const;
 		void Render() const;
 
+		
+
+		[[nodiscard]] std::vector < std::shared_ptr<GameObject>> GetObjectsInScene() const;
+		[[nodiscard]] std::vector < std::shared_ptr<GameObject>> GetObjectsByName(std::string name) const;
+		[[nodiscard]] std::shared_ptr<GameObject> GetObjectByName(std::string name) const;
+
+		[[nodiscard]] std::string GetSceneName() const;
+
+		void AddOnLevelLoudFunction(const std::function<void()>& function);
+
+
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
-
-		std::vector < std::shared_ptr<GameObject>> GetObjectsInScene() const;
-		std::vector < std::shared_ptr<GameObject>> GetObjectsByName(std::string name) const;
-		std::shared_ptr<GameObject> GetObjectByName(std::string name) const;
-
 	private: 
 		explicit Scene(std::string name);
 
@@ -37,10 +46,13 @@ namespace dae
 
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
 
-		void HandleObjectRemoval();
+		//functions that will be executed the moment the scene becomes active.
+		std::vector<std::function<void()>>  m_OnSceneActiveFunctions;
 
-		//todo: figure out how to use dubble buffers for things like movement.
-		static int m_CurrentIndex;
+		//should only be executed by the scene manager
+		void ExecuteOnLevelLoadFunctions();
+
+		void HandleObjectRemoval();
 	};
 
 }

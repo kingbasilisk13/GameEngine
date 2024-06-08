@@ -1,9 +1,11 @@
 #include "SkipLevelCommand.h"
 
+#include <utility>
+
 #include "SceneManager.h"
 
 SkipLevelCommand::SkipLevelCommand(std::vector<std::string> vectorOfLevels)
-	:m_VectorOfLevels(vectorOfLevels)
+	:m_VectorOfLevels(std::move(vectorOfLevels))
 {
 }
 
@@ -17,7 +19,6 @@ void SkipLevelCommand::Execute()
 		{
 			if(i + 1 >= static_cast<int>(m_VectorOfLevels.size()))
 			{
-				//todo: replace this with a command that returns user to main menu.
 				dae::SceneManager::GetInstance().OpenSceneByName("MainMenu");
 			}
 			else

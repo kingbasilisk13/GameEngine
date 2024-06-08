@@ -26,6 +26,7 @@ void dae::SceneManager::OpenSceneByName(const std::string& name)
 	if(m_MapOfScenes.contains(name))
 	{
 		m_ActiveScene = name;
+		m_MapOfScenes[m_ActiveScene]->ExecuteOnLevelLoadFunctions();
 		return;
 	}
 
@@ -40,6 +41,14 @@ dae::Scene* dae::SceneManager::GetActiveScene()
 std::string dae::SceneManager::GetActiveSceneName()
 {
 	return m_ActiveScene;
+}
+
+void dae::SceneManager::DeleteSceneByName(const std::string& sceneName)
+{
+	if (const auto it = m_MapOfScenes.find(sceneName); it != m_MapOfScenes.end()) 
+	{
+		m_MapOfScenes.erase(it);
+	}
 }
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)

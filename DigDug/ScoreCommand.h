@@ -5,7 +5,7 @@
 class ScoreCommand final : public dae::GameComponentCommand
 {
 public:
-	ScoreCommand(dae::BaseComponent* component,const int amountOfPoints);
+	ScoreCommand(dae::BaseComponent* component, std::string boundSceneName,const int amountOfPoints);
 
 	void Execute() override;
 

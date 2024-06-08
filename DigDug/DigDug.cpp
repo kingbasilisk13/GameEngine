@@ -6,6 +6,7 @@
 
 #include <windows.h>
 
+#include "AcceptSelectedGameModeCommand.h"
 #include "BoxComponent.h"
 #include "ControllerInput.h"
 
@@ -14,11 +15,11 @@
 #include "ResourceManager.h"
 #include "TextComponent.h"
 #include "FpsComponent.h"
+#include "GameModeSelectorComponent.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "HealthComponent.h"
 #include "InputManager.h"
-#include "KillCommand.h"
 #include "LevelLoader.h"
 #include "LoggingSoundSystem.h"
 #include "SetDirectionCommand.h"
@@ -33,6 +34,7 @@
 #include "ScoreCommand.h"
 #include "ScoreComponent.h"
 #include "SdlSoundSystem.h"
+#include "SelectGameModeCommand.h"
 #include "ServiceLocator.h"
 #include "StateComponent.h"
 #include "SkipLevelCommand.h"
@@ -100,6 +102,13 @@ void InitializeMusic()
 
 }
 
+void DeleteOldLevels()
+{
+	dae::SceneManager::GetInstance().DeleteSceneByName("L1_1");
+	dae::SceneManager::GetInstance().DeleteSceneByName("L2_1");
+	dae::SceneManager::GetInstance().DeleteSceneByName("L3_1");
+}
+
 void MainMenuCreator()
 {
 	auto& mainMenu = dae::SceneManager::GetInstance().CreateScene("MainMenu");
@@ -145,8 +154,6 @@ void MainMenuCreator()
 
 	auto renderComponent = arrow->GetComponent<dae::RenderComponent>();
 
-	
-
 	std::vector<glm::vec2> positionsArrayDown{};
 	positionsArrayDown.emplace_back(xPosition, yPosition - distanceBetweenOptions);
 	positionsArrayDown.emplace_back(xPosition, yPosition);
@@ -169,7 +176,40 @@ void MainMenuCreator()
 		dae::KeyState::Down
 	);
 
+	arrow->AddComponent(std::make_unique<GameModeSelectorComponent>(arrow.get()));
+	auto gameModeSelectorComponent = arrow->GetComponent<GameModeSelectorComponent>();
+
+	
+
+	std::vector<GameMode> gameModeUp{};
+	gameModeUp.emplace_back(GameMode::singlePlayer);
+	gameModeUp.emplace_back(GameMode::coOp);
+	gameModeUp.emplace_back(GameMode::vS);
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<SelectGameModeCommand>(gameModeSelectorComponent, "MainMenu", gameModeUp),
+		SDL_SCANCODE_W,
+		dae::KeyState::Down
+	);
+
+	std::vector<GameMode> gameModeDown{};
+	gameModeDown.emplace_back(GameMode::singlePlayer);
+	gameModeDown.emplace_back(GameMode::vS);
+	gameModeDown.emplace_back(GameMode::coOp);
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<SelectGameModeCommand>(gameModeSelectorComponent, "MainMenu", gameModeDown),
+		SDL_SCANCODE_S,
+		dae::KeyState::Down
+	);
+
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<AcceptSelectedGameModeCommand>(gameModeSelectorComponent, "MainMenu"),
+		SDL_SCANCODE_RETURN,
+		dae::KeyState::Down
+	);
+
 	mainMenu.Add(arrow);
+
+	mainMenu.AddOnLevelLoudFunction(DeleteOldLevels);
 
 }
 
@@ -183,22 +223,22 @@ void InitializeGame()
 
 	dae::SceneManager::GetInstance().OpenSceneByName("MainMenu");
 
-	auto& scene1 = dae::SceneManager::GetInstance().CreateScene("L1_1");
-	auto temp1 = LevelLoader(&scene1, "../Data/Levels/L1_1.txt");
-
-	auto& scene2 = dae::SceneManager::GetInstance().CreateScene("L2_1");
-	auto temp2 =LevelLoader(&scene2, "../Data/Levels/L2_1.txt");
-
-	auto& scene3 = dae::SceneManager::GetInstance().CreateScene("L3_1");
-	auto temp3 = LevelLoader(&scene3, "../Data/Levels/L3_1.txt");
-
-	std::vector<std::string> level = {"L1_1","L2_1","L3_1"};
+	std::vector<std::string> level = { "L1_1","L2_1","L3_1" };
 
 	dae::InputManager::GetInstance().AddKeyBinding(
 		std::make_unique<SkipLevelCommand>(level),
 		SDL_SCANCODE_F1,
 		dae::KeyState::Down
 	);
+
+	std::vector<std::string> cooplevel = { "L1_2","L2_2","L3_2" };
+
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<SkipLevelCommand>(cooplevel),
+		SDL_SCANCODE_F1,
+		dae::KeyState::Down
+	);
+
 }
 
 int main(int, char* []) {
