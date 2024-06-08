@@ -35,7 +35,11 @@ namespace dae
 
 		void GetWindowSize(int* width, int* height) const;
 
+		void SetDebugRenderCollision(bool debugRender);
+
 	private:
+		bool m_DebugRenderCollision = false;
+
 		SDL_Renderer* m_Renderer{};
 		SDL_Window* m_Window{};
 		SDL_Color m_ClearColor{};

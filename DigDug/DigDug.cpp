@@ -220,6 +220,19 @@ void MainMenuCreator()
 
 void InitializeGame()
 {
+	std::cout << "menu controls:\nW: Move arrow up.\nS: Move arrow down.\nEnter: Confirm Selected mode.\n\n";
+
+	std::cout << "F1: Skip level.\nM: mute all audio\n\n";
+
+	std::cout << "Single player:\nwasd or D-pad on controller 1: movement.\n\n";
+
+	std::cout << "VS mode:\nwasd or D-pad on controller 1: movement.\nThere is no second player in this mode\n\n";
+
+	std::cout << "Co-op mode:\nwasd or D-pad on controller 2: movement player 1.\nD-pad controller 1: movement player 2.\n\n";
+
+	std::cout << "Re-made by Michiel Eeckhout\n\n";
+
+
 	InitializeMusic();
 
 	MainMenuCreator();

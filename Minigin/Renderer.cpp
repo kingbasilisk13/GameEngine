@@ -89,6 +89,11 @@ void dae::Renderer::RenderTexture(RenderInfo renderInfo)
 
 void dae::Renderer::RenderRectanle(Rectf box)
 {
+	if (!m_DebugRenderCollision)
+	{
+		return;
+	}
+
 	SDL_Rect temp{};
 	temp.x = static_cast<int>(box.left);
 	temp.y = static_cast<int>(box.top);
@@ -132,19 +137,26 @@ void dae::Renderer::DisplayRenderMap()
 		
 	}
 	m_RenderMap.clear();
-	
-	SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 255); // White
-	for (auto debugRectanlge : m_DebugRectanlges)
+
+	if(m_DebugRenderCollision)
 	{
-		SDL_RenderDrawRect(m_Renderer, &debugRectanlge);
+		SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 255); // White
+		for (auto debugRectanlge : m_DebugRectanlges)
+		{
+			SDL_RenderDrawRect(m_Renderer, &debugRectanlge);
+		}
+		SDL_SetRenderDrawColor(m_Renderer, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a);
+
+		m_DebugRectanlges.clear();
 	}
-	SDL_SetRenderDrawColor(m_Renderer, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a);
-
-	m_DebugRectanlges.clear();
-
 }
 
 void dae::Renderer::GetWindowSize(int* width, int* height) const
 {
 	SDL_GetWindowSize(m_Window,width,height);
+}
+
+void dae::Renderer::SetDebugRenderCollision(bool debugRender)
+{
+	m_DebugRenderCollision = debugRender;
 }

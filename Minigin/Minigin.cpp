@@ -64,7 +64,7 @@ dae::Minigin::Minigin(const std::string &dataPath, const int width, const int he
 	}
 
 	g_window = SDL_CreateWindow(
-		"Programming 4 assignment",
+		"2DAE18_Eeckhout_Michiel_exam_DigDug",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		width,
