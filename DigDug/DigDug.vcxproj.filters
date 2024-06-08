@@ -81,9 +81,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DigDug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="KillCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
@@ -116,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="ReleaseButtonCommand.cpp">
       <Filter>Source Files\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="GridComponent.cpp">
-      <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="PookaWanderState.cpp">
       <Filter>Source Files\Characters\Enemies\Pooka\States</Filter>
@@ -153,11 +147,20 @@
     <ClCompile Include="RegisterInputCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="SwitchLevelCommand.cpp">
+    <ClCompile Include="SkipLevelCommand.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
     <ClCompile Include="BoxDeletionComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameModeSelectorComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveImageCommand.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="DigDug.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -233,11 +236,17 @@
     <ClInclude Include="RegisterInputCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="SwitchLevelCommand.h">
+    <ClInclude Include="SkipLevelCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="BoxDeletionComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModeSelectorComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveImageCommand.h">
+      <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -57,12 +57,18 @@ void dae::RenderComponent::ChangeDestinationSize(const int width, const int heig
 	m_RenderInfo.destinationHeight = height;
 }
 
-void dae::RenderComponent::ChangeImageFlip(FlipImage imageFlip)
+void dae::RenderComponent::ChangeDestinationPosition(const int x, const int y)
+{
+	m_RenderInfo.destinationX = x;
+	m_RenderInfo.destinationY = y;
+}
+
+void dae::RenderComponent::ChangeImageFlip(const FlipImage imageFlip)
 {
 	m_RenderInfo.imageFlip = imageFlip;
 }
 
-void dae::RenderComponent::ChangeAngle(float angle)
+void dae::RenderComponent::ChangeAngle(const float angle)
 {
 	m_RenderInfo.angle = angle;
 }

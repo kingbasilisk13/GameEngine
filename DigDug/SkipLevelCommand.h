@@ -4,10 +4,10 @@
 #include "Command.h"
 #include <vector>
 
-class SwitchLevelCommand final : public dae::Command
+class SkipLevelCommand final : public dae::Command
 {
 public:
-	SwitchLevelCommand(std::vector<std::string> vectorOfLevels);
+	SkipLevelCommand(std::vector<std::string> vectorOfLevels);
 
 	void Execute() override;
 

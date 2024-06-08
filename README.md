@@ -1,3 +1,6 @@
+# Notes
+**sprites**: Her bruikt van Sander De Keukelaere.
+
 # Design choises
 **Game loop**: The delta time value is saved to a singleton and can only be changed by the minigin run function. This to prevent other classes from acidentily changing the value of delta time. Apart from that delta time can be read from anywhere in the program. Fixed update has a fixed time stap wich is given as parameter to the function. The function is only used for physics calculations and networking, the parameter is added to enshure the right time value is used in the calculations.
 

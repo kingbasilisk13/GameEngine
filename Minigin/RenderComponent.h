@@ -63,6 +63,9 @@ namespace dae
 		//the part of the image that will be drawn.
 		void ChangeDestinationSize(int width, int height);
 
+		//the part of the image that will be drawn.
+		void ChangeDestinationPosition(int x, int y);
+
 		void ChangeImageFlip(FlipImage imageFlip);
 
 		void ChangeAngle(float angle);

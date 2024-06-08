@@ -23,6 +23,7 @@
 #include "LoggingSoundSystem.h"
 #include "SetDirectionCommand.h"
 #include "GridMovementComponent.h"
+#include "MoveImageCommand.h"
 #include "NullSoundSystem.h"
 #include "PookaWanderState.h"
 #include "PlayerObserverComponent.h"
@@ -34,7 +35,7 @@
 #include "SdlSoundSystem.h"
 #include "ServiceLocator.h"
 #include "StateComponent.h"
-#include "SwitchLevelCommand.h"
+#include "SkipLevelCommand.h"
 #include "ToggleAudioCommand.h"
 #include "Transform.h"
 
@@ -99,11 +100,88 @@ void InitializeMusic()
 
 }
 
+void MainMenuCreator()
+{
+	auto& mainMenu = dae::SceneManager::GetInstance().CreateScene("MainMenu");
+	int width;
+	int height;
+	dae::Renderer::GetInstance().GetWindowSize(&width, &height);
+
+	constexpr int scaleImage = 2;
+
+	const auto background = std::make_shared<dae::GameObject>("background");
+	auto position = background->GetWorldPosition();
+	auto size = dae::ResourceManager::GetInstance().LoadTexture("MainMenu/Background.png")->GetSize();
+	dae::RenderInfo renderInfo;
+	renderInfo.destinationX = width / 2;
+	renderInfo.destinationY = height / 2;
+	renderInfo.destinationWidth = size.x * scaleImage;
+	renderInfo.destinationHeight = size.y * scaleImage;
+	renderInfo.sourceWidth = size.x;
+	renderInfo.sourceHeight = size.y;
+	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("MainMenu/Background.png");
+	background->AddComponent(std::make_unique<dae::RenderComponent>(background.get(), renderInfo));
+	mainMenu.Add(background);
+
+
+	const auto arrow = std::make_shared<dae::GameObject>("arrow");
+	position = arrow->GetWorldPosition();
+	size = dae::ResourceManager::GetInstance().LoadTexture("MainMenu/Marker.png")->GetSize();
+
+	const int xPosition = (width / 2) - 90;
+	const int yPosition = (height / 2) + 18;
+	constexpr int distanceBetweenOptions = 32;
+
+	renderInfo.zOrder = 1;
+	renderInfo.destinationX = xPosition;
+	renderInfo.destinationY = yPosition - distanceBetweenOptions;
+	renderInfo.destinationWidth = size.x * scaleImage;
+	renderInfo.destinationHeight = size.y * scaleImage;
+	renderInfo.sourceWidth = size.x;
+	renderInfo.sourceHeight = size.y;
+	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("MainMenu/Marker.png");
+
+	arrow->AddComponent(std::make_unique<dae::RenderComponent>(arrow.get(), renderInfo));
+
+	auto renderComponent = arrow->GetComponent<dae::RenderComponent>();
+
+	
+
+	std::vector<glm::vec2> positionsArrayDown{};
+	positionsArrayDown.emplace_back(xPosition, yPosition - distanceBetweenOptions);
+	positionsArrayDown.emplace_back(xPosition, yPosition);
+	positionsArrayDown.emplace_back(xPosition, yPosition+ distanceBetweenOptions);
+
+	std::vector<glm::vec2> positionsArrayUp{};
+	positionsArrayUp.emplace_back(xPosition, yPosition + distanceBetweenOptions);
+	positionsArrayUp.emplace_back(xPosition, yPosition);
+	positionsArrayUp.emplace_back(xPosition, yPosition - distanceBetweenOptions);
+
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<MoveImageCommand>(renderComponent,"MainMenu", positionsArrayUp),
+		SDL_SCANCODE_W,
+		dae::KeyState::Down
+	);
+
+	dae::InputManager::GetInstance().AddKeyBinding(
+		std::make_unique<MoveImageCommand>(renderComponent, "MainMenu", positionsArrayDown),
+		SDL_SCANCODE_S,
+		dae::KeyState::Down
+	);
+
+	mainMenu.Add(arrow);
+
+}
+
 
 
 void InitializeGame()
 {
 	InitializeMusic();
+
+	MainMenuCreator();
+
+	dae::SceneManager::GetInstance().OpenSceneByName("MainMenu");
 
 	auto& scene1 = dae::SceneManager::GetInstance().CreateScene("L1_1");
 	auto temp1 = LevelLoader(&scene1, "../Data/Levels/L1_1.txt");
@@ -114,19 +192,13 @@ void InitializeGame()
 	auto& scene3 = dae::SceneManager::GetInstance().CreateScene("L3_1");
 	auto temp3 = LevelLoader(&scene3, "../Data/Levels/L3_1.txt");
 
-
-	dae::SceneManager::GetInstance().OpenSceneByName("L1_1");
-
 	std::vector<std::string> level = {"L1_1","L2_1","L3_1"};
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<SwitchLevelCommand>(level),
+		std::make_unique<SkipLevelCommand>(level),
 		SDL_SCANCODE_F1,
 		dae::KeyState::Down
 	);
-
-	//dae::Renderer::GetInstance().SetBackgroundColor(SDL_Color{0,0,151,225});
-
 }
 
 int main(int, char* []) {

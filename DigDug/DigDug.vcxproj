@@ -164,12 +164,13 @@
     <ClCompile Include="FpsComponent.cpp" />
     <ClCompile Include="FygarGhostState.cpp" />
     <ClCompile Include="FygarWanderState.cpp" />
+    <ClCompile Include="GameModeSelectorComponent.cpp" />
+    <ClCompile Include="MoveImageCommand.cpp" />
     <ClCompile Include="PlayerAttackingState.cpp" />
     <ClCompile Include="PlayerDyingState.cpp" />
     <ClCompile Include="PlayerIdleState.cpp" />
     <ClCompile Include="PlayerWalkingState.cpp" />
     <ClCompile Include="PookaGhostState.cpp" />
-    <ClCompile Include="GridComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="KillCommand.cpp" />
     <ClCompile Include="LevelLoader.cpp" />
@@ -182,7 +183,7 @@
     <ClCompile Include="ScoreCommand.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="SetDirectionCommand.cpp" />
-    <ClCompile Include="SwitchLevelCommand.cpp" />
+    <ClCompile Include="SkipLevelCommand.cpp" />
     <ClCompile Include="TimerComponent.cpp" />
     <ClCompile Include="ToggleAudioCommand.cpp" />
   </ItemGroup>
@@ -191,7 +192,9 @@
     <ClInclude Include="FpsComponent.h" />
     <ClInclude Include="FygarGhostState.h" />
     <ClInclude Include="FygarWanderState.h" />
+    <ClInclude Include="GameModeSelectorComponent.h" />
     <ClInclude Include="IPlayerStateBase.h" />
+    <ClInclude Include="MoveImageCommand.h" />
     <ClInclude Include="PlayerAttackingState.h" />
     <ClInclude Include="PlayerDyingState.h" />
     <ClInclude Include="PlayerIdleState.h" />
@@ -210,7 +213,7 @@
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="SetDirectionCommand.h" />
-    <ClInclude Include="SwitchLevelCommand.h" />
+    <ClInclude Include="SkipLevelCommand.h" />
     <ClInclude Include="TimerComponent.h" />
     <ClInclude Include="ToggleAudioCommand.h" />
   </ItemGroup>
