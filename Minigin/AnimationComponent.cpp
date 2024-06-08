@@ -13,6 +13,11 @@ dae::AnimationComponent::AnimationComponent(GameObject* gameObject, float timeBe
 
 void dae::AnimationComponent::Update()
 {
+	if(m_PlayAnimationOnce && (m_CurrentRowNumber+1) == m_NumberOfRows && (m_CurrentColumnNumber+1) == m_NumberOfColumns)
+	{
+		return;
+	}
+
 	if(m_PauseAnimation)
 	{
 		return;
@@ -66,4 +71,27 @@ void dae::AnimationComponent::Render() const
 void dae::AnimationComponent::PauseAnimation(bool pauseAnimation)
 {
 	m_PauseAnimation = pauseAnimation;
+}
+
+void dae::AnimationComponent::ChangeTimeBetweenFrames(const float time)
+{
+	m_TimeBetweenFrames = time;
+	m_PassedTime = 0.f;
+}
+
+void dae::AnimationComponent::ChangeNumberOfRows(const int rows)
+{
+	m_NumberOfRows = rows;
+	m_CurrentRowNumber = 0;
+}
+
+void dae::AnimationComponent::ChangeNumberOfColumns(const int columns)
+{
+	m_NumberOfColumns = columns;
+	m_CurrentColumnNumber = 0;
+}
+
+void dae::AnimationComponent::SetPlayAnimationOnce(const bool playAnimationOnce)
+{
+	m_PlayAnimationOnce = playAnimationOnce;
 }

@@ -50,7 +50,7 @@ namespace dae
 		std::vector<std::function<void()>>  m_OnSceneActiveFunctions;
 
 		//should only be executed by the scene manager
-		void ExecuteOnLevelLoadFunctions();
+		void ExecuteOnLevelLoadFunctions() const;
 
 		void HandleObjectRemoval();
 	};

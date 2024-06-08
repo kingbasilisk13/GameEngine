@@ -5,6 +5,6 @@
 
 void ReleaseButtonCommand::Execute()
 {
-	dae::ServiceLocator::GetSoundSystem().PauseMusic();
+	//dae::ServiceLocator::GetSoundSystem().PauseMusic();
 
 }

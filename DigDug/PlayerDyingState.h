@@ -2,6 +2,16 @@
 #include "IPlayerStateBase.h"
 
 
+namespace dae
+{
+	class RenderComponent;
+}
+
+namespace dae
+{
+	class AnimationComponent;
+}
+
 class PlayerDyingState final :public IPlayerStateBase
 {
 public:
@@ -23,5 +33,12 @@ public:
 	PlayerDyingState& operator=(PlayerDyingState&& other) = delete;
 
 private:
+	float m_DeathAnimationTime = 2.5f;
+
+	float m_TimePassed = 0.f;
+
+	dae::AnimationComponent* m_AnimationComponent;
+
+	dae::RenderComponent* m_RenderComponent;
 
 };

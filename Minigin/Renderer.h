@@ -6,6 +6,7 @@
 
 namespace dae
 {
+	struct Rectf;
 	class Texture2D;
 
 	class MemoryTestImGui;
@@ -21,6 +22,8 @@ namespace dae
 		void Destroy();
 
 		void RenderTexture(RenderInfo renderInfo);
+
+		void RenderRectanle(Rectf box);
 
 		[[nodiscard]] SDL_Renderer* GetSDLRenderer() const;
 
@@ -38,6 +41,8 @@ namespace dae
 		SDL_Color m_ClearColor{};
 
 		std::multimap<int, RenderInfo> m_RenderMap;
+
+		std::vector<SDL_Rect> m_DebugRectanlges;
 
 		MemoryTestImGui* m_ImGuiObject{};
 	};

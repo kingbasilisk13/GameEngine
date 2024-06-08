@@ -1,23 +1,62 @@
 #include "BoxDeletionComponent.h"
 
 #include "BoxComponent.h"
+#include "GameModeSelectorComponent.h"
 #include "Rectf.h"
 #include "RenderComponent.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "SceneManager.h"
 
-BoxDeletionComponent::BoxDeletionComponent(dae::GameObject* gameObject)
+BoxDeletionComponent::BoxDeletionComponent(dae::GameObject* gameObject, const GameMode gameMode)
 	: BaseComponent(gameObject)
+	, m_GameMode(gameMode)
 {
 }
 
 void BoxDeletionComponent::Update()
 {
 	//todo: warning this will cause errors if the scene does not contain a player 1 object.
-	auto player1 = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectByName("player1");
+	if(m_Player1 == nullptr)
+	{
+		m_Player1 = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectByName("player1").get();
+	}
 
-	if(player1 == nullptr)
+	if(m_Player1 != nullptr)
+	{
+		CheckIfNeedToDeleteCell(m_Player1);
+	}
+
+	switch (m_GameMode)
+	{
+	case GameMode::coOp:
+		if (m_Player2 == nullptr)
+		{
+			m_Player2 = dae::SceneManager::GetInstance().GetActiveScene()->GetObjectByName("player2").get();
+		}
+
+		if (m_Player2 != nullptr)
+		{
+			CheckIfNeedToDeleteCell(m_Player2);
+		}
+		break;
+	default: ;
+	}
+
+	
+}
+
+void BoxDeletionComponent::FixedUpdate()
+{
+}
+
+void BoxDeletionComponent::Render() const
+{
+}
+
+void BoxDeletionComponent::CheckIfNeedToDeleteCell(dae::GameObject* player)
+{
+	if (player == nullptr)
 	{
 		return;
 	}
@@ -25,9 +64,9 @@ void BoxDeletionComponent::Update()
 	dae::Rectf thisObject = GetOwningGameObject()->GetComponent<dae::BoxComponent>()->GetBox();
 
 
-	if (player1->HasComponent<dae::BoxComponent>())
+	if (player->HasComponent<dae::BoxComponent>())
 	{
-		dae::Rectf otherObject = player1->GetComponent<dae::BoxComponent>()->GetBox();
+		dae::Rectf otherObject = player->GetComponent<dae::BoxComponent>()->GetBox();
 
 		if (dae::utils::IsOverlapping(thisObject, otherObject))
 		{
@@ -42,12 +81,4 @@ void BoxDeletionComponent::Update()
 			owner->RemoveComponent(this);
 		}
 	}
-}
-
-void BoxDeletionComponent::FixedUpdate()
-{
-}
-
-void BoxDeletionComponent::Render() const
-{
 }

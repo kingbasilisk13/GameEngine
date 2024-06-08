@@ -79,34 +79,6 @@ void GridMovementComponent::Update()
 			}
 		}
 	}
-	//else
-	//{
-	//	//check direction. horizontal movment.
-	//	if (m_Direction.x != 0)
-	//	{
-	//		for (const int xValue : m_XValues)
-	//		{
-	//			if (position.x > (xValue - radius) && position.x < (xValue + radius))
-	//			{
-	//				auto p1 = glm::abs(xValue - position.x);
-	//				auto p2 = glm::abs(xValue - newPosition.x);
-
-	//				if (p2 < p1)
-	//				{
-	//					newPosition.x = static_cast<float>(xValue);
-	//				}
-	//				else
-	//				{
-	//					break;
-	//				}
-	//			}
-	//		}
-	//	}
-	//	else//vertical movement
-	//	{
-
-	//	}
-	//}
 
 	GetOwningGameObject()->SetLocalPosition(newPosition);
 

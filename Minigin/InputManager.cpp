@@ -96,39 +96,46 @@ public:
 
 	void RemoveBoundLevelCommands(const std::string& levelName)
 	{
-		if(!m_KeyBindings.empty())
+		try
 		{
-			std::erase_if(m_KeyBindings, [levelName](const KeyBinding& binding)
+			if (this)
 			{
-				const auto temp = dynamic_cast<GameComponentCommand*>(binding.command.get());
-				if (temp)
+				if (!m_KeyBindings.empty())
 				{
-					if (temp->GetBoundSceneName() == levelName)
-					{
-						return true;
-					}
-				}
-				return false;
-			});
-		}
-
-		if (!m_ControllerBindings.empty())
-		{
-			std::erase_if(m_ControllerBindings, [levelName](const ControllerBinding& binding)
-				{
-					const auto temp = dynamic_cast<GameComponentCommand*>(binding.command.get());
-					if (temp)
-					{
-						if (temp->GetBoundSceneName() == levelName)
+					std::erase_if(m_KeyBindings, [levelName](const KeyBinding& binding)
 						{
-							return true;
-						}
-					}
-					return false;
-				});
-		}
+							const auto temp = dynamic_cast<GameComponentCommand*>(binding.command.get());
+							if (temp)
+							{
+								if (temp->GetBoundSceneName() == levelName)
+								{
+									return true;
+								}
+							}
+							return false;
+						});
+				}
 
-		
+				if (!m_ControllerBindings.empty())
+				{
+					std::erase_if(m_ControllerBindings, [levelName](const ControllerBinding& binding)
+						{
+							const auto temp = dynamic_cast<GameComponentCommand*>(binding.command.get());
+							if (temp)
+							{
+								if (temp->GetBoundSceneName() == levelName)
+								{
+									return true;
+								}
+							}
+							return false;
+						});
+				}
+			}
+		}
+		catch (...)
+		{
+		}
 	}
 
 private:
@@ -183,7 +190,6 @@ bool dae::InputManager::ProcessInput() const
 	{
 		if (e.type == SDL_QUIT) 
 		{
-			delete m_Pimpl;
 			return false;
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) 
@@ -217,6 +223,12 @@ void dae::InputManager::RemoveBoundLevelCommands(const std::string& levelName) c
 	{
 		m_Pimpl->RemoveBoundLevelCommands(levelName);
 	}
+}
+
+dae::InputManager::~InputManager()
+{
+	delete m_Pimpl;
+	m_Pimpl = nullptr;
 }
 
 dae::InputManager::InputManager()

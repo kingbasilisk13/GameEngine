@@ -1,36 +1,37 @@
 #include "EventManager.h"
 #include <algorithm>
-#include "IHandler.h"
 #include "IObserver.h"
 
 
-void dae::EventManager::Subscribe(EventType eventType, IHandler* handler)
+void dae::EventManager::Subscribe(IObserver* observer)
 {
-
-	m_Events[eventType].push_back(handler);
+	m_Observers.push_back(observer);
 }
 
-void dae::EventManager::RemoveHandler(const IHandler* handler)
+void dae::EventManager::BroadcastEvent(const std::string& event)
 {
-	for (const auto& test : m_Events)
+	RemoveDeletedObservers();
+	for (const auto observer : m_Observers)
 	{
-		EventType bob = test.first;
-
-		UnSubscribe(bob, handler);
+		if(observer != nullptr)
+		{
+			observer->OnGlobalNotify(event);
+		}
 	}
+	RemoveDeletedObservers();
 }
 
-void dae::EventManager::BroadcastEvent(EventType eventType, std::tuple<std::any> data)
+void dae::EventManager::RemoveDeletedObservers()
 {
-	std::for_each(m_Events[eventType].begin(), m_Events[eventType].end(), [&](IHandler* handler)
+	for (auto observersMarkedForDeletion : m_ObserversMarkedForDeletion)
 	{
-			handler->HandleEvent(eventType, data);
-	});
-
+		std::erase(m_Observers, observersMarkedForDeletion);
+	}
+	m_ObserversMarkedForDeletion.clear();
 }
 
-void dae::EventManager::UnSubscribe(EventType eventType, const IHandler* handler)
+void dae::EventManager::UnSubscribe(IObserver* observer)
 {
-	m_Events[eventType].erase(std::remove(m_Events[eventType].begin(), m_Events[eventType].end(), handler), m_Events[eventType].end());
+	m_ObserversMarkedForDeletion.emplace_back(observer);
 }
 

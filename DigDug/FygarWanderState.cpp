@@ -4,6 +4,7 @@
 #include "EngineTime.h"
 #include "FygarGhostState.h"
 #include "GameObject.h"
+#include "GridMovementComponent.h"
 #include "RenderComponent.h"
 #include "ResourceManager.h"
 #include "Scene.h"
@@ -22,12 +23,12 @@ FygarWanderState::~FygarWanderState() = default;
 dae::IState* FygarWanderState::Update(dae::GameObject* owner)
 {
 	Move(owner);
-
 	if (HitWall(owner))
 	{
+
+		//this form of movement does not allow the enemie to follow the wall.
 		auto renderer = owner->GetComponent<dae::RenderComponent>();
-		m_FuturePosition = owner->GetWorldPosition();
-		//todo: this will cause problems because now there is 1 whole frame where the enemy does nothing.
+
 		if (m_Direction == glm::vec2{ 0,-1 })
 		{
 			m_Direction = glm::vec2{ 1,0 };
@@ -48,6 +49,8 @@ dae::IState* FygarWanderState::Update(dae::GameObject* owner)
 		}
 	}
 
+	const auto gridMovement = owner->GetComponent<GridMovementComponent>();
+	gridMovement->SetMovementDirection(m_Direction);
 
 	const float time = dae::EngineTime::GetInstance().GetDeltaTime();
 	m_TimePassed += time;
@@ -56,8 +59,6 @@ dae::IState* FygarWanderState::Update(dae::GameObject* owner)
 	{
 		return new FygarGhostState();
 	}
-
-	owner->SetLocalPosition(m_FuturePosition);
 
 	return nullptr;
 }

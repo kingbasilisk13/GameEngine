@@ -14,7 +14,6 @@
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "TextComponent.h"
-#include "FpsComponent.h"
 #include "GameModeSelectorComponent.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -107,6 +106,10 @@ void DeleteOldLevels()
 	dae::SceneManager::GetInstance().DeleteSceneByName("L1_1");
 	dae::SceneManager::GetInstance().DeleteSceneByName("L2_1");
 	dae::SceneManager::GetInstance().DeleteSceneByName("L3_1");
+
+	dae::SceneManager::GetInstance().DeleteSceneByName("L1_2");
+	dae::SceneManager::GetInstance().DeleteSceneByName("L2_2");
+	dae::SceneManager::GetInstance().DeleteSceneByName("L3_2");
 }
 
 void MainMenuCreator()

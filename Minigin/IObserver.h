@@ -24,5 +24,8 @@ namespace dae
 
 		//called when class implementing the interface is deleted. Warns all subjects that observer no longer exists.
 		virtual void InformAllSubjects(std::vector<Subject*> subjects) = 0;
+
+		//function used to handle global notify events.
+		virtual void OnGlobalNotify(const std::string event);
 	};
 }

@@ -87,9 +87,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FpsComponent.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="HealthComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -171,11 +168,14 @@
     <ClCompile Include="SelectGameModeCommand.cpp">
       <Filter>Source Files\Commands\GameModeCommands</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyAttackComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ResetPositionComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FpsComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="HealthComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -202,9 +202,6 @@
     </ClInclude>
     <ClInclude Include="ReleaseButtonCommand.h">
       <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="GridComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="PookaWanderState.h">
       <Filter>Header Files\Characters\Enemies\Pooka\States</Filter>
@@ -259,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="AcceptSelectedGameModeCommand.h">
       <Filter>Header Files\Commands\GameModeCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttackComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ResetPositionComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -31,13 +31,16 @@ namespace dae
 			, const ControllerInput button
 			, const KeyState state) const;
 
-		//removes all commands bound to a specifick scene.
+		//removes all commands bound to a specific scene.
 		void RemoveBoundLevelCommands(const std::string& levelName) const;
 
 
+		~InputManager() override;
 	private:
 		friend class Singleton<InputManager>;
 		InputManager();
+
+
 
 		class InputImpl;
 		InputImpl* m_Pimpl = nullptr;

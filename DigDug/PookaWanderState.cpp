@@ -3,6 +3,7 @@
 #include "BoxComponent.h"
 #include "EngineTime.h"
 #include "GameObject.h"
+#include "GridMovementComponent.h"
 #include "PookaGhostState.h"
 #include "RenderComponent.h"
 #include "ResourceManager.h"
@@ -27,7 +28,6 @@ dae::IState* PookaWanderState::Update(dae::GameObject* owner)
 		auto renderer = owner->GetComponent<dae::RenderComponent>();
 		//up->right->down->left->up ....
 		m_FuturePosition = owner->GetWorldPosition();
-		//todo: this will cause problems because now there is 1 whole frame where the enemy does nothing.
 		if(m_Direction == glm::vec2{0,-1})
 		{
 			m_Direction = glm::vec2{ 1,0 };
@@ -49,6 +49,8 @@ dae::IState* PookaWanderState::Update(dae::GameObject* owner)
 		}
 	}
 
+	const auto gridMovement = owner->GetComponent<GridMovementComponent>();
+	gridMovement->SetMovementDirection(m_Direction);
 
 	const float time = dae::EngineTime::GetInstance().GetDeltaTime();
 	m_TimePassed += time;
@@ -58,7 +60,7 @@ dae::IState* PookaWanderState::Update(dae::GameObject* owner)
 		return new PookaGhostState();
 	}
 
-	owner->SetLocalPosition(m_FuturePosition);
+
 
 	return nullptr;
 }

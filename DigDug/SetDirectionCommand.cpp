@@ -8,7 +8,7 @@
 #include "GridMovementComponent.h"
 #include "ServiceLocator.h"
 
-SetDirectionCommand::SetDirectionCommand(dae::BaseComponent* component, std::string boundSceneName, const glm::vec3 direction)
+SetDirectionCommand::SetDirectionCommand(dae::BaseComponent* component, std::string boundSceneName, const glm::vec2 direction)
 	: GameComponentCommand(component, std::move(boundSceneName))
 	, m_Direction(direction)
 {
@@ -16,12 +16,10 @@ SetDirectionCommand::SetDirectionCommand(dae::BaseComponent* component, std::str
 
 void SetDirectionCommand::Execute()
 {
-	if(m_Direction == glm::vec3 {})
+	if(m_Direction == glm::vec2 {})
 	{
 		return;
 	}
-
-	//dae::ServiceLocator::GetSoundSystem().PlayMusic(24,50,-1);
 
 	dynamic_cast<GridMovementComponent*>(GetGameComponent())->SetMovementDirection(glm::normalize(m_Direction));
 }

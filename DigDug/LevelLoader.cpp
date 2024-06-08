@@ -1,15 +1,15 @@
 #include "LevelLoader.h"
-
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <stdexcept>
-
 #include "AnimationComponent.h"
 #include "BoxComponent.h"
 #include "BoxDeletionComponent.h"
 #include "ControllerInput.h"
+#include "EnemyAttackComponent.h"
 #include "FygarWanderState.h"
+#include "GameModeSelectorComponent.h"
 #include "HealthComponent.h"
 #include "InputManager.h"
 #include "PookaWanderState.h"
@@ -24,6 +24,7 @@
 #include "ScoreComponent.h"
 #include "SetDirectionCommand.h"
 #include "ReleaseButtonCommand.h"
+#include "ResetPositionComponent.h"
 
 LevelLoader::LevelLoader(dae::Scene* scene, const std::string& levelToLoad, const GameMode gameMode)
 	:m_Scene(scene)
@@ -226,7 +227,7 @@ void LevelLoader::AddTunnel(const int x, const int y, const bool dugOut) const
 			)
 		);
 
-		tunnel->AddComponent(std::make_unique<BoxDeletionComponent>(tunnel.get()));
+		tunnel->AddComponent(std::make_unique<BoxDeletionComponent>(tunnel.get(),m_GameMode));
 	}
 
 	m_Scene->Add(tunnel);
@@ -251,11 +252,8 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 	renderInfo.destinationY = static_cast<int>(position.y);
 	renderInfo.destinationWidth = tempWidth * m_Scale;
 	renderInfo.destinationHeight = player1Size.y * m_Scale;
-	renderInfo.sourceX = 0;
-	renderInfo.sourceY = 0;
 	renderInfo.sourceWidth = tempWidth;
 	renderInfo.sourceHeight = player1Size.y;
-	renderInfo.angle = 0;
 	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("DigDug0/Walking.png");
 	renderInfo.imageFlip = dae::FlipImage::None;
 
@@ -267,17 +265,17 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 		1,
 		2));
 
-	
+	player1->AddComponent(std::make_unique<ResetPositionComponent>(player1.get(), player1.get()->GetWorldPosition()));
 
 	player1->AddComponent(std::make_unique<GridMovementComponent>(player1.get(), speed));
 
 	const auto movementComponent = player1->GetComponent<GridMovementComponent>();
 
-	glm::vec2 tL;
+	glm::vec2 tL{};
 	tL.x = static_cast<float>(m_XValues[0]);
 	tL.y = static_cast<float>(m_YValues[0]);
 
-	glm::vec2 bR;
+	glm::vec2 bR{};
 	bR.x = static_cast<float>(m_XValues[11]);
 	bR.y = static_cast<float>(m_YValues[11]);
 
@@ -301,34 +299,29 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 
 	m_Scene->Add(player1);
 
-	const auto component = player1->GetComponent<GridMovementComponent>();
-
-	//todo: problem. because each level is loaded in at the same time. the key bindings get added each time.
-	//todo: maybe it is better to seperate the keybindings in 2 groups. general key bindings. (aka mute button) and player specific. aka set these in the states
-
 	const auto sceneName = m_Scene->GetSceneName();
 
 #pragma region movement
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<SetDirectionCommand>(component, sceneName,glm::vec3(1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(movementComponent, sceneName,glm::vec3(1, 0, 0)),
 		SDL_SCANCODE_D,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(-1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(movementComponent, sceneName, glm::vec3(-1, 0, 0)),
 		SDL_SCANCODE_A,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(0, -1, 0)),
+		std::make_unique<SetDirectionCommand>(movementComponent, sceneName, glm::vec3(0, -1, 0)),
 		SDL_SCANCODE_W,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddKeyBinding(
-		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(0, 1, 0)),
+		std::make_unique<SetDirectionCommand>(movementComponent, sceneName, glm::vec3(0, 1, 0)),
 		SDL_SCANCODE_S,
 		dae::KeyState::Pressed
 	);
@@ -364,6 +357,132 @@ void LevelLoader::AddPlayer1(const int x, const int y)
 #pragma endregion input
 
 	m_AlreadySpawnedP1 = true;
+
+	switch (m_GameMode)
+	{
+	case GameMode::singlePlayer:
+#pragma region movement
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<SetDirectionCommand>(movementComponent, sceneName, glm::vec2(1, 0)),
+			0,
+			dae::ControllerInput::Gamepad_Dpad_Right,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<SetDirectionCommand>(movementComponent, sceneName, glm::vec2(-1, 0)),
+			0,
+			dae::ControllerInput::Gamepad_Dpad_Left,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<SetDirectionCommand>(movementComponent, sceneName, glm::vec2(0, -1)),
+			0,
+			dae::ControllerInput::Gamepad_Dpad_Up,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<SetDirectionCommand>(movementComponent, sceneName, glm::vec2(0, 1)),
+			0,
+			dae::ControllerInput::Gamepad_Dpad_Down,
+			dae::KeyState::Pressed
+		);
+#pragma endregion movement
+#pragma region input
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::right),
+			0,
+			dae::ControllerInput::Gamepad_Dpad_Right,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::left),
+			0,
+			dae::ControllerInput::Gamepad_Dpad_Left,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::up),
+			0,
+			dae::ControllerInput::Gamepad_Dpad_Up,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::down),
+			0,
+			dae::ControllerInput::Gamepad_Dpad_Down,
+			dae::KeyState::Pressed
+		);
+#pragma endregion input
+		break;
+
+	case GameMode::coOp:
+#pragma region movement
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<SetDirectionCommand>(movementComponent, sceneName, glm::vec2(1, 0)),
+			1,
+			dae::ControllerInput::Gamepad_Dpad_Right,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<SetDirectionCommand>(movementComponent, sceneName, glm::vec2(-1, 0)),
+			1,
+			dae::ControllerInput::Gamepad_Dpad_Left,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<SetDirectionCommand>(movementComponent, sceneName, glm::vec2(0, -1)),
+			1,
+			dae::ControllerInput::Gamepad_Dpad_Up,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<SetDirectionCommand>(movementComponent, sceneName, glm::vec2(0, 1)),
+			1,
+			dae::ControllerInput::Gamepad_Dpad_Down,
+			dae::KeyState::Pressed
+		);
+#pragma endregion movement
+#pragma region input
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::right),
+			1,
+			dae::ControllerInput::Gamepad_Dpad_Right,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::left),
+			1,
+			dae::ControllerInput::Gamepad_Dpad_Left,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::up),
+			1,
+			dae::ControllerInput::Gamepad_Dpad_Up,
+			dae::KeyState::Pressed
+		);
+
+		dae::InputManager::GetInstance().AddControllerBinding(
+			std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::down),
+			1,
+			dae::ControllerInput::Gamepad_Dpad_Down,
+			dae::KeyState::Pressed
+		);
+#pragma endregion input
+		break;
+	}
+
 }
 
 
@@ -377,7 +496,7 @@ void LevelLoader::AddPlayer2(const int x, const int y)
 
 	const auto player2Size = dae::ResourceManager::GetInstance().LoadTexture("DigDug1/Walking.png")->GetSize();
 
-	const int tempWidth = static_cast<int>(player2Size.x * 0.5f);
+	const int tempWidth = player2Size.x / 2;
 
 	const auto position = player2->GetWorldPosition();
 	dae::RenderInfo renderInfo{};
@@ -386,76 +505,109 @@ void LevelLoader::AddPlayer2(const int x, const int y)
 	renderInfo.destinationY = static_cast<int>(position.y);
 	renderInfo.destinationWidth = tempWidth * m_Scale;
 	renderInfo.destinationHeight = player2Size.y * m_Scale;
-	renderInfo.sourceX = 0;
-	renderInfo.sourceY = 0;
 	renderInfo.sourceWidth = tempWidth;
 	renderInfo.sourceHeight = player2Size.y;
-	renderInfo.angle = 0;
 	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("DigDug1/Walking.png");
-	renderInfo.imageFlip = dae::FlipImage::None;
+
+	player2->AddComponent(std::make_unique<ResetPositionComponent>(player2.get(), player2.get()->GetWorldPosition()));
 
 	player2->AddComponent(std::make_unique<dae::RenderComponent>(player2.get(), renderInfo));
 
+	player2->AddComponent(std::make_unique<dae::AnimationComponent>(
+		player2.get(),
+		0.5f,
+		1,
+		2));
+
 	player2->AddComponent(std::make_unique<GridMovementComponent>(player2.get(), speed));
+	const auto movementComponent = player2->GetComponent<GridMovementComponent>();
+	glm::vec2 tL{};
+	tL.x = static_cast<float>(m_XValues[0]);
+	tL.y = static_cast<float>(m_YValues[0]);
+	glm::vec2 bR{};
+	bR.x = static_cast<float>(m_XValues[11]);
+	bR.y = static_cast<float>(m_YValues[11]);
+	movementComponent->SetBounds(tL, bR);
+	movementComponent->SetGridValues(m_XValues, m_YValues);
+
 	player2->AddComponent(std::make_unique<HealthComponent>(player2.get(), 3));
-	player2->AddComponent(std::make_unique<ScoreComponent>(player2.get()));
+
+	player2->AddComponent(std::make_unique<dae::StateComponent>(player2.get(), new PlayerWalkingState(PlayerInput::right, dae::FlipImage::None)));
+
+	player2->AddComponent(std::make_unique<dae::BoxComponent>
+		(
+			player2.get(),
+			static_cast<float>(m_TileSize.x / 2),
+			static_cast<float>(m_TileSize.y / 2)
+		)
+	);
+	
 	m_Scene->Add(player2);
 
 	const auto component = player2->GetComponent<GridMovementComponent>();
 
 	const auto sceneName = m_Scene->GetSceneName();
 
+#pragma region movement
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec2(1, 0)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Right,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(-1, 0, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec2(-1, 0)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Left,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(0, -1, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec2(0, -1)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Up,
 		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec3(0, 1, 0)),
+		std::make_unique<SetDirectionCommand>(component, sceneName, glm::vec2(0, 1)),
 		0,
 		dae::ControllerInput::Gamepad_Dpad_Down,
 		dae::KeyState::Pressed
 	);
+#pragma endregion movement
+	const auto stateComponent = player2->GetComponent<dae::StateComponent>();
 
+#pragma region input
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<ReleaseButtonCommand>(), 0,
+		std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::right),
+		0,
 		dae::ControllerInput::Gamepad_Dpad_Right,
-		dae::KeyState::Up
+		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<ReleaseButtonCommand>(), 0,
+		std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::left),
+		0,
 		dae::ControllerInput::Gamepad_Dpad_Left,
-		dae::KeyState::Up
+		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<ReleaseButtonCommand>(), 0,
+		std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::up),
+		0,
 		dae::ControllerInput::Gamepad_Dpad_Up,
-		dae::KeyState::Up
+		dae::KeyState::Pressed
 	);
 
 	dae::InputManager::GetInstance().AddControllerBinding(
-		std::make_unique<ReleaseButtonCommand>(), 0,
+		std::make_unique<RegisterInputCommand>(stateComponent, sceneName, PlayerInput::down),
+		0,
 		dae::ControllerInput::Gamepad_Dpad_Down,
-		dae::KeyState::Up
+		dae::KeyState::Pressed
 	);
+#pragma endregion input
 }
 
 
@@ -475,15 +627,16 @@ void LevelLoader::AddPooka(const int x, const int y) const
 	renderInfo.destinationY = static_cast<int>(position.y);
 	renderInfo.destinationWidth = tempWidth * m_Scale;
 	renderInfo.destinationHeight = pookaSize.y * m_Scale;
-	renderInfo.sourceX = 0;
-	renderInfo.sourceY = 0;
 	renderInfo.sourceWidth = tempWidth;
 	renderInfo.sourceHeight = pookaSize.y;
-	renderInfo.angle = 0;
 	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("Pooka/Default.png");
 	renderInfo.imageFlip = dae::FlipImage::None;
 
+	pooka->AddComponent(std::make_unique<ResetPositionComponent>(pooka.get(), pooka.get()->GetWorldPosition()));
+
 	pooka->AddComponent(std::make_unique<dae::RenderComponent>(pooka.get(), renderInfo));
+
+	pooka->AddComponent(std::make_unique<EnemyAttackComponent>(pooka.get()));
 
 	pooka->AddComponent(std::make_unique<dae::AnimationComponent>(
 		pooka.get(),
@@ -493,6 +646,17 @@ void LevelLoader::AddPooka(const int x, const int y) const
 
 
 	pooka->AddComponent(std::make_unique<dae::StateComponent>(pooka.get(),	new PookaWanderState()));
+
+	pooka->AddComponent(std::make_unique<GridMovementComponent>(pooka.get(), 40.f));
+	const auto movementComponent = pooka->GetComponent<GridMovementComponent>();
+	glm::vec2 tL{};
+	tL.x = static_cast<float>(m_XValues[0]);
+	tL.y = static_cast<float>(m_YValues[0]);
+	glm::vec2 bR{};
+	bR.x = static_cast<float>(m_XValues[11]);
+	bR.y = static_cast<float>(m_YValues[11]);
+	movementComponent->SetBounds(tL, bR);
+	movementComponent->SetGridValues(m_XValues, m_YValues);
 
 	float size = static_cast<float>(pookaSize.y);
 
@@ -524,15 +688,16 @@ void LevelLoader::AddFygar(const int x, const int y) const
 	renderInfo.destinationY = static_cast<int>(position.y);
 	renderInfo.destinationWidth = tempWidth * m_Scale;
 	renderInfo.destinationHeight = fygarSize.y * m_Scale;
-	renderInfo.sourceX = 0;
-	renderInfo.sourceY = 0;
 	renderInfo.sourceWidth = tempWidth;
 	renderInfo.sourceHeight = fygarSize.y;
-	renderInfo.angle = 0;
 	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("Fygar/Default.png");
 	renderInfo.imageFlip = dae::FlipImage::None;
 
 	fygar->AddComponent(std::make_unique<dae::RenderComponent>(fygar.get(), renderInfo));
+
+	fygar->AddComponent(std::make_unique<ResetPositionComponent>(fygar.get(), fygar.get()->GetWorldPosition()));
+
+	fygar->AddComponent(std::make_unique<EnemyAttackComponent>(fygar.get()));
 
 	fygar->AddComponent(std::make_unique<dae::AnimationComponent>(
 		fygar.get(),
@@ -547,8 +712,21 @@ void LevelLoader::AddFygar(const int x, const int y) const
 			new FygarWanderState()
 		)
 	);
-	float size = static_cast<float>(fygarSize.y);
 
+
+	fygar->AddComponent(std::make_unique<GridMovementComponent>(fygar.get(), 40.f));
+	const auto movementComponent = fygar->GetComponent<GridMovementComponent>();
+	glm::vec2 tL{};
+	tL.x = static_cast<float>(m_XValues[0]);
+	tL.y = static_cast<float>(m_YValues[0]);
+	glm::vec2 bR{};
+	bR.x = static_cast<float>(m_XValues[11]);
+	bR.y = static_cast<float>(m_YValues[11]);
+	movementComponent->SetBounds(tL, bR);
+	movementComponent->SetGridValues(m_XValues, m_YValues);
+
+
+	float size = static_cast<float>(fygarSize.y);
 	fygar->AddComponent(std::make_unique<dae::BoxComponent>
 		(
 			fygar.get(),
@@ -576,11 +754,8 @@ void LevelLoader::AddRock(const int x, const int y) const
 	renderInfo.destinationY = static_cast<int>(position.y);
 	renderInfo.destinationWidth = size.x * m_Scale;
 	renderInfo.destinationHeight = size.y * m_Scale;
-	renderInfo.sourceX = 0;
-	renderInfo.sourceY = 0;
 	renderInfo.sourceWidth = size.x;
 	renderInfo.sourceHeight = size.y;
-	renderInfo.angle = 0;
 	renderInfo.textureToRender = dae::ResourceManager::GetInstance().LoadTexture("Rock/RockDefault.png");
 	renderInfo.imageFlip = dae::FlipImage::None;
 

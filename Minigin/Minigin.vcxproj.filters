@@ -165,9 +165,6 @@
     <ClInclude Include="ControllerInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IHandler.h">
-      <Filter>Header Files\Observers</Filter>
-    </ClInclude>
     <ClInclude Include="ServiceLocator.h">
       <Filter>Header Files\ServiceLocators</Filter>
     </ClInclude>
@@ -316,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="IObserver.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

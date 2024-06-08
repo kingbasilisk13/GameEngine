@@ -9,6 +9,7 @@
 #include "backends/imgui_impl_sdl2.h"
 
 #include "MemoryTestImGui.h"
+#include "Rectf.h"
 #include "RenderComponent.h"
 #include "Texture2D.h"
 
@@ -86,6 +87,17 @@ void dae::Renderer::RenderTexture(RenderInfo renderInfo)
 	m_RenderMap.emplace(renderInfo.zOrder, renderInfo);
 }
 
+void dae::Renderer::RenderRectanle(Rectf box)
+{
+	SDL_Rect temp{};
+	temp.x = static_cast<int>(box.left);
+	temp.y = static_cast<int>(box.top);
+	temp.w = static_cast<int>(box.width);
+	temp.h = static_cast<int>(box.height);
+
+	m_DebugRectanlges.emplace_back(temp);
+}
+
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_Renderer; }
 
 void dae::Renderer::DisplayRenderMap()
@@ -116,8 +128,20 @@ void dae::Renderer::DisplayRenderMap()
 			SDL_RenderCopyEx(m_Renderer, info.textureToRender->GetSdlTexture(), &source, &dst, info.angle, NULL, SDL_FLIP_VERTICAL);
 			break;
 		}
+
+		
 	}
 	m_RenderMap.clear();
+	
+	SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 255); // White
+	for (auto debugRectanlge : m_DebugRectanlges)
+	{
+		SDL_RenderDrawRect(m_Renderer, &debugRectanlge);
+	}
+	SDL_SetRenderDrawColor(m_Renderer, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a);
+
+	m_DebugRectanlges.clear();
+
 }
 
 void dae::Renderer::GetWindowSize(int* width, int* height) const

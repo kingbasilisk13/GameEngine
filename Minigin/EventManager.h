@@ -1,42 +1,32 @@
 #pragma once
-
-#include <any>
-#include "Minigin.h"
 #include "Singleton.h"
+#include "Minigin.h"
+
 
 //todo: this does not work yet. do not use this.
 namespace dae
 {
-	class IHandler;
-
-	enum class EventType
-	{
-		playSound,
-		playMusic
-	};
 	class IObserver;
 
+	//like a subject but on a global level.
 	class EventManager final : public Singleton<EventManager>
 	{
 	public:
+		void Subscribe(IObserver* observer);
 
-		void Subscribe(EventType eventType, IHandler* handler);
+		void UnSubscribe(IObserver* observer);
 
-		void UnSubscribe(EventType eventType,const IHandler* handler);
+		//simple event system. broadcast a string starting with a specific name and all the required values seperated by a ;.
+		void BroadcastEvent(const std::string& event);
 
-		void RemoveHandler(const IHandler* handler);
-
-		void BroadcastEvent(EventType eventType, std::tuple<std::any> data);
 	private:
 		friend class Singleton<EventManager>;
 		EventManager() = default;
 
-		//todo: voeg hier een map toe waar je specifieken handelers linkd aan specifieke events.
-		//vb sound event word voor alles met sound gelinked.
+		std::vector<IObserver*> m_Observers{};
 
-		//todo: queue moet niet per see via de time ge de coupled worden. je mag ze gewoon direct uitvoeren. de keuze is aan u.
+		std::vector<IObserver*> m_ObserversMarkedForDeletion{};
 
-		std::unordered_map<EventType, std::vector<IHandler*>> m_Events;
-
+		void RemoveDeletedObservers();
 	};
 }

@@ -15,7 +15,7 @@ std::vector<std::shared_ptr<dae::GameObject>> dae::Scene::GetObjectsByName(std::
 {
 	std::vector<std::shared_ptr<GameObject>> results;
 
-	for (auto gameObject : m_objects)
+	for (const auto& gameObject : m_objects)
 	{
 		if(gameObject->GetObjectName() == name)
 		{
@@ -30,7 +30,7 @@ std::shared_ptr<dae::GameObject> dae::Scene::GetObjectByName(std::string name) c
 {
 	std::vector<std::shared_ptr<GameObject>> results;
 
-	for (auto gameObject : m_objects)
+	for (auto& gameObject : m_objects)
 	{
 		if (gameObject->GetObjectName() == name)
 		{
@@ -122,9 +122,9 @@ void dae::Scene::Render() const
 	Renderer::GetInstance().DisplayRenderMap();
 }
 
-void dae::Scene::ExecuteOnLevelLoadFunctions()
+void dae::Scene::ExecuteOnLevelLoadFunctions() const
 {
-	for (auto function : m_OnSceneActiveFunctions)
+	for (const auto& function : m_OnSceneActiveFunctions)
 	{
 		function();
 	}

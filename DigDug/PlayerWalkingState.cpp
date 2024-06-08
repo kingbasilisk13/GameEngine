@@ -1,8 +1,10 @@
 #include "PlayerWalkingState.h"
 
 #include "AnimationComponent.h"
+#include "EventManager.h"
 #include "GameObject.h"
 #include "ISoundSystem.h"
+#include "PlayerDyingState.h"
 #include "PlayerIdleState.h"
 #include "RenderComponent.h"
 #include "ServiceLocator.h"
@@ -15,7 +17,9 @@ PlayerWalkingState::PlayerWalkingState(const PlayerInput previousDirection, dae:
 }
 
 PlayerWalkingState::~PlayerWalkingState()
-= default;
+{
+	dae::EventManager::GetInstance().UnSubscribe(this);
+}
 
 void PlayerWalkingState::HandleInput(const PlayerInput input)
 {
@@ -39,6 +43,10 @@ void PlayerWalkingState::HandleInput(const PlayerInput input)
 
 dae::IState* PlayerWalkingState::Update(dae::GameObject* owner)
 {
+	if(m_PlayerHasDied)
+	{
+		return new PlayerDyingState();
+	}
 	CalculateDirection(owner);
 
 	if(m_PlayerIsIdle)
@@ -54,11 +62,34 @@ dae::IState* PlayerWalkingState::Update(dae::GameObject* owner)
 void PlayerWalkingState::OnEnter(dae::GameObject* owner)
 {
 	owner->GetComponent<dae::AnimationComponent>()->PauseAnimation(false);
+	dae::ServiceLocator::GetSoundSystem().PlayMusic(24,50,-1);
+	dae::EventManager::GetInstance().Subscribe(this);
 }
 
 void PlayerWalkingState::OnExit()
 {
+	dae::EventManager::GetInstance().UnSubscribe(this);
 	dae::ServiceLocator::GetSoundSystem().PauseMusic();
+}
+
+void PlayerWalkingState::OnGlobalNotify(const std::string event)
+{
+	if(event == "Player1GotHit")
+	{
+		m_PlayerHasDied = true;
+	}
+}
+
+void PlayerWalkingState::OnNotify(dae::Subject* , dae::Event )
+{
+}
+
+void PlayerWalkingState::AddSubject(dae::Subject* )
+{
+}
+
+void PlayerWalkingState::InformAllSubjects(std::vector<dae::Subject*> )
+{
 }
 
 void PlayerWalkingState::CalculateDirection(dae::GameObject* owner)

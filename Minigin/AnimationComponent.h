@@ -27,8 +27,17 @@ namespace dae
 
 		void PauseAnimation(bool pauseAnimation);
 
+		void ChangeTimeBetweenFrames(const float time);
+
+		void ChangeNumberOfRows(const int rows);
+		void ChangeNumberOfColumns(const int columns);
+
+		void SetPlayAnimationOnce(const bool playAnimationOnce);
+
 	private:
 		bool m_PauseAnimation = false;
+
+		bool m_PlayAnimationOnce = false;
 
 		float m_TimeBetweenFrames;
 		float m_PassedTime;

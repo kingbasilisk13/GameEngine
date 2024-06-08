@@ -1,5 +1,7 @@
 #include "BoxComponent.h"
 
+#include "Renderer.h"
+
 
 dae::BoxComponent::BoxComponent(GameObject* gameObject,const float width,const float height)
 	:BaseComponent(gameObject)
@@ -25,6 +27,7 @@ void dae::BoxComponent::FixedUpdate()
 
 void dae::BoxComponent::Render() const
 {
+	Renderer::GetInstance().RenderRectanle(m_Box);
 }
 
 void dae::BoxComponent::ChangeDimensions(const float width, const float height)
@@ -33,8 +36,10 @@ void dae::BoxComponent::ChangeDimensions(const float width, const float height)
 	m_Box = ReCalculateBox(center, width, height);
 }
 
-dae::Rectf dae::BoxComponent::GetBox() const
+dae::Rectf dae::BoxComponent::GetBox()
 {
+	const glm::vec2 center = GetOwningGameObject()->GetWorldPosition();
+	m_Box = ReCalculateBox(center, m_Box.width, m_Box.height);
 	return m_Box;
 }
 

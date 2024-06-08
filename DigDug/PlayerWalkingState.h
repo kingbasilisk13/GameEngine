@@ -1,8 +1,10 @@
 #pragma once
+
+#include "IObserver.h"
 #include "IPlayerStateBase.h"
 #include "RenderComponent.h"
 
-class PlayerWalkingState final : public IPlayerStateBase
+class PlayerWalkingState final : public IPlayerStateBase, public dae::IObserver
 {
 public:
 
@@ -17,6 +19,12 @@ public:
 
 	void OnExit() override;
 
+	void OnGlobalNotify(const std::string event) override;
+
+	void OnNotify(dae::Subject* component, dae::Event event) override;
+	void AddSubject(dae::Subject* subject) override;
+	void InformAllSubjects(std::vector<dae::Subject*> subjects) override;
+
 	PlayerWalkingState(const PlayerWalkingState& other) = delete;
 	PlayerWalkingState(PlayerWalkingState&& other) = delete;
 	PlayerWalkingState& operator=(const PlayerWalkingState& other) = delete;
@@ -24,6 +32,8 @@ public:
 
 private:
 	bool m_PlayerIsIdle = false;
+
+	bool m_PlayerHasDied = false;
 
 	PlayerInput m_Direction = PlayerInput::right;
 	PlayerInput m_PreviousDirection = PlayerInput::right;

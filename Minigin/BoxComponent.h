@@ -24,7 +24,7 @@ namespace dae
 
 		void ChangeDimensions(float width, float height);
 
-		[[nodiscard]] Rectf GetBox() const;
+		[[nodiscard]] Rectf GetBox();
 
 		[[nodiscard]] Rectf GetFutureBox(glm::vec2) const;
 
